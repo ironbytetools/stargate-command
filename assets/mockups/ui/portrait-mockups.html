@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SGC Command Portrait Mockups</title>
+<style>
+:root{--bg:#070d18;--panel:#0d1726;--line:#1e3350;--steel:#7f93ad;--glow:#9fd4ff;--txt:#cfe3f7;--dim:#6f86a3;--warn:#ffb347;--bad:#ff5d5d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.4 ui-monospace,Menlo,Consolas,monospace;padding:24px 16px 64px}
+h1{font-size:18px;letter-spacing:.2em;margin:0 0 4px;color:var(--glow)}
+h2{font-size:13px;letter-spacing:.18em;color:var(--glow);border-bottom:1px solid var(--line);padding-bottom:6px;margin:32px 0 14px}
+p.sub{color:var(--dim);margin:0 0 8px;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);padding:8px;text-align:center}
+.card svg{width:100%;height:auto;display:block}
+.card .n{margin-top:6px;font-size:12px;color:var(--txt)}
+.card .r{font-size:11px;color:var(--dim)}
+.wrap{max-width:1100px;margin:0 auto}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border:1px solid var(--line);color:var(--dim);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>SGC COMMAND // PORTRAIT MOCKUPS</h1>
+<p class="sub">Stylized silhouettes with role badges. All figures are original; names are labels only, with no likenesses. Colors follow the HUD palette. State overlays are shown at the bottom.</p>
+
+<h2>EXPLORATION TEAM</h2>
+<div class="grid" id="exp"></div>
+<h2>RECON TEAM (AIR FORCE SPECIAL FORCES)</h2>
+<div class="grid" id="rec"></div>
+<h2>ASSAULT TEAM (MARINES)</h2>
+<div class="grid" id="ass"></div>
+<h2>SECURITY TEAM (AIR FORCE SECURITY FORCES)</h2>
+<div class="grid" id="sec"></div>
+<h2>PERMANENT STAFF</h2>
+<div class="grid" id="staff"></div>
+<h2>FACTION CONTACTS</h2>
+<div class="grid" id="fac"></div>
+<h2>SPECIAL OPERATIONS RESCUE UNITS (EMBLEMS)</h2>
+<div class="grid" id="ops"></div>
+<h2>LOGISTICS BASES (EMBLEMS)</h2>
+<div class="grid" id="log"></div>
+<h2>STATE OVERLAYS</h2>
+<div class="grid" id="states"></div>
+</div>
+<script>
+const NS="http://www.w3.org/2000/svg";
+const C={bg1:"#10223a",bg2:"#0a1424",body:"#5d718c",bodyDark:"#42546c",skin:"#8ea4bf",rim:"#bfe3ff",accent:"#4aa8ff",warn:"#ffb347",bad:"#ff5d5d",plate:"#0a1626"};
+function icon(k,cx,cy,s,col){
+const g={
+star:`<polygon points="0,-1 .3,-.3 1,-.3 .45,.15 .6,.9 0,.45 -.6,.9 -.45,.15 -1,-.3 -.3,-.3" fill="${col}"/>`,
+cross:`<path d="M-.3-1h.6v.7h.7v.6h-.7v.7h-.6v-.7h-.7v-.6h.7z" fill="${col}"/>`,
+scope:`<circle r=".7" fill="none" stroke="${col}" stroke-width=".18"/><path d="M-1 0h2M0-1v2" stroke="${col}" stroke-width=".14"/>`,
+atom:`<ellipse rx="1" ry=".38" fill="none" stroke="${col}" stroke-width=".14"/><ellipse rx="1" ry=".38" transform="rotate(60)" fill="none" stroke="${col}" stroke-width=".14"/><ellipse rx="1" ry=".38" transform="rotate(120)" fill="none" stroke="${col}" stroke-width=".14"/>`,
+glyph:`<path d="M-.9-.9h1.8M0-.9v1.8M-.6.9h1.2M-.9-.2l.6.5" fill="none" stroke="${col}" stroke-width=".18"/>`,
+shield:`<path d="M0-1L.9-.6V.1C.9.6.4.9 0 1C-.4.9-.9.6-.9.1V-.6Z" fill="none" stroke="${col}" stroke-width=".16"/>`,
+bolt:`<path d="M.3-1L-.6.1h.5L-.3 1L.7-.2H.1Z" fill="${col}"/>`,
+chev:`<path d="M-.9-.4L0 .5L.9-.4M-.9.2L0 1.1L.9.2" fill="none" stroke="${col}" stroke-width=".18"/>`,
+wrench:`<circle cx="-.35" cy="-.35" r=".45" fill="none" stroke="${col}" stroke-width=".18"/><path d="M-.05-.05L.9.9" stroke="${col}" stroke-width=".25"/>`,
+book:`<path d="M-.9-.7H0V.8H-.9ZM0-.7H.9V.8H0Z" fill="none" stroke="${col}" stroke-width=".15"/>`,
+bomb:`<circle cy=".25" r=".6" fill="${col}"/><path d="M.2-.35L.5-.8" stroke="${col}" stroke-width=".15"/>`,
+rifle:`<path d="M-1 .15H.7L1 -.1M-.4 .15V.7" fill="none" stroke="${col}" stroke-width=".2"/>`,
+doc:`<path d="M-.6-.9H.3L.7-.5V.9H-.6Z" fill="none" stroke="${col}" stroke-width=".15"/><path d="M-.3-.1H.4M-.3.3H.4" stroke="${col}" stroke-width=".12"/>`,
+wing:`<path d="M0 .8L-.9-.1L-.6-.2L0 .2L.6-.2L.9-.1Z" fill="${col}"/>`,
+gear:`<circle r=".45" fill="none" stroke="${col}" stroke-width=".25"/><path d="M0-.9v.35M0 .55v.35M-.9 0h.35M.55 0h.35" stroke="${col}" stroke-width=".25"/>`,
+eye:`<path d="M-1 0Q0-.8 1 0Q0 .8-1 0Z" fill="none" stroke="${col}" stroke-width=".16"/><circle r=".22" fill="${col}"/>`,
+helm:`<path d="M-.8.1A.8.8 0 0 1 .8.1V.5H-.8Z" fill="${col}"/>`,
+leaf:`<path d="M-.8.8Q-.8-.8 .8-.8Q.8.8-.8.8Z" fill="none" stroke="${col}" stroke-width=".16"/>`,
+sun:`<circle r=".35" fill="${col}"/><path d="M0-1v.3M0 .7v.3M-1 0h.3M.7 0h.3M-.7-.7l.2.2M.5.5l.2.2M.7-.7l-.2.2M-.5.5l-.2.2" stroke="${col}" stroke-width=".13"/>`,
+box:`<path d="M-.8-.4L0-.8L.8-.4V.5L0 .9L-.8.5ZM-.8-.4L0 0L.8-.4M0 0V.9" fill="none" stroke="${col}" stroke-width=".13"/>`,
+heli:`<path d="M-1-.8H1M0-.8V-.3" stroke="${col}" stroke-width=".13"/><ellipse cy=".15" rx=".6" ry=".35" fill="none" stroke="${col}" stroke-width=".14"/><path d="M.5.1H1V.5" fill="none" stroke="${col}" stroke-width=".12"/>`,
+jet:`<path d="M0-1L.2-.2L1 .3V.5L.2.3L.15.8L.5 1V1.1H-.5V1L-.15.8L-.2.3L-1 .5V.3L-.2-.2Z" fill="${col}"/>`,
+truck:`<path d="M-1-.4H.3V.4H-1ZM.3-.1H.8L1 .2V.4H.3" fill="none" stroke="${col}" stroke-width=".14"/><circle cx="-.5" cy=".5" r=".2" fill="${col}"/><circle cx=".6" cy=".5" r=".2" fill="${col}"/>`,
+big:`<path d="M-1 .1H1M-.2-.4H.4L1 .1M-.6.1V.6H.6V.1" fill="none" stroke="${col}" stroke-width=".14"/>`
+}[k]||"";
+return `<g transform="translate(${cx} ${cy}) scale(${s})">${g}</g>`;
+}
+function bust(o){
+const {hair="none",head="bare",skin=C.skin,bodyCol=C.body,build=1,badge="star",badgeCol=C.accent,glasses=false,headset=false,beard=false,state="ok",uniform="solid",coat=false,robe=false,lens=false,bun=false,epaulet=false,beret=false}=o;
+const w=70*build;
+let s=`<svg viewBox="0 0 120 150" xmlns="${NS}"><defs><linearGradient id="g${o.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${C.bg1}"/><stop offset="1" stop-color="${C.bg2}"/></linearGradient><radialGradient id="r${o.id}" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="#2a5a8c" stop-opacity=".45"/><stop offset="1" stop-color="#2a5a8c" stop-opacity="0"/></radialGradient></defs>`;
+s+=`<rect width="120" height="150" fill="url(#g${o.id})"/><rect width="120" height="150" fill="url(#r${o.id})"/>`;
+s+=`<path d="M${60-w/2} 150 Q${60-w/2} 108 ${60-w/4} 100 L${60-9} 93 H${60+9} L${60+w/4} 100 Q${60+w/2} 108 ${60+w/2} 150Z" fill="${bodyCol}" stroke="${C.rim}" stroke-opacity=".35" stroke-width="1"/>`;
+if(robe)s+=`<path d="M${60-w/2} 150 Q${60-w/2} 110 60 104 Q${60+w/2} 110 ${60+w/2} 150Z" fill="${C.bodyDark}"/><path d="M60 98V150" stroke="${C.rim}" stroke-opacity=".3"/>`;
+if(coat)s+=`<path d="M${60-12} 96L60 130L${60+12} 96L${60+8} 93H${60-8}Z" fill="#cfe3f7" fill-opacity=".85"/>`;
+else s+=`<path d="M${60-9} 93L60 112L${60+9} 93Z" fill="${C.bodyDark}"/>`;
+if(epaulet)s+=`<rect x="${60-w/2+3}" y="106" width="12" height="4" fill="${C.accent}" opacity=".8"/><rect x="${60+w/2-15}" y="106" width="12" height="4" fill="${C.accent}" opacity=".8"/>`;
+s+=`<rect x="54" y="82" width="12" height="14" fill="${skin}"/>`;
+s+=`<ellipse cx="60" cy="68" rx="19" ry="23" fill="${skin}" stroke="${C.rim}" stroke-opacity=".4"/>`;
+if(beard)s+=`<path d="M42 72Q44 94 60 94Q76 94 78 72Q70 82 60 82Q50 82 42 72Z" fill="#2c3a4e"/>`;
+if(hair==="short")s+=`<path d="M41 66Q40 44 60 43Q80 44 79 66Q74 54 60 54Q46 54 41 66Z" fill="#2c3a4e"/>`;
+if(hair==="long")s+=`<path d="M40 70Q36 42 60 42Q84 42 80 70L82 96Q74 92 76 70Q70 54 60 54Q50 54 44 70Q46 92 38 96Z" fill="#2c3a4e"/>`;
+if(hair==="bob")s+=`<path d="M40 76Q36 42 60 42Q84 42 80 76Q76 80 74 76Q72 56 60 54Q48 56 46 76Q44 80 40 76Z" fill="#2c3a4e"/>`;
+if(hair==="gray")s+=`<path d="M41 66Q40 44 60 43Q80 44 79 66Q74 54 60 54Q46 54 41 66Z" fill="#aab6c6"/>`;
+if(hair==="bald")s+=``;
+if(bun)s+=`<circle cx="60" cy="40" r="7" fill="#2c3a4e"/>`;
+if(head==="helmet")s+=`<path d="M38 66Q36 36 60 34Q84 36 82 66L80 62Q60 52 40 62Z" fill="#3a4a60" stroke="${C.rim}" stroke-opacity=".5"/><path d="M38 66Q60 58 82 66" fill="none" stroke="${C.rim}" stroke-opacity=".3"/>`;
+if(head==="boonie")s+=`<path d="M34 58Q60 50 86 58L84 52Q80 38 60 38Q40 38 36 52Z" fill="#46586e" stroke="${C.rim}" stroke-opacity=".5"/>`;
+if(head==="cap")s+=`<path d="M40 60Q40 40 60 40Q80 40 80 60Z" fill="#33445b" stroke="${C.rim}" stroke-opacity=".5"/><path d="M40 60H92" stroke="#33445b" stroke-width="5" stroke-linecap="round"/>`;
+if(beret)s+=`<path d="M38 60Q36 40 62 38Q82 40 80 58Q60 52 38 60Z" fill="#33445b" stroke="${C.rim}" stroke-opacity=".5"/>`;
+if(head==="bandana")s+=`<path d="M40 58Q60 48 80 58V64Q60 56 40 64Z" fill="#46586e"/>`;
+if(head==="turban")s+=`<path d="M38 62Q36 38 60 36Q84 38 82 62Q60 52 38 62Z" fill="#6a5a46"/>`;
+if(head==="crest")s+=`<path d="M38 64Q36 34 60 32Q84 34 82 64Q60 54 38 64Z" fill="#6a5a46"/><path d="M60 32V54" stroke="${C.rim}" stroke-opacity=".5"/>`;
+if(glasses)s+=`<rect x="46" y="64" width="12" height="9" rx="2" fill="none" stroke="${C.rim}" stroke-width="1.4"/><rect x="62" y="64" width="12" height="9" rx="2" fill="none" stroke="${C.rim}" stroke-width="1.4"/><path d="M58 68H62" stroke="${C.rim}" stroke-width="1.2"/>`;
+if(lens)s+=`<rect x="45" y="64" width="30" height="8" rx="3" fill="${C.accent}" fill-opacity=".55" stroke="${C.rim}" stroke-width="1"/>`;
+if(headset)s+=`<path d="M41 68Q40 46 60 46Q80 46 79 68" fill="none" stroke="#1b2738" stroke-width="3"/><rect x="38" y="64" width="6" height="12" rx="2" fill="#1b2738"/><path d="M41 76Q44 84 54 83" fill="none" stroke="#1b2738" stroke-width="2"/>`;
+s+=`<circle cx="94" cy="130" r="17" fill="${C.plate}" stroke="${badgeCol}" stroke-width="2"/>${icon(badge,94,130,9,badgeCol)}`;
+if(state==="injured"){s+=`<rect x="44" y="52" width="34" height="9" rx="2" fill="#e9eef5" transform="rotate(-14 61 56)"/><path d="M58 51v10M54 56h8" stroke="${C.bad}" stroke-width="2.4" transform="rotate(-14 61 56)"/><rect x="1" y="1" width="118" height="148" fill="none" stroke="${C.warn}" stroke-width="3"/>`;}
+if(state==="captured"){s+=`<rect width="120" height="150" fill="#0a1424" fill-opacity=".55"/><path d="M0 0L120 150M0 150L120 0" stroke="#24364e" stroke-width="0"/><rect x="38" y="64" width="44" height="24" rx="3" fill="#0a1424" fill-opacity=".85" stroke="${C.warn}" stroke-width="2"/><path d="M48 76h24M48 82h24" stroke="${C.warn}" stroke-width="2" stroke-dasharray="4 3"/><rect x="1" y="1" width="118" height="148" fill="none" stroke="#7f93ad" stroke-width="3" stroke-dasharray="8 5"/>`;}
+if(state==="killed"){s+=`<rect width="120" height="150" fill="#05080e" fill-opacity=".72"/><path d="M0 0H44L0 44Z" fill="#05080e"/><path d="M0 12L12 0M0 26L26 0" stroke="#cfe3f7" stroke-width="2.4"/><rect x="1" y="1" width="118" height="148" fill="none" stroke="#3a4a60" stroke-width="3"/>`;}
+return s+"</svg>";
+}
+function addTo(id,list){
+const el=document.getElementById(id);
+list.forEach((p,i)=>{
+const d=document.createElement("div");d.className="card";
+d.innerHTML=bust({...p.o,id:id+i})+`<div class="n">${p.n}</div><div class="r">${p.r||""}</div>`;
+el.appendChild(d);
+});
+}
+addTo("exp",[
+{n:"Team Lead",r:"EXPLORATION",o:{hair:"short",head:"cap",badge:"star",epaulet:true,build:1.05}},
+{n:"Soldier",r:"EXPLORATION",o:{head:"helmet",badge:"rifle",build:1.15,bodyCol:"#566a52"}},
+{n:"Scientist",r:"EXPLORATION",o:{hair:"bob",glasses:true,badge:"atom",coat:true,build:.9}},
+{n:"Linguist",r:"EXPLORATION",o:{hair:"long",badge:"glyph",headset:false,build:.9,glasses:true}}
+]);
+addTo("rec",[
+{n:"Recon Leader",r:"RECON",o:{head:"boonie",badge:"star",epaulet:true,bodyCol:"#4d5f7a"}},
+{n:"Sniper",r:"RECON",o:{head:"boonie",badge:"scope",beard:true,build:1.05,bodyCol:"#4d5f7a"}},
+{n:"Recon Specialist",r:"RECON",o:{head:"bandana",lens:true,badge:"eye",headset:true,build:.95,bodyCol:"#4d5f7a"}}
+]);
+addTo("ass",[
+{n:"Assault Lead",r:"ASSAULT",o:{head:"helmet",badge:"star",epaulet:true,build:1.15,bodyCol:"#4f6150"}},
+{n:"Rifleman",r:"ASSAULT",o:{head:"helmet",badge:"rifle",build:1.1,bodyCol:"#4f6150"}},
+{n:"Machine Gunner",r:"ASSAULT",o:{head:"helmet",badge:"chev",beard:true,build:1.3,bodyCol:"#4f6150"}},
+{n:"Grenadier",r:"ASSAULT",o:{head:"helmet",badge:"bomb",build:1.2,bodyCol:"#4f6150"}}
+]);
+addTo("sec",[
+{n:"Security Lead",r:"SECURITY",o:{head:"beret",badge:"shield",epaulet:true,bodyCol:"#566a8a",badgeCol:"#ffd27f"}},
+{n:"Security Officer",r:"SECURITY",o:{head:"beret",badge:"shield",build:1.1,bodyCol:"#566a8a",badgeCol:"#ffd27f"}},
+{n:"Security Officer",r:"SECURITY",o:{head:"beret",badge:"shield",hair:"bob",build:.95,bodyCol:"#566a8a",badgeCol:"#ffd27f"}}
+]);
+addTo("staff",[
+{n:"Col. Carter",r:"LAB / SCIENTIST",o:{hair:"bob",coat:true,badge:"atom",epaulet:true,build:.95}},
+{n:"Dr. Lee",r:"LAB / SCIENTIST",o:{hair:"short",glasses:true,coat:true,badge:"atom",build:.9}},
+{n:"Dr. Langford",r:"ARCHEOLOGY",o:{hair:"gray",glasses:true,coat:true,badge:"book",build:.85,bun:false}},
+{n:"MSgt. Harriman",r:"IRIS OPERATOR",o:{hair:"bald",headset:true,badge:"gear",epaulet:true,build:1.05}},
+{n:"Maj. Hale",r:"INFIRMARY",o:{hair:"short",coat:true,badge:"cross",epaulet:true,build:1.0}}
+]);
+addTo("fac",[
+{n:"Council Elder",r:"FACTION",o:{hair:"gray",beard:true,robe:true,badge:"leaf",bodyCol:"#6a5a7a",badgeCol:"#c9a7ff"}},
+{n:"Envoy",r:"FACTION",o:{head:"turban",robe:true,badge:"sun",bodyCol:"#7a6a52",badgeCol:"#ffd27f"}},
+{n:"Warrior",r:"FACTION",o:{head:"crest",badge:"chev",build:1.2,bodyCol:"#6a5a46",badgeCol:"#ffb347"}},
+{n:"Scholar",r:"FACTION",o:{hair:"long",robe:true,badge:"book",build:.9,bodyCol:"#4f6a6a",badgeCol:"#7fe0c8"}}
+]);
+function emblem(id,icn,col,label){
+return `<svg viewBox="0 0 120 150" xmlns="${NS}"><defs><linearGradient id="e${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${C.bg1}"/><stop offset="1" stop-color="${C.bg2}"/></linearGradient></defs><rect width="120" height="150" fill="url(#e${id})"/><path d="M60 14L104 30V76C104 106 84 126 60 136C36 126 16 106 16 76V30Z" fill="${C.plate}" stroke="${col}" stroke-width="3"/><path d="M60 24L94 36V76C94 100 78 116 60 124C42 116 26 100 26 76V36Z" fill="none" stroke="${col}" stroke-opacity=".4"/>${icon(icn,60,76,26,col)}</svg>`;
+}
+function addEmblems(id,list){
+const el=document.getElementById(id);
+list.forEach((p,i)=>{
+const d=document.createElement("div");d.className="card";
+d.innerHTML=emblem(id+i,p.i,p.c)+`<div class="n">${p.n}</div><div class="r">${p.r||""}</div>`;
+el.appendChild(d);
+});
+}
+addEmblems("ops",[
+{n:"Rangers",r:"LEVEL 1",i:"chev",c:"#9fd4ff"},
+{n:"Pararescue",r:"LEVEL 2",i:"wing",c:"#9fd4ff"},
+{n:"Marine Raiders",r:"LEVEL 3",i:"rifle",c:"#9fd4ff"},
+{n:"Navy SEALs",r:"LEVEL 4",i:"bolt",c:"#9fd4ff"},
+{n:"Delta Force",r:"LEVEL 5",i:"star",c:"#9fd4ff"}
+]);
+addEmblems("log",[
+{n:"Peterson SFB",r:"TRUCK",i:"truck",c:"#7fe0c8"},
+{n:"Hill AFB",r:"HELICOPTER",i:"heli",c:"#7fe0c8"},
+{n:"Travis AFB",r:"C-130",i:"big",c:"#7fe0c8"},
+{n:"Wright-Patterson",r:"C-130",i:"big",c:"#7fe0c8"},
+{n:"Ramstein",r:"C-17",i:"jet",c:"#7fe0c8"},
+{n:"Kadena",r:"C-17",i:"jet",c:"#7fe0c8"}
+]);
+const base={hair:"short",head:"helmet",badge:"rifle",build:1.1,bodyCol:"#4f6150"};
+addTo("states",[
+{n:"Ready",r:"NORMAL",o:{...base}},
+{n:"Injured",r:"STAND DOWN / HEALING",o:{...base,state:"injured"}},
+{n:"Captured",r:"AWAITING RESCUE",o:{...base,state:"captured"}},
+{n:"Killed",r:"REPLACEMENT NEEDED",o:{...base,state:"killed"}}
+]);
+</script>
+</body>
+</html>

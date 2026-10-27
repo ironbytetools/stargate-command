@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SGC Command Portrait Mockups v2</title>
+<style>
+:root{--bg:#060b15;--panel:#0b1524;--line:#1c3150;--glow:#9fd4ff;--txt:#d4e6f8;--dim:#6f86a3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.4 ui-monospace,Menlo,Consolas,monospace;padding:24px 16px 64px}
+h1{font-size:18px;letter-spacing:.2em;margin:0 0 4px;color:var(--glow)}
+h2{font-size:13px;letter-spacing:.18em;color:var(--glow);border-bottom:1px solid var(--line);padding-bottom:6px;margin:34px 0 14px}
+p.sub{color:var(--dim);margin:0 0 8px;max-width:820px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);padding:8px;text-align:center}
+.card svg{width:100%;height:auto;display:block}
+.card .n{margin-top:6px;font-size:12px;color:var(--txt)}
+.card .r{font-size:11px;color:var(--dim)}
+.wrap{max-width:1120px;margin:0 auto}
+.small{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.small .card{padding:4px;width:auto}
+.small svg{display:block}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<pattern id="ocp" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="22" height="22" fill="#4b5342"/><path d="M0 4L8 0L12 6L5 10Z" fill="#6b6a52"/><path d="M10 12L20 8L22 16L14 20Z" fill="#363c30"/><path d="M2 14L8 12L9 20L1 21Z" fill="#7b765a"/><path d="M14 0L22 2L20 7L13 5Z" fill="#363c30"/></pattern>
+<pattern id="marpat" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="#3d4a34"/><path d="M0 0H6V4H10V8H4V12H0Z" fill="#6f7656"/><path d="M12 10H20V14H16V20H10V16H12Z" fill="#242d20"/><path d="M12 0H18V3H14V5H12Z" fill="#8a8461"/><path d="M0 14H5V20H0Z" fill="#242d20"/></pattern>
+<pattern id="grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="#9fd4ff" stroke-opacity=".05"/></pattern>
+<linearGradient id="shadeL" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".5"/><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#bfe3ff" stop-opacity="0"/><stop offset="1" stop-color="#bfe3ff" stop-opacity=".22"/></linearGradient>
+<linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3eefb"/><stop offset=".5" stop-color="#8da3bd"/><stop offset="1" stop-color="#4d6280"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset=".5" stop-color="#d9a93f"/><stop offset="1" stop-color="#8a6420"/></linearGradient>
+<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs></svg>
+<div class="wrap">
+<h1>SGC COMMAND // PORTRAIT MOCKUPS v2</h1>
+<p class="sub">Redrawn after reviewing US uniform and insignia conventions: Army and Air Force OCP with mandarin collars, name and service tapes and chest rank; Marine MARPAT with eight-point cover; Army chevrons point up, Air Force chevrons point down; officers use bars, oak leaf, eagle. Names are labels only, with no likenesses. Insignia are heraldic-style originals, not copies of official badges.</p>
+
+<h2>EXPLORATION TEAM</h2><div class="grid" id="exp"></div>
+<h2>RECON TEAM (AIR FORCE SPECIAL FORCES)</h2><div class="grid" id="rec"></div>
+<h2>ASSAULT TEAM (MARINES)</h2><div class="grid" id="ass"></div>
+<h2>SECURITY TEAM (AIR FORCE SECURITY FORCES)</h2><div class="grid" id="sec"></div>
+<h2>PERMANENT STAFF</h2><div class="grid" id="staff"></div>
+<h2>FACTION CONTACTS</h2><div class="grid" id="fac"></div>
+<h2>SPECIAL OPERATIONS RESCUE UNITS</h2><div class="grid" id="ops"></div>
+<h2>LOGISTICS BASES</h2><div class="grid" id="log"></div>
+<h2>STATE OVERLAYS</h2><div class="grid" id="states"></div>
+<h2>SMALL SIZE CHECK (48 / 64 / 96 PX)</h2><div class="small" id="small"></div>
+</div>
+<script>
+const NS="http://www.w3.org/2000/svg";
+const SK={a:"#c9a58f",b:"#a97f66",c:"#7d5a47",d:"#dcc0ac",e:"#5a4033"};
+const TEAM={exp:"#4aa8ff",rec:"#5fe0c4",ass:"#ff8a5c",sec:"#ffd27f",staff:"#c9a7ff",fac:"#9aa8ff"};
+const HAIR={blk:"#1d242f",brn:"#3b2c25",gry:"#aab6c6",blond:"#a38455",red:"#7a3d27"};
+function rank(k,x,y,s=1){
+const g=(a)=>`<g transform="translate(${x} ${y}) scale(${s})">${a}</g>`;
+const chev=(n,up,rk,star)=>{let p="";for(let i=0;i<n;i++){const o=up?-i*3.2:i*3.2;p+=up?`<path d="M-8 ${o+2}L0 ${o-3}L8 ${o+2}" fill="none" stroke="#e8d9a0" stroke-width="1.8"/>`:`<path d="M-8 ${o-2}L0 ${o+3}L8 ${o-2}" fill="none" stroke="#c9b27a" stroke-width="1.8"/>`}
+for(let i=0;i<rk;i++){p+=`<path d="M-8 ${(up?4:-4)+(up?1:-1)*i*3}Q0 ${(up?9:-9)+(up?1:-1)*i*3} 8 ${(up?4:-4)+(up?1:-1)*i*3}" fill="none" stroke="#e8d9a0" stroke-width="1.6"/>`}
+if(star)p+=`<polygon points="0,-1.8 .6,-.6 1.9,-.6 .9,.2 1.2,1.5 0,.8 -1.2,1.5 -.9,.2 -1.9,-.6 -.6,-.6" fill="#e8d9a0" transform="translate(0 ${up?-1:0})"/>`;return p};
+const bar=(c,w=7)=>`<rect x="${-w/2}" y="-2" width="${w}" height="3.6" rx=".6" fill="${c}" stroke="#000" stroke-opacity=".3" stroke-width=".4"/>`;
+const leaf=(c)=>`<path d="M0 3C-6 2-6.5-3-1-5C-1.5-2 0-1 0 3C0-1 1.5-2 1-5C6.5-3 6 2 0 3Z" fill="${c}" stroke="#000" stroke-opacity=".3" stroke-width=".4"/>`;
+const eagle=`<path d="M-8-3C-4-4-2-3 0-1C2-3 4-4 8-3C6-1 4 0 2 0.5L3 4L0 2.5L-3 4L-2 0.5C-4 0-6-1-8-3Z" fill="url(#steel)" stroke="#000" stroke-opacity=".3" stroke-width=".4"/>`;
+const m={
+up2:chev(2,true,0),up3:chev(3,true,0),up3r:chev(3,true,1),down3:chev(3,false,0,true),down4:chev(4,false,0,true),down5:chev(4,false,1,true),
+o1:bar("url(#gold)"),o2:bar("url(#steel)"),o3:bar("url(#steel)",5.5)+`<g transform="translate(6 0)">${bar("url(#steel)",5.5)}</g>`.replace("translate(6 0)","translate(7 0)"),
+o4:leaf("url(#gold)"),o5:leaf("url(#steel)"),o6:eagle,
+m2:`<path d="M-8 3L0-2L8 3" fill="none" stroke="#d7c27a" stroke-width="1.8"/><path d="M-8 6L0 1L8 6" fill="none" stroke="#d7c27a" stroke-width="1.8"/>`,
+m3:`<path d="M-8 2L0-3L8 2" fill="none" stroke="#d7c27a" stroke-width="1.8"/><path d="M-8 5L0 0L8 5" fill="none" stroke="#d7c27a" stroke-width="1.8"/><path d="M-8 8L0 3L8 8" fill="none" stroke="#d7c27a" stroke-width="1.8"/>`
+};
+return g(m[k]||"");
+}
+function pickIcon(k,cx,cy,s,col){
+const I={
+star:`<polygon points="0,-1 .3,-.3 1,-.3 .45,.15 .6,.9 0,.45 -.6,.9 -.45,.15 -1,-.3 -.3,-.3" fill="${col}"/>`,
+cross:`<path d="M-.3-1h.6v.7h.7v.6h-.7v.7h-.6v-.7h-.7v-.6h.7z" fill="${col}"/>`,
+scope:`<circle r=".7" fill="none" stroke="${col}" stroke-width=".18"/><path d="M-1 0h2M0-1v2" stroke="${col}" stroke-width=".14"/><circle r=".08" fill="${col}"/>`,
+atom:`<ellipse rx="1" ry=".38" fill="none" stroke="${col}" stroke-width=".14"/><ellipse rx="1" ry=".38" transform="rotate(60)" fill="none" stroke="${col}" stroke-width=".14"/><ellipse rx="1" ry=".38" transform="rotate(120)" fill="none" stroke="${col}" stroke-width=".14"/><circle r=".14" fill="${col}"/>`,
+glyph:`<circle r=".85" fill="none" stroke="${col}" stroke-width=".13"/><path d="M-.5-.4h1M0-.4v.9M-.4.5h.8" stroke="${col}" stroke-width=".16"/>`,
+shield:`<path d="M0-1L.9-.6V.1C.9.6.4.9 0 1C-.4.9-.9.6-.9.1V-.6Z" fill="none" stroke="${col}" stroke-width=".16"/><path d="M0-.5V.6M-.4 0H.4" stroke="${col}" stroke-width=".13"/>`,
+chev:`<path d="M-.9-.5L0 .2L.9-.5M-.9.1L0 .8L.9.1" fill="none" stroke="${col}" stroke-width=".2"/>`,
+book:`<path d="M-.9-.6Q-.4-.8 0-.5Q.4-.8.9-.6V.7Q.4.5 0 .8Q-.4.5-.9.7Z" fill="none" stroke="${col}" stroke-width=".15"/><path d="M0-.5V.8" stroke="${col}" stroke-width=".12"/>`,
+bomb:`<circle cy=".25" r=".6" fill="${col}"/><path d="M.2-.35Q.4-.7.7-.8" fill="none" stroke="${col}" stroke-width=".14"/>`,
+rifle:`<path d="M-1 .15H.7L1 -.1M-.4 .15V.7M-.9 .15L-1.05 .5" fill="none" stroke="${col}" stroke-width=".2"/>`,
+gear:`<circle r=".45" fill="none" stroke="${col}" stroke-width=".22"/><path d="M0-.95v.35M0 .6v.35M-.95 0h.35M.6 0h.35M-.67-.67l.25.25M.42.42l.25.25M.67-.67l-.25.25M-.42.42l-.25.25" stroke="${col}" stroke-width=".2"/>`,
+eye:`<path d="M-1 0Q0-.8 1 0Q0 .8-1 0Z" fill="none" stroke="${col}" stroke-width=".16"/><circle r=".22" fill="${col}"/>`,
+leaf:`<path d="M-.8.8Q-.8-.8 .8-.8Q.8.8-.8.8Z" fill="none" stroke="${col}" stroke-width=".16"/><path d="M-.7.7L.5-.5" stroke="${col}" stroke-width=".12"/>`,
+sun:`<circle r=".35" fill="${col}"/><path d="M0-1v.3M0 .7v.3M-1 0h.3M.7 0h.3M-.7-.7l.2.2M.5.5l.2.2M.7-.7l-.2.2M-.5.5l-.2.2" stroke="${col}" stroke-width=".13"/>`
+};
+return `<g transform="translate(${cx} ${cy}) scale(${s})">${I[k]||""}</g>`;
+}
+function bust(o){
+const id=o.id;
+const sk=o.skin||SK.a,hairC=o.hairC||HAIR.brn;
+const b=o.build||1,w=96*b;
+const uni=o.uni||"ocp";
+const fill={ocp:"url(#ocp)",marpat:"url(#marpat)",coat:"#dfe8f2",blue:"#1d2e4d",robe:o.robeC||"#5b4a74",scrubs:"#2c6f7a",civ:"#3b4a63"}[uni];
+const tc=o.team||TEAM.exp;
+let s=`<svg viewBox="0 0 120 150" xmlns="${NS}" role="img">`;
+s+=`<defs><radialGradient id="hd${id}" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient>
+<linearGradient id="bg${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14294a"/><stop offset="1" stop-color="#070d19"/></linearGradient>
+<radialGradient id="gl${id}" cx=".5" cy=".38" r=".55"><stop offset="0" stop-color="${tc}" stop-opacity=".38"/><stop offset="1" stop-color="${tc}" stop-opacity="0"/></radialGradient>
+<clipPath id="cp${id}"><rect width="120" height="150"/></clipPath></defs><g clip-path="url(#cp${id})">`;
+s+=`<rect width="120" height="150" fill="url(#bg${id})"/><rect width="120" height="150" fill="url(#grid)"/><rect width="120" height="150" fill="url(#gl${id})"/>`;
+s+=`<path d="M${60-w/2} 150C${60-w/2} 122 ${60-w/2+14} 106 ${60-24} 101L${60+24} 101C${60+w/2-14} 106 ${60+w/2} 122 ${60+w/2} 150Z" fill="${fill}"/>`;
+s+=`<path d="M${60-w/2} 150C${60-w/2} 122 ${60-w/2+14} 106 ${60-24} 101L${60+24} 101C${60+w/2-14} 106 ${60+w/2} 122 ${60+w/2} 150Z" fill="url(#shadeL)"/>`;
+if(uni==="ocp"||uni==="marpat"){
+s+=`<path d="M60 108V150" stroke="#000" stroke-opacity=".35" stroke-width=".8"/>`;
+s+=`<path d="M43 98L55 93L60 106L51 110Z" fill="${uni==="ocp"?"#3e453a":"#2e3a29"}" stroke="#000" stroke-opacity=".4" stroke-width=".6"/><path d="M77 98L65 93L60 106L69 110Z" fill="${uni==="ocp"?"#3e453a":"#2e3a29"}" stroke="#000" stroke-opacity=".4" stroke-width=".6"/>`;
+const nm=o.name||"",sv=o.svc||"U.S. ARMY";
+s+=`<rect x="33" y="112" width="22" height="6.5" fill="${o.tapeC||"#2c3326"}" stroke="#000" stroke-opacity=".3" stroke-width=".4"/><text x="44" y="117" font-size="4.2" text-anchor="middle" fill="${o.tapeT||"#e6dfb4"}" font-family="monospace" font-weight="700">${nm}</text>`;
+s+=`<rect x="68" y="112" width="24" height="6.5" fill="${o.tapeC||"#2c3326"}" stroke="#000" stroke-opacity=".3" stroke-width=".4"/><text x="80" y="117" font-size="3.8" text-anchor="middle" fill="${o.tapeT||"#e6dfb4"}" font-family="monospace" font-weight="700">${sv}</text>`;
+s+=`<g transform="translate(12 104) rotate(-8)"><rect width="9" height="6" fill="#fff"/><rect y="0" width="9" height="1" fill="#b22"/><rect y="2" width="9" height="1" fill="#b22"/><rect y="4" width="9" height="1" fill="#b22"/><rect width="4" height="3" fill="#2a3f7a"/></g>`;
+if(o.rank)s+=rank(o.rank,60,128,1.25);
+}
+if(uni==="coat"){
+s+=`<path d="M${60-w/2+4} 150C${60-w/2+4} 124 ${60-w/2+16} 108 ${60-22} 102L60 150Z" fill="#cfdae8"/><path d="M${60+w/2-4} 150C${60+w/2-4} 124 ${60+w/2-16} 108 ${60+22} 102L60 150Z" fill="#e8f0f8"/>`;
+s+=`<path d="M46 98L56 94L60 120L52 130L40 106Z" fill="#fff" stroke="#9db0c6" stroke-width=".6"/><path d="M74 98L64 94L60 120L68 130L80 106Z" fill="#f3f7fb" stroke="#9db0c6" stroke-width=".6"/>`;
+s+=`<path d="M54 94L60 112L66 94Z" fill="${o.under||"#2f3b52"}"/>`;
+s+=`<rect x="25" y="116" width="12" height="16" rx="1" fill="#fff" stroke="#9db0c6" stroke-width=".5"/><rect x="28" y="125" width="6" height="4" fill="${tc}" opacity=".8"/><path d="M28 132h6M28 135h5" stroke="#9db0c6" stroke-width=".8"/>`;
+s+=`<rect x="74" y="122" width="10" height="3" fill="${tc}" opacity=".9"/>`;
+if(o.rank)s+=rank(o.rank,90,112,.8);
+}
+if(uni==="scrubs"){s+=`<path d="M50 98L60 116L70 98Z" fill="#1c4a52"/><rect x="74" y="124" width="12" height="8" fill="#237a86" stroke="#0d2f36" stroke-width=".5"/>`}
+if(uni==="blue"){s+=`<path d="M44 98L56 94L60 116L50 126Z" fill="#14233c"/><path d="M76 98L64 94L60 116L70 126Z" fill="#14233c"/><path d="M52 96L60 112L68 96Z" fill="#dfe8f2"/><path d="M58 100h4l-1 18h-2Z" fill="#6b1d2a"/>`}
+if(uni==="robe"){
+s+=`<path d="M${60-w/2} 150C${60-w/2} 122 ${60-w/2+14} 106 ${60-24} 101L60 150Z" fill="#000" opacity=".12"/><path d="M42 98L60 150L78 98L72 96L60 118L48 96Z" fill="${o.trim||"#c8a85a"}" opacity=".9"/><path d="M50 98L60 112L70 98" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1"/>`;
+}
+if(uni==="civ"){s+=`<path d="M50 98L60 114L70 98Z" fill="#dfe8f2"/><path d="M60 114V150" stroke="#000" stroke-opacity=".4"/>`}
+s+=`<path d="M52 82H68V98C68 103 52 103 52 98Z" fill="${sk}"/><path d="M52 90H68V98C68 103 52 103 52 98Z" fill="#000" opacity=".28"/>`;
+if(o.headset&&o.hs!=="none"){}
+s+=`<ellipse cx="42" cy="68" rx="3.4" ry="5.2" fill="${sk}"/><ellipse cx="78" cy="68" rx="3.4" ry="5.2" fill="${sk}"/><ellipse cx="42" cy="68" rx="3.4" ry="5.2" fill="#000" opacity=".15"/>`;
+s+=`<path d="M42 58C42 40 78 40 78 58V70C78 84 70 91 60 91C50 91 42 84 42 70Z" fill="${sk}"/>`;
+s+=`<path d="M42 58C42 40 78 40 78 58V70C78 84 70 91 60 91C50 91 42 84 42 70Z" fill="url(#hd${id})"/>`;
+s+=`<path d="M50 70Q54 68 57 70M63 70Q66 68 70 70" fill="none" stroke="#000" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round"/>`;
+s+=`<path d="M60 70V77Q58.5 79 60 79.5Q62 79 60.5 77" fill="none" stroke="#000" stroke-opacity=".22" stroke-width=".9"/>`;
+s+=`<path d="M54.5 84Q60 86 65.5 84" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1" stroke-linecap="round"/>`;
+const hr=o.hair;
+if(hr==="buzz")s+=`<path d="M42 58C42 42 78 42 78 58C74 50 68 48 60 48C52 48 46 50 42 58Z" fill="${hairC}" opacity=".75"/>`;
+if(hr==="short")s+=`<path d="M41 60C39 40 81 40 79 60C76 50 70 46 60 46C50 46 44 50 41 60Z" fill="${hairC}"/>`;
+if(hr==="side")s+=`<path d="M41 62C38 38 80 36 79 60C76 50 68 44 52 46C46 47 43 52 41 62Z" fill="${hairC}"/>`;
+if(hr==="bob")s+=`<path d="M40 82C36 54 42 36 60 36C78 36 84 54 80 82C76 84 74 80 74 74C74 56 70 48 60 48C50 48 46 56 46 74C46 80 44 84 40 82Z" fill="${hairC}"/>`;
+if(hr==="long")s+=`<path d="M40 96C34 62 40 36 60 36C80 36 86 62 80 96C76 96 74 86 74 76C74 56 70 48 60 48C50 48 46 56 46 76C46 86 44 96 40 96Z" fill="${hairC}"/>`;
+if(hr==="bun")s+=`<circle cx="60" cy="35" r="7.5" fill="${hairC}"/><path d="M41 60C39 40 81 40 79 60C76 50 70 46 60 46C50 46 44 50 41 60Z" fill="${hairC}"/>`;
+if(hr==="gray")s+=`<path d="M41 62C38 38 80 36 79 62C76 50 70 45 60 45C50 45 44 50 41 62Z" fill="${HAIR.gry}"/>`;
+if(hr==="curl")s+=`<path d="M40 64C34 52 38 36 52 36C56 32 66 32 70 36C84 36 86 52 80 64C78 54 72 48 60 48C48 48 42 54 40 64Z" fill="${hairC}"/>`;
+if(o.beard)s+=`<path d="M43 72C44 88 52 95 60 95C68 95 76 88 77 72C72 82 66 83 60 83C54 83 48 82 43 72Z" fill="${hairC}" opacity=".9"/>`;
+if(o.stache)s+=`<path d="M52 80Q60 77 68 80Q60 83 52 80Z" fill="${hairC}"/>`;
+const hg=o.head;
+const camo=uni==="marpat"||o.hgCamo==="marpat"?"url(#marpat)":"url(#ocp)";
+if(hg==="ach"){
+s+=`<path d="M38 66C34 36 48 26 60 26C72 26 86 36 82 66L79 62C78 58 76 56 72 55C66 53 54 53 48 55C44 56 42 58 41 62Z" fill="${camo}" stroke="#000" stroke-opacity=".5" stroke-width=".8"/>`;
+s+=`<path d="M38 66C34 36 48 26 60 26C72 26 86 36 82 66L79 62C78 58 76 56 72 55C66 53 54 53 48 55C44 56 42 58 41 62Z" fill="url(#hd${id})"/>`;
+s+=`<path d="M52 30L68 30L66 38L54 38Z" fill="#20262b" stroke="#000" stroke-opacity=".5" stroke-width=".6"/><rect x="57" y="36" width="6" height="3" fill="#3a4147"/><path d="M40 58Q60 51 80 58" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="1"/><path d="M42 60C40 76 46 88 52 92M78 60C80 76 74 88 68 92" fill="none" stroke="#1b2024" stroke-width="1.4"/>`;
+}
+if(hg==="patrol"){
+s+=`<path d="M40 58L42 40C42 38 44 37 46 37H74C76 37 78 38 78 40L80 58C70 54 50 54 40 58Z" fill="${camo}" stroke="#000" stroke-opacity=".5" stroke-width=".8"/><path d="M40 58L42 40H78L80 58C70 54 50 54 40 58Z" fill="url(#hd${id})"/><path d="M38 59C48 56 72 56 82 59L84 63C72 60 48 60 36 63Z" fill="#363c30" stroke="#000" stroke-opacity=".5" stroke-width=".6"/>`;
+if(o.rank){s+=`<rect x="53" y="42" width="14" height="10" rx="1.5" fill="#2c3326" stroke="#000" stroke-opacity=".4" stroke-width=".5"/>`+rank(o.rank,60,46.5,.55)}
+}
+if(hg==="boonie"){
+s+=`<path d="M42 56C42 38 78 38 78 56Z" fill="${camo}" stroke="#000" stroke-opacity=".5" stroke-width=".8"/><path d="M42 56C42 38 78 38 78 56Z" fill="url(#hd${id})"/><path d="M26 58C30 52 44 54 60 54C76 54 90 52 94 58C88 64 72 62 60 62C48 62 32 64 26 58Z" fill="${camo}" stroke="#000" stroke-opacity=".5" stroke-width=".8"/><path d="M26 58C30 52 44 54 60 54C76 54 90 52 94 58C88 64 72 62 60 62C48 62 32 64 26 58Z" fill="url(#shadeL)"/><path d="M42 54H78" stroke="#000" stroke-opacity=".4" stroke-width="1"/>`;
+}
+if(hg==="eight"){
+s+=`<path d="M40 56L44 40C44 38 46 37 48 37H72C74 37 76 38 76 40L80 56Z" fill="${camo}" stroke="#000" stroke-opacity=".5" stroke-width=".8"/><path d="M40 56L44 40H76L80 56Z" fill="url(#hd${id})"/><path d="M38 56C48 52 72 52 82 56L86 60C72 56 48 56 34 60Z" fill="#2e3a29" stroke="#000" stroke-opacity=".5" stroke-width=".6"/><path d="M60 37V56M50 37L46 56M70 37L74 56" stroke="#000" stroke-opacity=".28" stroke-width=".7"/><circle cx="60" cy="48" r="4.2" fill="#242d20" stroke="#d7c27a" stroke-width=".8"/><circle cx="60" cy="48" r="1.4" fill="#d7c27a"/>`;
+}
+if(hg==="beret"){
+const bc=o.bc||"#27406a";
+s+=`<path d="M38 60C36 42 48 34 66 34C82 34 86 46 82 58C72 52 52 52 38 60Z" fill="${bc}" stroke="#000" stroke-opacity=".5" stroke-width=".8"/><path d="M38 60C36 42 48 34 66 34C82 34 86 46 82 58C72 52 52 52 38 60Z" fill="url(#hd${id})"/><path d="M38 60C52 52 72 52 82 58" fill="none" stroke="#000" stroke-opacity=".4" stroke-width="1.2"/><path d="M69 48L74 48L74 53C74 56 71.5 57 71.5 57C71.5 57 69 56 69 53Z" fill="${o.flash||"url(#gold)"}" stroke="#000" stroke-opacity=".4" stroke-width=".5"/>`;
+}
+if(hg==="nvg"){
+s+=`<path d="M46 52H74V60H46Z" fill="#1b2026" stroke="#000" stroke-opacity=".5" stroke-width=".6"/><circle cx="53" cy="54" r="3.6" fill="#0f1418" stroke="#4a5560" stroke-width=".8"/><circle cx="67" cy="54" r="3.6" fill="#0f1418" stroke="#4a5560" stroke-width=".8"/><circle cx="53" cy="54" r="1.3" fill="#7fffa8" opacity=".7"/><circle cx="67" cy="54" r="1.3" fill="#7fffa8" opacity=".7"/>`;
+}
+if(o.lens)s+=`<rect x="46" y="66" width="28" height="8" rx="3" fill="${tc}" fill-opacity=".5" stroke="#d4e6f8" stroke-width=".9"/><path d="M48 68H62" stroke="#fff" stroke-opacity=".6" stroke-width="1"/>`;
+if(o.glasses)s+=`<rect x="46" y="65" width="12" height="9" rx="3" fill="#bfe3ff" fill-opacity=".12" stroke="#d4e6f8" stroke-width="1.2"/><rect x="62" y="65" width="12" height="9" rx="3" fill="#bfe3ff" fill-opacity=".12" stroke="#d4e6f8" stroke-width="1.2"/><path d="M58 69H62M46 68L42 67M74 68L78 67" stroke="#d4e6f8" stroke-width="1.1"/>`;
+if(o.headset)s+=`<path d="M42 66C40 44 80 44 78 66" fill="none" stroke="#161d27" stroke-width="2.6"/><rect x="36.5" y="62" width="6.5" height="14" rx="3" fill="#161d27" stroke="#4a5a72" stroke-width=".6"/><path d="M40 76C42 86 50 88 56 86" fill="none" stroke="#161d27" stroke-width="1.8"/><circle cx="57" cy="86" r="2" fill="#161d27"/>`;
+if(o.scarf)s+=`<path d="M46 86C52 92 68 92 74 86L76 94C68 100 52 100 44 94Z" fill="${o.scarf}" stroke="#000" stroke-opacity=".3" stroke-width=".6"/>`;
+if(o.turban)s+=`<path d="M38 62C34 38 50 28 62 30C78 30 86 42 82 62C76 54 68 50 60 50C52 50 44 54 38 62Z" fill="${o.turban}" stroke="#000" stroke-opacity=".4" stroke-width=".8"/><path d="M40 52C52 44 72 42 82 50M40 58C54 50 70 48 81 56" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1"/>`;
+if(o.crest)s+=`<path d="M38 64C34 36 48 28 60 28C72 28 86 36 82 64L78 60C74 52 46 52 42 60Z" fill="#4a4a52" stroke="#c8a85a" stroke-width=".9"/><path d="M60 14C52 22 52 28 60 30C68 28 68 22 60 14Z" fill="#c8a85a"/><path d="M60 30V54" stroke="#c8a85a" stroke-width=".9"/>`;
+s+=`<path d="M82 46C88 56 86 76 80 88M104 150C106 128 98 112 84 104" fill="none" stroke="#bfe3ff" stroke-opacity=".35" stroke-width="1.2"/>`;
+if(o.badge){
+s+=`<path d="M0 138H120V150H0Z" fill="#050a14" opacity=".88"/><path d="M0 138H120" stroke="${tc}" stroke-width="1.6"/>`;
+s+=`<path d="M2 118L16 112L30 118V136C30 144 16 148 16 148C16 148 2 144 2 136Z" fill="#07101c" stroke="${tc}" stroke-width="1.6"/>`+pickIcon(o.badge,16,130,9,tc);
+}
+s+=`<path d="M4 4v10M4 4h10M116 4v10M116 4h-10" stroke="${tc}" stroke-opacity=".7" stroke-width="1.2" fill="none"/>`;
+const st=o.state;
+if(st==="injured")s+=`<rect x="1.5" y="1.5" width="117" height="147" fill="none" stroke="#ffb347" stroke-width="3"/><path d="M42 49L78 44L80 52L44 57Z" fill="#eef2f7" transform="rotate(-6 60 50)"/><path d="M60 45V55M55 50H65" stroke="#e0463e" stroke-width="2.6" transform="rotate(-6 60 50)"/><path d="M90 100h14v10H90z" fill="#ffb347" opacity="0"/>`;
+if(st==="captured")s+=`<rect width="120" height="150" fill="#0a1424" fill-opacity=".5"/><path d="M0 0L120 150M120 0L0 150" stroke="#7f93ad" stroke-opacity=".12" stroke-width="1"/><rect x="40" y="62" width="40" height="22" rx="3" fill="#0a1424" fill-opacity=".82" stroke="#ffb347" stroke-width="1.8"/><path d="M60 62V84M44 73H76" stroke="#ffb347" stroke-opacity=".4" stroke-width="1"/><circle cx="60" cy="73" r="5" fill="none" stroke="#ffb347" stroke-width="1.8"/><rect x="1.5" y="1.5" width="117" height="147" fill="none" stroke="#7f93ad" stroke-width="3" stroke-dasharray="8 5"/>`;
+if(st==="killed")s+=`<rect width="120" height="150" fill="#04070d" fill-opacity=".74"/><path d="M0 0H50L0 50Z" fill="#04070d"/><path d="M0 14L14 0M0 28L28 0M0 42L42 0" stroke="#d4e6f8" stroke-width="1.8" stroke-opacity=".85"/><rect x="1.5" y="1.5" width="117" height="147" fill="none" stroke="#33465e" stroke-width="3"/>`;
+s+=`</g></svg>`;
+return s;
+}
+function addTo(id,list){
+const el=document.getElementById(id);
+list.forEach((p,i)=>{
+const d=document.createElement("div");d.className="card";
+d.innerHTML=bust({...p.o,id:id+i})+`<div class="n">${p.n}</div><div class="r">${p.r||""}</div>`;
+el.appendChild(d);
+});
+}
+const A={uni:"ocp",svc:"U.S. ARMY",team:TEAM.exp};
+const F={uni:"ocp",svc:"U.S. AIR FORCE",tapeC:"#4a3a28",tapeT:"#f0d9a8",team:TEAM.rec};
+const M={uni:"marpat",svc:"U.S. MARINES",tapeC:"#242d20",tapeT:"#e6dfb4",team:TEAM.ass};
+const S={uni:"ocp",svc:"U.S. AIR FORCE",tapeC:"#4a3a28",tapeT:"#f0d9a8",team:TEAM.sec};
+addTo("exp",[
+{n:"Team Lead",r:"EXPLORATION · CPT",o:{...A,name:"LEAD",rank:"o3",rankY:140,hair:"short",hairC:HAIR.brn,head:"patrol",skin:SK.a,badge:"star",build:1.02}},
+{n:"Soldier",r:"EXPLORATION · SGT",o:{...A,name:"REYES",rank:"up3",rankY:138,hair:"buzz",hairC:HAIR.blk,head:"ach",skin:SK.c,badge:"rifle",build:1.1}},
+{n:"Scientist",r:"EXPLORATION · CIVILIAN",o:{...A,uni:"coat",hair:"bob",hairC:HAIR.red,glasses:true,skin:SK.d,badge:"atom",build:.92,under:"#2f4a6b"}},
+{n:"Linguist",r:"EXPLORATION · 1LT",o:{...A,name:"ONO",rank:"o2",rankY:140,hair:"long",hairC:HAIR.blk,head:"patrol",skin:SK.b,badge:"glyph",build:.9}}
+]);
+addTo("rec",[
+{n:"Recon Leader",r:"RECON · CAPT",o:{...F,name:"HARLAN",rank:"o3",rankY:140,hair:"short",hairC:HAIR.blond,head:"boonie",headset:true,skin:SK.a,badge:"star",build:1.02}},
+{n:"Sniper",r:"RECON · SSGT",o:{...F,name:"BRANT",rank:"down4",rankY:134,hair:"buzz",hairC:HAIR.brn,head:"boonie",beard:true,scarf:"#58604a",skin:SK.d,badge:"scope",build:1.05}},
+{n:"Recon Specialist",r:"RECON · SGT",o:{...F,name:"VOSS",rank:"down3",rankY:134,hair:"short",hairC:HAIR.blk,head:"ach",hgCamo:"ocp",headset:true,skin:SK.b,badge:"eye",build:.98}}
+]);
+addTo("ass",[
+{n:"Assault Lead",r:"ASSAULT · CAPT",o:{...M,name:"DRAKE",rank:"o3",rankY:140,hair:"buzz",hairC:HAIR.blk,head:"eight",skin:SK.c,badge:"star",build:1.12}},
+{n:"Rifleman",r:"ASSAULT · LCPL",o:{...M,name:"COLE",rank:"m2",rankY:136,hair:"buzz",hairC:HAIR.brn,head:"ach",skin:SK.a,badge:"rifle",build:1.1}},
+{n:"Machine Gunner",r:"ASSAULT · SGT",o:{...M,name:"OKAFOR",rank:"m3",rankY:134,hair:"buzz",hairC:HAIR.blk,head:"ach",beard:true,skin:SK.e,badge:"chev",build:1.3}},
+{n:"Grenadier",r:"ASSAULT · CPL",o:{...M,name:"TRAN",rank:"m2",rankY:136,hair:"buzz",hairC:HAIR.blk,head:"ach",skin:SK.d,badge:"bomb",build:1.18}}
+]);
+addTo("sec",[
+{n:"Security Lead",r:"SECURITY · CAPT",o:{...S,name:"WARD",rank:"o3",rankY:140,hair:"short",hairC:HAIR.brn,head:"beret",bc:"#2a4a86",skin:SK.a,badge:"shield",build:1.06}},
+{n:"Security Officer",r:"SECURITY · TSGT",o:{...S,name:"PIKE",rank:"down4",rankY:134,hair:"buzz",hairC:HAIR.blk,head:"beret",bc:"#2a4a86",skin:SK.c,badge:"shield",build:1.12}},
+{n:"Security Officer",r:"SECURITY · SRA",o:{...S,name:"LUND",rank:"down3",rankY:134,hair:"bun",hairC:HAIR.blond,head:"beret",bc:"#2a4a86",skin:SK.d,badge:"shield",build:.95}}
+]);
+const ST=TEAM.staff;
+addTo("staff",[
+{n:"Col. Carter",r:"LAB · COL",o:{uni:"coat",under:"#3b4a2f",team:ST,hair:"side",hairC:HAIR.blond,skin:SK.d,badge:"atom",rank:"o6",build:.95}},
+{n:"Dr. Lee",r:"LAB · CIVILIAN",o:{uni:"coat",under:"#2f3b52",team:ST,hair:"short",hairC:HAIR.blk,glasses:true,skin:SK.b,badge:"atom",build:.9}},
+{n:"Dr. Langford",r:"ARCHEOLOGY",o:{uni:"civ",team:ST,hair:"bun",hairC:HAIR.gry,glasses:true,skin:SK.d,badge:"book",build:.85}},
+{n:"MSgt. Harriman",r:"IRIS OPERATOR · CMSGT",o:{...S,team:ST,name:"HARRIMAN",rank:"down5",rankY:134,hair:"curl",hairC:HAIR.gry,headset:true,skin:SK.e,badge:"gear",build:1.05}},
+{n:"Maj. Hale",r:"INFIRMARY · MAJ",o:{uni:"scrubs",team:ST,hair:"short",hairC:HAIR.brn,skin:SK.a,badge:"cross",build:1.0}}
+]);
+const FC=TEAM.fac;
+addTo("fac",[
+{n:"Council Elder",r:"FACTION",o:{uni:"robe",robeC:"#5b4a74",trim:"#c8a85a",team:FC,hair:"gray",beard:true,skin:SK.b,badge:"leaf",build:1.0}},
+{n:"Envoy",r:"FACTION",o:{uni:"robe",robeC:"#6b5a3e",trim:"#e0c27a",team:FC,turban:"#8a7650",skin:SK.c,badge:"sun",build:.98}},
+{n:"Warrior",r:"FACTION",o:{uni:"robe",robeC:"#3e3a46",trim:"#c85a3a",team:FC,crest:true,skin:SK.e,badge:"chev",build:1.2}},
+{n:"Scholar",r:"FACTION",o:{uni:"robe",robeC:"#3a5a5e",trim:"#7fe0c8",team:FC,hair:"long",hairC:HAIR.blk,skin:SK.d,badge:"book",build:.92}}
+]);
+const wings=(c)=>`<path d="M55 62C44 48 28 44 14 52C26 54 32 60 34 68C26 66 20 70 17 77C28 77 36 79 43 88L53 83Z" fill="${c}" opacity=".88"/><path d="M65 62C76 48 92 44 106 52C94 54 88 60 86 68C94 66 100 70 103 77C92 77 84 79 77 88L67 83Z" fill="${c}" opacity=".88"/><path d="M50 66C42 58 32 56 24 58M50 74C42 68 34 68 26 70M50 82C44 78 38 78 32 80M70 66C78 58 88 56 96 58M70 74C78 68 86 68 94 70M70 82C76 78 82 78 88 80" fill="none" stroke="#05080f" stroke-opacity=".45" stroke-width="1"/>`;
+function crest(id,o){
+const col=o.c,field=o.f;
+const shield=`M60 14L102 24V70C102 100 84 120 60 130C36 120 18 100 18 70V24Z`;
+let s=`<svg viewBox="0 0 120 150" xmlns="${NS}" role="img"><defs><linearGradient id="cb${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14294a"/><stop offset="1" stop-color="#070d19"/></linearGradient><linearGradient id="cf${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${field}"/><stop offset="1" stop-color="#05080f"/></linearGradient></defs>`;
+s+=`<rect width="120" height="150" fill="url(#cb${id})"/><rect width="120" height="150" fill="url(#grid)"/>`;
+s+=`<path d="${shield}" fill="url(#steel)"/><path d="M60 19L97 28V70C97 97 81 115 60 124C39 115 23 97 23 70V28Z" fill="url(#cf${id})"/><path d="M60 19L97 28V70C97 97 81 115 60 124C39 115 23 97 23 70V28Z" fill="none" stroke="${col}" stroke-opacity=".6" stroke-width="1"/>`;
+s+=o.art(col);
+s+=`<path d="M10 128H110L104 136L110 144H10L16 136Z" fill="#06101d" stroke="${col}" stroke-width="1.4"/><text x="60" y="139.5" font-size="${o.t.length>10?4.8:7.2}" text-anchor="middle" fill="${col}" font-family="monospace" font-weight="700" letter-spacing=".4">${o.t}</text>`;
+return s+"</svg>";
+}
+function addCrest(id,list){
+const el=document.getElementById(id);
+list.forEach((p,i)=>{
+const d=document.createElement("div");d.className="card";
+d.innerHTML=crest(id+i,p)+`<div class="n">${p.n}</div><div class="r">${p.r||""}</div>`;
+el.appendChild(d);
+});
+}
+addCrest("ops",[
+{n:"Rangers",r:"LEVEL 1",c:"#e6d9a8",f:"#4a4228",t:"RANGERS",art:c=>`<path d="M60 36L66 52L84 52L70 62L76 80L60 70L44 80L50 62L36 52L54 52Z" fill="none" stroke="${c}" stroke-width="2"/><path d="M60 44V104M52 96H68" stroke="${c}" stroke-width="3" stroke-linecap="round"/><path d="M60 104L56 112H64Z" fill="${c}"/>`},
+{n:"Pararescue",r:"LEVEL 2",c:"#f0c4c4",f:"#5a1c2a",t:"THAT OTHERS MAY LIVE",art:c=>`${wings(c)}<ellipse cx="60" cy="36" rx="9" ry="3" fill="none" stroke="${c}" stroke-width="2"/><circle cx="60" cy="48" r="6.5" fill="${c}"/><path d="M60 57C51 57 47 70 45 100H75C73 70 69 57 60 57Z" fill="${c}"/><path d="M60 62V100" stroke="#5a1c2a" stroke-opacity=".5" stroke-width="1.2"/>`},
+{n:"Marine Raiders",r:"LEVEL 3",c:"#d9c27a",f:"#2a3a25",t:"RAIDERS",art:c=>`<path d="M60 34L90 52V66L60 54L30 66V52Z" fill="${c}"/><path d="M60 62L84 76V88L60 76L36 88V76Z" fill="${c}" opacity=".7"/><path d="M60 40V108M56 98H64" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`},
+{n:"Navy SEALs",r:"LEVEL 4",c:"#c8dcf4",f:"#10284a",t:"SPEC WARFARE",art:c=>`<path d="M60 40V108M44 46V64C44 75 52 80 60 80C68 80 76 75 76 64V46" fill="none" stroke="${c}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 32L54 44H66ZM44 38L38.5 49H49.5ZM76 38L70.5 49H81.5Z" fill="${c}"/><path d="M50 98C54 106 66 106 70 98" fill="none" stroke="${c}" stroke-width="2.4"/>`},
+{n:"Delta Force",r:"LEVEL 5",c:"#c8d0dc",f:"#262c36",t:"SPECIAL MISSION",art:c=>`<path d="M60 38L92 100H28Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round"/><path d="M60 62L74 92H46Z" fill="${c}" opacity=".85"/><circle cx="60" cy="48" r="2.4" fill="${c}"/>`}
+]);
+const jet=(c)=>`<path d="M60 30L66 64L98 86V94L66 84L64 104L78 112V118H42V112L56 104L54 84L22 94V86L54 64Z" fill="${c}"/><ellipse cx="40" cy="86" rx="3" ry="7" fill="${c}"/><ellipse cx="80" cy="86" rx="3" ry="7" fill="${c}"/><ellipse cx="30" cy="92" rx="2.6" ry="6" fill="${c}"/><ellipse cx="90" cy="92" rx="2.6" ry="6" fill="${c}"/>`;
+const big=(c)=>`<path d="M55 38C55 30 65 30 65 38V98L76 106V112H44V106L55 98Z" fill="${c}"/><rect x="16" y="58" width="88" height="9" rx="2" fill="${c}"/><g fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round"><path d="M26 50V58M44 50V58M76 50V58M94 50V58"/><path d="M21 49H31M39 49H49M71 49H81M89 49H99"/></g>`;
+const heli=(c)=>`<path d="M30 46H90M60 46V56" stroke="${c}" stroke-width="3" stroke-linecap="round"/><path d="M40 78C40 62 80 62 90 74L96 74V80L86 82C84 92 44 94 40 84Z" fill="${c}"/><path d="M96 70V90" stroke="${c}" stroke-width="3"/><path d="M46 100H84M50 94V100M80 94V100" stroke="${c}" stroke-width="2.4"/>`;
+const truck=(c)=>`<path d="M26 66H70V94H26ZM70 74H88L98 86V94H70Z" fill="${c}"/><circle cx="42" cy="98" r="7" fill="#0b1524" stroke="${c}" stroke-width="3"/><circle cx="84" cy="98" r="7" fill="#0b1524" stroke="${c}" stroke-width="3"/>`;
+addCrest("log",[
+{n:"Peterson SFB",r:"TRUCK · 10 KM",c:"#8fe8d2",f:"#123a38",t:"PETERSON",art:truck},
+{n:"Hill AFB",r:"HELICOPTER · 800 KM",c:"#8fe8d2",f:"#123a38",t:"HILL",art:heli},
+{n:"Travis AFB",r:"C-130 · 1,600 KM",c:"#8fe8d2",f:"#123a38",t:"TRAVIS",art:big},
+{n:"Wright-Patterson",r:"C-130 · 1,900 KM",c:"#8fe8d2",f:"#123a38",t:"WRIGHT-PATT",art:big},
+{n:"Ramstein",r:"C-17 · 8,000 KM",c:"#8fe8d2",f:"#123a38",t:"RAMSTEIN",art:jet},
+{n:"Kadena",r:"C-17 · 9,500 KM",c:"#8fe8d2",f:"#123a38",t:"KADENA",art:jet}
+]);
+const base={...M,name:"COLE",rank:"m2",rankY:136,hair:"buzz",hairC:HAIR.brn,head:"ach",skin:SK.a,badge:"rifle",build:1.1};
+addTo("states",[
+{n:"Ready",r:"NORMAL",o:{...base}},
+{n:"Injured",r:"STAND DOWN / HEALING",o:{...base,state:"injured"}},
+{n:"Captured",r:"AWAITING RESCUE",o:{...base,state:"captured"}},
+{n:"Killed",r:"REPLACEMENT NEEDED",o:{...base,state:"killed"}}
+]);
+const sm=document.getElementById("small");
+[[48,"Lead",{...A,name:"LEAD",rank:"o3",rankY:140,hair:"short",head:"patrol",badge:"star",build:1.02}],[64,"Scientist",{...A,uni:"coat",hair:"bob",hairC:HAIR.red,glasses:true,skin:SK.d,badge:"atom",build:.92,under:"#2f4a6b"}],[96,"Rifleman",{...M,name:"COLE",rank:"m2",rankY:136,hair:"buzz",head:"ach",badge:"rifle",build:1.1}],[48,"Pararescue",null],[64,"Pararescue",null]].forEach(([px,n,o],i)=>{
+const d=document.createElement("div");d.className="card";
+const inner=o?bust({...o,id:"sm"+i}):crest("sm"+i,{c:"#e8b4b4",f:"#5a1c2a",t:"PJ",art:c=>`<g transform="translate(0 6)">${wings(c)}<circle cx="60" cy="50" r="5" fill="${c}"/><path d="M52 62C52 56 68 56 68 62L72 90H48Z" fill="${c}"/></g>`});
+d.innerHTML=`<div style="width:${px}px">${inner}</div>`;
+sm.appendChild(d);
+});
+</script>
+</body>
+</html>

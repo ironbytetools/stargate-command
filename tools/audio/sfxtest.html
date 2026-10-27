@@ -1,0 +1,12 @@
+<!doctype html><meta charset=utf-8><body><script>
+let muted=false,humNodes=null;
+const BUS={};
+window.mk=async function(name){
+ const a=new OfflineAudioContext(2,44100*5,44100);
+ const out=a.createGain();out.gain.value=0.9;out.connect(a.destination);
+ BUS.fx=out;
+ window.ac=()=>a;
+ const code=window.SFXSRC;
+ return a;
+};
+</script>
