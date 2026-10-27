@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COMM 1 Locate-Team Mockups 2</title>
+<style>
+:root { --bg: #050c14; --panel: #0a1726; --line: #17405a; --cy: #7ffbff; --ok: #6dffb0; --warn: #ffd36b; --bad: #ff6b6b; --dim: #6f93a8; --txt: #cfeaf5; }
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(circle at 50% 0%, #0b2236, #050c14 60%); color: var(--txt); font: 14px/1.5 "Courier New", monospace; min-height: 100vh; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 18px 16px 40px; }
+h1 { margin: 0 0 4px; font-size: 18px; letter-spacing: 3px; color: var(--cy); font-weight: normal; }
+.sub { color: var(--dim); font-size: 12px; letter-spacing: 2px; margin-bottom: 14px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+button { background: #07131f; color: var(--cy); border: 1px solid var(--cy); font: inherit; padding: 6px 12px; letter-spacing: 1px; cursor: pointer; }
+button:hover:not(:disabled) { background: #0e2a3f; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.on { background: #12394f; box-shadow: 0 0 8px rgba(127, 251, 255, 0.35); }
+.panel { background: var(--panel); border: 1px solid var(--line); padding: 14px; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 14px; }
+@media (max-width: 780px) { .grid2 { grid-template-columns: 1fr; } }
+.row { display: flex; gap: 14px; justify-content: space-between; border-bottom: 1px solid #10283b; padding: 5px 0; }
+.dim { color: var(--dim); }
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+.bad { color: var(--bad); }
+h2 { font-size: 12px; letter-spacing: 3px; color: var(--cy); font-weight: normal; margin: 0 0 6px; }
+.note { color: var(--dim); font-size: 12px; margin: 8px 0; }
+.meter { height: 8px; background: #0b1d2b; border: 1px solid var(--line); margin: 6px 0 10px; }
+.meter i { display: block; height: 100%; background: var(--cy); }
+.ctl { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; align-items: center; }
+.board { display: grid; gap: 3px; margin: 0 auto; width: max-content; }
+.cell { width: 44px; height: 44px; padding: 0; font-size: 11px; background: #06101a; border: 1px solid #12354b; color: var(--dim); position: relative; }
+.cell.seen { background: #0c2536; color: #7aa6bd; }
+.cell.malp { background: #14425a; color: #fff; border-color: var(--cy); }
+.cell.found { background: #1d5a3a; color: #eafff3; border-color: var(--ok); }
+.cell.near { box-shadow: inset 0 0 0 2px rgba(255, 211, 107, 0.6); }
+.cell.mark::after { content: "+"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 26px; color: var(--ok); }
+.cell.truth { outline: 2px solid var(--ok); }
+.msg { font-size: 22px; letter-spacing: 6px; color: var(--warn); padding: 10px 0; word-break: break-all; }
+.seg { border: 1px solid var(--line); padding: 10px; margin: 8px 0; }
+.seg .lab { color: var(--dim); font-size: 12px; letter-spacing: 2px; }
+input { background: #07101a; color: var(--txt); border: 1px solid #1d4a66; font: inherit; padding: 6px 8px; width: 170px; letter-spacing: 2px; text-transform: uppercase; }
+input:focus { outline: none; border-color: var(--cy); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chips span { border: 1px solid #1d4a66; padding: 1px 6px; font-size: 11px; color: var(--dim); }
+.result { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>COMM 1 // LOCATE THE TEAM</h1>
+  <div class="sub">MOCKUPS 2 // TUNING STAGE UNCHANGED // REPLACES THE BEARING AND FIX STAGE // PLAYABLE</div>
+  <div class="tabs">
+    <button id="tC" class="on" onclick="show('C')">C  CODED COORDINATES</button>
+    <button id="tD" onclick="show('D')">D  MALP SWEEP</button>
+    <span class="dim" style="margin-left:10px">HAZARD</span>
+    <button id="hlow" onclick="setHaz('low')">LOW</button>
+    <button id="hmed" class="on" onclick="setHaz('med')">MEDIUM</button>
+    <button id="hhigh" onclick="setHaz('high')">HIGH</button>
+    <span class="dim" id="tierlab" style="margin-left:10px;display:none">MALP TIER</span>
+    <span id="tiers" style="display:none"></span>
+  </div>
+  <div class="grid2">
+    <div class="panel" id="stage"></div>
+    <div class="panel" id="side"></div>
+  </div>
+</div>
+<script>
+const HAZ = {
+  low: { size: 5, checks: 4, segs: 1, noise: 0, label: 'LOW' },
+  med: { size: 7, checks: 4, segs: 2, noise: 1, label: 'MEDIUM' },
+  high: { size: 9, checks: 5, segs: 2, noise: 3, label: 'HIGH' }
+};
+const COLS = ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA', 'ECHO', 'FOXTROT', 'GOLF', 'HOTEL', 'INDIA'];
+const ROWS = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE'];
+const BANDS = [
+  { id: 'PINPOINT', max: 0, travel: '1:00', yield: '100%', intel: 'one extra intel tier', cls: 'ok' },
+  { id: 'GOOD', max: 1, travel: '1:30', yield: '90%', intel: 'full intel', cls: 'ok' },
+  { id: 'ROUGH', max: 2, travel: '2:00', yield: '80%', intel: 'one intel tier fewer', cls: 'warn' },
+  { id: 'POOR', max: 99, travel: '3:00', yield: '70%', intel: 'no intel', cls: 'bad' }
+];
+let mode = 'C';
+let haz = 'med';
+let tier = 2;
+let G = null;
+
+function shiftWord(w, k) {
+  return w.split('').map(ch => String.fromCharCode((ch.charCodeAt(0) - 65 + k + 26) % 26 + 65)).join('');
+}
+
+function noisy(w, n) {
+  const a = w.split('');
+  const idx = a.map((_, i) => i).sort(() => Math.random() - 0.5).slice(0, Math.min(n, a.length - 2));
+  idx.forEach(i => { a[i] = '?'; });
+  return a.join('');
+}
+
+function newGame() {
+  const H = HAZ[haz];
+  const n = H.size;
+  const tx = Math.floor(Math.random() * n);
+  const ty = Math.floor(Math.random() * n);
+  G = { n, tx, ty, done: false, mark: null };
+  if (mode === 'C') {
+    const k1 = 1 + Math.floor(Math.random() * 24);
+    const k2 = H.segs === 2 ? 1 + Math.floor(Math.random() * 24) : k1;
+    G.k1 = k1;
+    G.k2 = k2;
+    G.colCipher = shiftWord(COLS[tx], k1);
+    G.rowCipher = shiftWord(ROWS[ty], k2);
+    G.colShow = noisy(G.colCipher, H.noise);
+    G.rowShow = noisy(G.rowCipher, Math.max(0, H.noise - 1));
+    G.left = H.checks;
+    G.colIn = '';
+    G.rowIn = '';
+    G.colOk = null;
+    G.rowOk = null;
+    G.linguist = false;
+  } else {
+    const moves = 6 + tier;
+    G.mx = Math.floor(n / 2);
+    G.my = n - 1;
+    G.left = moves;
+    G.total = moves;
+    G.seen = {};
+    G.last = null;
+    G.trend = '';
+    reveal();
+  }
+  render();
+}
+
+function sight() { return tier >= 5 ? 3 : (tier >= 3 ? 2 : 1); }
+
+function cheb(x, y) { return Math.max(Math.abs(x - G.tx), Math.abs(y - G.ty)); }
+
+function reveal() {
+  const r = sight();
+  for (let y = G.my - r; y <= G.my + r; y++) for (let x = G.mx - r; x <= G.mx + r; x++) {
+    if (x >= 0 && y >= 0 && x < G.n && y < G.n) G.seen[x + ',' + y] = true;
+  }
+  G.found = Math.max(Math.abs(G.mx - G.tx), Math.abs(G.my - G.ty)) <= r;
+  const d = Math.hypot(G.mx - G.tx, G.my - G.ty);
+  if (G.last !== null) G.trend = d < G.last - 0.05 ? 'STRONGER' : (d > G.last + 0.05 ? 'WEAKER' : 'UNCHANGED');
+  G.last = d;
+  G.hint = hintDir();
+}
+
+function hintDir() {
+  if (G.found) return 'TEAM IN SIGHT';
+  if (haz === 'high') return 'NO BEARING';
+  const dx = G.tx - G.mx;
+  const dy = G.ty - G.my;
+  const names = ['E', 'SE', 'S', 'SW', 'W', 'NW', 'N', 'NE'];
+  let o = Math.round(Math.atan2(dy, dx) / (Math.PI / 4));
+  o = (o + 8) % 8;
+  if (haz === 'med' && Math.random() < 0.25) o = (o + (Math.random() < 0.5 ? 1 : 7)) % 8;
+  return 'BEARING ' + names[o];
+}
+
+function show(m) {
+  mode = m;
+  document.getElementById('tC').classList.toggle('on', m === 'C');
+  document.getElementById('tD').classList.toggle('on', m === 'D');
+  document.getElementById('tierlab').style.display = m === 'D' ? '' : 'none';
+  document.getElementById('tiers').style.display = m === 'D' ? '' : 'none';
+  document.getElementById('tiers').innerHTML = [1, 2, 3, 4, 5].map(t => '<button class="' + (t === tier ? 'on' : '') + '" onclick="setTier(' + t + ')">' + t + '</button>').join(' ');
+  newGame();
+}
+
+function setTier(t) { tier = t; show('D'); }
+
+function setHaz(h) {
+  haz = h;
+  ['low', 'med', 'high'].forEach(k => document.getElementById('h' + k).classList.toggle('on', k === h));
+  newGame();
+}
+
+function move(dx, dy) {
+  if (G.done || G.left <= 0) return;
+  const x = G.mx + dx;
+  const y = G.my + dy;
+  if (x < 0 || y < 0 || x >= G.n || y >= G.n) return;
+  G.mx = x;
+  G.my = y;
+  G.left--;
+  reveal();
+  render();
+}
+
+function clickCell(x, y) {
+  if (G.done) return;
+  if (G.markMode) { G.mark = { x, y }; render(); return; }
+  if (Math.max(Math.abs(x - G.mx), Math.abs(y - G.my)) === 1) move(x - G.mx, y - G.my);
+}
+
+function toggleMark() { G.markMode = !G.markMode; render(); }
+
+function checkWord(which) {
+  if (G.done || G.left <= 0) return;
+  const val = document.getElementById(which + 'In').value.trim().toUpperCase();
+  G[which + 'In'] = val;
+  const want = which === 'col' ? COLS[G.tx] : ROWS[G.ty];
+  G[which + 'Ok'] = val === want;
+  G.left--;
+  render();
+}
+
+function useLinguist() {
+  if (G.linguist || G.done) return;
+  G.linguist = true;
+  render();
+}
+
+function submitC() {
+  if (G.done) return;
+  const c = COLS.indexOf((document.getElementById('colIn').value || '').trim().toUpperCase());
+  const r = ROWS.indexOf((document.getElementById('rowIn').value || '').trim().toUpperCase());
+  G.colIn = document.getElementById('colIn').value;
+  G.rowIn = document.getElementById('rowIn').value;
+  G.guess = { x: c, y: r };
+  G.done = true;
+  render();
+}
+
+function confirmD() {
+  if (!G.mark || G.done) return;
+  G.guess = G.mark;
+  G.done = true;
+  render();
+}
+
+function resultHtml() {
+  const g = G.guess;
+  let dist = 99;
+  if (g && g.x >= 0 && g.y >= 0) dist = cheb(g.x, g.y);
+  const b = BANDS.find(x => dist <= x.max);
+  const label = dist === 99 ? 'NO VALID FIX' : dist + ' SECTOR' + (dist === 1 ? '' : 'S') + ' OFF';
+  return '<div class="result"><h2>CONTACT ESTABLISHED</h2><div class="row"><span>Position fix</span><b class="' + b.cls + '">' + b.id + ' // ' + label + '</b></div><div class="row"><span>Assist travel time</span><span>' + b.travel + '</span></div><div class="row"><span>Rescued team yield</span><span>' + b.yield + '</span></div><div class="row"><span>Assist intel</span><span>' + b.intel + '</span></div><div class="note">The team was actually at ' + COLS[G.tx] + ' ' + ROWS[G.ty] + '.</div></div>';
+}
+
+function renderC() {
+  const H = HAZ[haz];
+  let s = '<h2>INTERCEPTED TRANSMISSION // DECODE THE POSITION</h2>';
+  s += '<div class="note">SIGNAL LOCKED // ' + G.n + ' x ' + G.n + ' SECTORS // HAZARD ' + H.label + '</div>';
+  s += '<div class="row"><span>CHECKS LEFT</span><b class="' + (G.left <= 1 ? 'warn' : 'ok') + '">' + G.left + ' / ' + H.checks + '</b></div>';
+  s += '<div class="meter"><i style="width:' + (G.left / H.checks * 100) + '%"></i></div>';
+  const kInfo = H.segs === 2 ? 'The two words use different shifts.' : 'Both words use one shift.';
+  s += '<div class="seg"><div class="lab">COLUMN WORD // ' + COLS.length + ' POSSIBLE</div><div class="msg">' + G.colShow + '</div>';
+  s += '<input id="colIn" maxlength="9" placeholder="DECODED" value="' + G.colIn + '" ' + (G.done ? 'disabled' : '') + '> <button onclick="checkWord(\'col\')" ' + (G.done || G.left <= 0 ? 'disabled' : '') + '>CHECK</button> ' + (G.colOk === null ? '' : (G.colOk ? '<b class="ok">CORRECT</b>' : '<b class="bad">NOT A MATCH</b>')) + '</div>';
+  s += '<div class="seg"><div class="lab">ROW WORD // ' + ROWS.slice(0, G.n).length + ' POSSIBLE</div><div class="msg">' + G.rowShow + '</div>';
+  s += '<input id="rowIn" maxlength="9" placeholder="DECODED" value="' + G.rowIn + '" ' + (G.done ? 'disabled' : '') + '> <button onclick="checkWord(\'row\')" ' + (G.done || G.left <= 0 ? 'disabled' : '') + '>CHECK</button> ' + (G.rowOk === null ? '' : (G.rowOk ? '<b class="ok">CORRECT</b>' : '<b class="bad">NOT A MATCH</b>')) + '</div>';
+  if (G.linguist) s += '<div class="note ok">LINGUIST: the column word is shifted by ' + G.k1 + ' letters' + (H.segs === 2 ? '; the row word by ' + G.k2 + '.' : '.') + '</div>';
+  s += '<div class="ctl"><button onclick="submitC()" ' + (G.done ? 'disabled' : '') + '>TRANSMIT FIX</button><button onclick="useLinguist()" ' + (G.linguist || G.done ? 'disabled' : '') + '>ASK LINGUIST</button><button onclick="newGame()">NEW TRANSMISSION</button></div>';
+  document.getElementById('stage').innerHTML = s;
+  let d = '<h2>HOW IT PLAYS</h2>';
+  d += '<div class="note">The team sent their position as a shifted-letter code. ' + kInfo + ' Decode the column and row words, type them, and transmit. A CHECK tells you if a word is right and costs one check.</div>';
+  d += '<div class="note">Candidate words, as listed on the decoder card:</div>';
+  d += '<div class="dim small">COLUMNS</div><div class="chips">' + COLS.slice(0, G.n).map(w => '<span>' + w + '</span>').join('') + '</div>';
+  d += '<div class="dim small" style="margin-top:8px">ROWS</div><div class="chips">' + ROWS.slice(0, G.n).map(w => '<span>' + w + '</span>').join('') + '</div>';
+  d += '<div class="note">' + (H.noise ? 'Static has wiped out some letters (' + '?' + '), so you need the candidate list to fill the gaps.' : 'Low hazard: no static, every letter is clear.') + ' A Linguist on station can reveal the shift, which is the free hint.</div>';
+  d += '<div class="note">Fix is scored in sectors: exact is Pinpoint, one off Good, two off Rough, further or invalid Poor.</div>';
+  if (G.done) d += resultHtml();
+  document.getElementById('side').innerHTML = d;
+}
+
+function renderD() {
+  const n = G.n;
+  const r = sight();
+  let s = '<h2>MALP SWEEP // MOVE THE MALP TO FIND THE TEAM</h2>';
+  s += '<div class="note">SIGNAL LOCKED // ' + n + ' x ' + n + ' SECTORS // HAZARD ' + HAZ[haz].label + ' // MALP TIER ' + tier + ' SEES ' + (2 * r + 1) + ' x ' + (2 * r + 1) + '</div>';
+  s += '<div class="row"><span>MOVES LEFT</span><b class="' + (G.left <= 1 ? 'warn' : 'ok') + '">' + G.left + ' / ' + G.total + '</b></div>';
+  s += '<div class="meter"><i style="width:' + (G.left / G.total * 100) + '%"></i></div>';
+  s += '<div class="row"><span>RECEIVER</span><b class="' + (G.found ? 'ok' : 'warn') + '">' + G.hint + (G.trend ? ' // ' + G.trend : '') + '</b></div>';
+  s += '<div class="board" style="grid-template-columns:repeat(' + n + ',44px);margin-top:10px">';
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    const here = x === G.mx && y === G.my;
+    const seen = G.seen[x + ',' + y];
+    const team = G.found && x === G.tx && y === G.ty;
+    const cls = ['cell', here ? 'malp' : (team ? 'found' : (seen ? 'seen' : '')), G.mark && G.mark.x === x && G.mark.y === y ? 'mark' : '', G.done && x === G.tx && y === G.ty ? 'truth' : ''].join(' ');
+    const txt = here ? 'MALP' : (team ? 'TEAM' : (seen ? 'CLEAR' : String.fromCharCode(65 + x) + (y + 1)));
+    s += '<button class="' + cls + '" onclick="clickCell(' + x + ',' + y + ')">' + txt + '</button>';
+  }
+  s += '</div><div class="ctl"><button onclick="move(0,-1)" ' + (G.done || G.left <= 0 ? 'disabled' : '') + '>N</button><button onclick="move(0,1)" ' + (G.done || G.left <= 0 ? 'disabled' : '') + '>S</button><button onclick="move(-1,0)" ' + (G.done || G.left <= 0 ? 'disabled' : '') + '>W</button><button onclick="move(1,0)" ' + (G.done || G.left <= 0 ? 'disabled' : '') + '>E</button>';
+  s += '<button class="' + (G.markMode ? 'on' : '') + '" onclick="toggleMark()" ' + (G.done ? 'disabled' : '') + '>' + (G.markMode ? 'MARKING: CLICK A SECTOR' : 'PLACE FIX MARKER') + '</button><button onclick="confirmD()" ' + (G.mark && !G.done ? '' : 'disabled') + '>CONFIRM FIX</button><button onclick="newGame()">NEW TEAM POSITION</button></div>';
+  s += '<div class="note">Click an adjacent sector or use N, S, W, E to move the MALP one sector. Diagonals work by clicking.</div>';
+  document.getElementById('stage').innerHTML = s;
+  let d = '<h2>HOW IT PLAYS</h2>';
+  d += '<div class="note">The MALP starts at the bottom edge. Each move reveals the sectors it can see. When the team is in view they light up and you can mark them for a Pinpoint fix.</div>';
+  d += '<div class="note">' + (haz === 'low' ? 'Low hazard: the receiver gives a clear compass bearing toward the team.' : (haz === 'med' ? 'Medium hazard: the bearing is sometimes one direction off.' : 'High hazard: no bearing, only whether the signal got stronger or weaker with your last move.')) + '</div>';
+  d += '<div class="note">Your MALP tier sets how far it sees (tier 1 and 2 see 3 x 3, tier 3 and 4 see 5 x 5, tier 5 sees 7 x 7) and how many moves you get (6 plus the tier). Change the tier at the top to feel the difference.</div>';
+  d += '<div class="note">Fix is scored in sectors: exact is Pinpoint, one off Good, two off Rough, further Poor.</div>';
+  if (G.done) d += resultHtml();
+  document.getElementById('side').innerHTML = d;
+}
+
+function stash() {
+  const a = document.getElementById('colIn');
+  const b = document.getElementById('rowIn');
+  if (G && mode === 'C' && a && b) { G.colIn = a.value; G.rowIn = b.value; }
+}
+
+function render() { stash(); if (mode === 'C') renderC(); else renderD(); }
+
+show('C');
+</script>
+</body>
+</html>

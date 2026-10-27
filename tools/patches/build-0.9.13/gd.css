@@ -1,0 +1,26 @@
+#glbody { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+#gdfit { position: relative; flex: none; }
+#gddev { position: absolute; left: 0; top: 0; width: 760px; height: 540px; transform-origin: 0 0; box-sizing: border-box; border-radius: 22px; background: linear-gradient(150deg, #20312f, #0f1918); border: 3px solid #2f4b47; box-shadow: inset 0 0 0 7px #0a1110, inset 0 0 34px #000, 0 6px 30px rgba(0, 0, 0, 0.65); user-select: none; -webkit-user-select: none; touch-action: none; }
+#gdmon { position: absolute; left: 30px; top: 30px; width: 450px; height: 300px; overflow: hidden; border-radius: 6px; box-shadow: 0 0 0 5px #0a1110, 0 0 0 8px #3fe0d0, inset 0 0 36px rgba(63, 224, 208, 0.18); }
+#gdmon::after, #gdtray::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px); }
+#gdtray { position: absolute; left: 506px; top: 30px; width: 224px; height: 300px; overflow: hidden; border-radius: 6px; box-shadow: 0 0 0 5px #0a1110, 0 0 0 8px #6b5a33, inset 0 0 30px rgba(0, 0, 0, 0.7); }
+#gdsvg, #gdtsvg { display: block; }
+#gdkeys { position: absolute; left: 30px; top: 366px; display: grid; grid-template-columns: repeat(3, 76px); grid-auto-rows: 70px; gap: 8px; }
+#gddev .gdk { position: relative; margin: 0; padding: 0; min-width: 0; border-radius: 9px; border: 1px solid #4f7c76; background: linear-gradient(#2f4744, #1a2a28); color: #f3e9a8; box-shadow: 0 3px 0 #060c0b, inset 0 1px 0 rgba(255, 255, 255, 0.1); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+#gddev .gdk i { position: absolute; left: 6px; top: 3px; font-size: 10px; font-style: normal; color: #3fe0d0; }
+#gddev .gdk .glsvg { color: #f3e9a8; }
+#gddev .gdk.off { opacity: 0.35; }
+#gddev .gdk.hint { box-shadow: 0 0 0 2px #ffb84a, 0 3px 0 #060c0b; }
+#gddev .gdk.bad { border-color: #ff6a5a; box-shadow: 0 0 0 2px #ff6a5a; }
+#gddev .gdk:active, #gddev .gdp:active, #gddev .gds:active { transform: translateY(2px); }
+#gdpad { position: absolute; left: 330px; top: 366px; width: 152px; height: 148px; display: grid; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px); gap: 4px; }
+#gddev .gdp { margin: 0; padding: 0; min-width: 0; border-radius: 9px; border: 1px solid #4f7c76; background: linear-gradient(#2f4744, #1a2a28); color: #3fe0d0; font: inherit; font-size: 12px; cursor: pointer; box-shadow: 0 3px 0 #060c0b; }
+#gddev .gdp-up { grid-column: 2; grid-row: 1; }
+#gddev .gdp-left { grid-column: 1; grid-row: 2; }
+#gddev .gdp-enter { grid-column: 2; grid-row: 2; font-size: 10px; color: #5dffa0; border-radius: 50%; }
+#gddev .gdp-right { grid-column: 3; grid-row: 2; }
+#gddev .gdp-down { grid-column: 2; grid-row: 3; }
+#gdside { position: absolute; left: 506px; top: 366px; width: 224px; display: grid; grid-template-columns: 108px 108px; grid-auto-rows: 66px; gap: 8px; }
+#gddev .gds { margin: 0; padding: 0; min-width: 0; border-radius: 9px; border: 1px solid #4f7c76; background: linear-gradient(#2f4744, #1a2a28); color: #3fe0d0; font: inherit; font-size: 12px; letter-spacing: 0.1em; cursor: pointer; box-shadow: 0 3px 0 #060c0b; }
+#gddev .gds.giveup { color: #ff8f8f; border-color: #7a4646; }
+#gddev .gds.off { opacity: 0.35; }

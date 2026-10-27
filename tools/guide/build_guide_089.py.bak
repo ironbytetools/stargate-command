@@ -1,0 +1,358 @@
+import html, re
+def e(s): return html.escape(s, quote=False)
+def md(s):
+    s = e(s)
+    s = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', s)
+    return s
+out = []
+HEX = '<svg class="hx" viewBox="0 0 100 100"><polygon points="50,4 91,27 91,73 50,96 9,73 9,27" fill="#0a2238" stroke="#5cf2ff" stroke-width="3.5"/><polygon points="50,20 77,35 77,65 50,80 23,65 23,35" fill="none" stroke="#5cf2ff" stroke-width="1.5" opacity=".55"/></svg>'
+CHEV = '<svg class="chev" viewBox="0 0 270 10" preserveAspectRatio="none">' + ''.join(f'<polygon points="{x},0 {x+20},0 {x+14},9 {x+6},9" fill="#18b6cc" opacity="{1 if k in (0,8) else .45}"/>' for k,x in enumerate(range(0,270,30))) + '</svg>'
+def sec(n, title):
+    out.append(f'<div class="sec"><div class="banner"><div class="hexnum">{HEX}<span>{n:02d}</span></div><div class="bt"><div class="seclabel">SECTION {n:02d}</div><h1>{e(title)}</h1></div></div>{CHEV}')
+def endsec(): out.append('</div>')
+def h2(t): out.append(f'<h2>{e(t)}</h2>')
+def p(t): out.append(f'<p>{md(t)}</p>')
+def ul(items): out.append('<ul>' + ''.join(f'<li>{md(i)}</li>' for i in items) + '</ul>')
+def ol(items): out.append('<ol>' + ''.join(f'<li>{md(i)}</li>' for i in items) + '</ol>')
+def note(title, t): out.append(f'<div class="note"><div class="nt">{e(title)}</div>{md(t)}</div>')
+def kv(rows): out.append('<table class="kv">' + ''.join(f'<tr><td class="k">{e(a)}</td><td>{md(b)}</td></tr>' for a,b in rows) + '</table>')
+def table(head, rows, cls=''):
+    h = ''.join(f'<th>{md(x)}</th>' for x in head)
+    b = ''.join('<tr>' + ''.join(f'<td>{md(c)}</td>' for c in r) + '</tr>' for r in rows)
+    if len(rows) <= 14: cls += ' keep'
+    out.append(f'<table class="{cls}"><thead><tr>{h}</tr></thead><tbody>{b}</tbody></table>')
+def small(t): out.append(f'<p class="small">{md(t)}</p>')
+
+TOC = ["Overview and Objective","Starting, Saving and Settings","The Facility","Resources","Teams and Camaraderie","The Gate and Dialing","The Starmap, Systems and Worlds","Off-World Missions","Strongholds and Assaults","Factions and Diplomacy","Logistics, Tel'tak Runs and Rescue Teams","Motor Pool: MALPs and Vehicles","Research: Science Lab and Upgrades","Armory and Alien Technology","Infirmary and Healing","Minigames and Optional Challenges","Logs, Shortcuts and Quick Reference"]
+BUILD = "0.8.9"
+
+import json, os
+PAGES = json.load(open('toc_pages.json')) if os.path.exists('toc_pages.json') else {}
+out.append(f'''<div class="cover"><div class="grid"></div><svg class="emb" viewBox="0 0 100 100" width="190" height="190"><polygon points="50,5 91,27 91,73 50,95 9,73 9,27" fill="none" stroke="#5cf2ff" stroke-width="2.6"/><polygon points="50,19 78,35 78,65 50,81 22,65 22,35" fill="none" stroke="#5cf2ff" stroke-width="1.2" opacity=".6"/><circle cx="50" cy="50" r="17" fill="none" stroke="#5cf2ff" stroke-width="1.4" opacity=".8"/><g fill="#5cf2ff"><circle cx="26" cy="38" r="2.4"/><circle cx="31" cy="30" r="2.4"/><circle cx="38" cy="24" r="2.4"/><circle cx="46" cy="21" r="2.4"/><circle cx="54" cy="21" r="2.4"/><circle cx="62" cy="24" r="2.4"/><circle cx="69" cy="30" r="2.4"/><circle cx="74" cy="38" r="2.4"/></g></svg>
+<div class="ctitle">STARGATE COMMAND</div><div class="crule"></div><div class="csub">GAME GUIDE</div><div class="csub2">CHEYENNE MOUNTAIN COMPLEX // OPERATIONS MANUAL</div>
+<div class="cfoot"><span>BUILD {BUILD}</span><span>CLASSIFIED // TRAINING COPY</span><span>OCTOBER 2026</span></div></div>''')
+
+toc = ''.join(f'<div class="te"><span class="tn">{i+1:02d}</span><span class="tt">{e(t)}</span><span class="tl"></span><span class="tp">{PAGES.get(str(i+1), "")}</span></div>' for i,t in enumerate(TOC))
+out.append(f'<div class="tocpage"><div class="banner"><div class="hexnum">{HEX}<span>&#9776;</span></div><div class="bt"><div class="seclabel">REFERENCE</div><h1>Contents</h1></div></div>{CHEV}<div class="toc">{toc}</div><div class="tocnote"><b>Using this guide.</b> Sections 1 to 4 cover the basics. Sections 5 to 9 cover teams, the gate, missions and combat. Sections 10 to 15 cover factions, support services and upgrades. Section 16 covers the minigames. Section 17 is the quick reference.</div></div>')
+
+sec(1,"Overview and Objective")
+p("Stargate Command is a base management game. You run a secret Earth installation that dials off-world through a stargate, sends teams to explore and fight on alien planets, and brings back supplies, research and technology. Every decision is made from the Cheyenne Mountain facility and every return passes through the gate.")
+p("The campaign is organised into five star systems, one per level. Each system holds a set of worlds, some of which are Goa'uld strongholds. Your progress through the campaign is measured by which strongholds you capture.")
+h2("Core loop")
+ul(["**Dial** a destination from the Gate Room, paying power for each activation.","**Send** a mission (exploration, survey, assault, assist, rescue or diplomacy) with teams, vehicles and a MALP.","**Return** through the gate with supplies, naquadah, research, intel or casualties.","**Spend** those resources on raising teams, healing, research projects and facility upgrades."])
+h2("Winning the level")
+p("A level is cleared when every stronghold in its system has been captured. Capturing the last stronghold of a level unlocks the next system, adds its worlds to the starmap and raises the team limit by one per type. Capturing it also raises a **LEVEL SECURED** banner on the starmap, naming the next system, until you acknowledge it. The final stronghold of a level stays locked until 75% of the system's regular (non-stronghold) worlds, rounded down, have been explored: 3 of 4 at Level 1, 3 of 5 at Level 2, 1 of 2 at Level 3, 3 of 5 at Level 4 and 4 of 6 at Level 5.")
+h2("Starting position")
+kv([("SUPPLIES","60"),("POWER","80 (capped at 120)"),("NAQUADAH","0"),("RESEARCH","0"),("TEAMS","Two Exploration teams (Lt. Ortiz, Sgt. Kwan, Dr. Reyes, Dr. Okafor; Capt. Mercer, Sgt. Alvarez, Dr. Novak, Dr. Haddad)"),("MALPS","One"),("MEDICAL","Maj. Hale on station in the Infirmary"),("LEVEL","1 (Alpha Centauri)")])
+endsec()
+
+sec(2,"Starting, Saving and Settings")
+h2("Title screen")
+p("The title screen offers **NEW GAME** and **RESUME**, plus **SETTINGS** and **SAVE FILES** (see Saving). Starting a new game when an autosave exists asks for confirmation, because the new game replaces it.")
+h2("Saving")
+ul(["Autosave runs when something changes, every 10 seconds, and when the page is hidden or closed.","Three manual save slots are available from the menu (MENU, then SAVE). Overwriting a slot asks for confirmation.","Saves are kept in the browser's local storage. If the browser blocks local storage, the title screen reports that saving is unavailable.","Timers pause while the game is closed. Mission, healing, cooldown, repair and rescue-request time remaining are stored and resume where they left off.","An incoming wormhole in progress and a half-dialed gate are not saved. The gate resumes closed. Open wormholes resume open."])
+h2("Save files: export and import")
+ul(["**SAVE FILES** opens from the title screen and from Settings. It lists the autosave and the three manual slots with an EXPORT button each, plus EXPORT ALL SAVES. An export is a .json file saved by the browser; exporting from a running game autosaves first so the file is current.","**Import** with CHOOSE SAVE FILE. A bundle or a single save can be imported. Each save in the file gets a destination dropdown that lists only empty slots, with the slot of the same name proposed first. Nothing is ever written over an existing save.","A save from a newer build than the one you are running is blocked and the reason is shown. A save from an earlier build is accepted and upgraded when it loads. A file that is not a complete save is skipped.","After importing, use RESUME on the title screen to play the imported save."])
+h2("Settings")
+p("Settings apply to the interface only. Six accent colour presets are available: Cyan (default), Azure, Violet, Rose, Gold and Silver. The dialing computer and starmap keep their own colours. Text size can be Small, Normal or Large. Full screen is available from the Menu or with the F key. Settings are stored separately from game saves.")
+h2("The Menu")
+p("The header carries a single **MENU** button. It opens the Game Menu, which holds an Options block (**SETTINGS**, **HELP**, **SOUND**, **FULL SCREEN** and **TOUR**), the manual save slots, RETURN TO GAME and EXIT TO TITLE SCREEN. The Facility and the Gate Room scale to fit the window: the whole screen is laid out at a fixed width and scaled evenly, between 0.6 and 1.6 times, and centered with side margins on wide displays.")
+h2("Opening tour")
+p("A new game opens with a tour by General Hammond and Colonel Carter. It covers the Facility, resources, teams, the Gate Room and the Menu in eight short cards, and **SKIP TOUR** or Escape ends it. Game time is paused while the tour is open and the soundtrack keeps playing. A game you resume or load does not show the tour again. **TOUR** in the Menu replays it at any time.")
+h2("Music and sound")
+p("The title screen plays the Main Title. In the base, calm music plays in turn. Tense music starts with an incoming wormhole or an overdue team, and a cleared level plays the end credits. Tracks crossfade. Settings has Master, Music and Effects sliders, and SOUND mutes everything.")
+endsec()
+
+sec(3,"The Facility")
+p("The Facility screen shows nine rooms as a narrow column of cards on the left, with the selected room's panel taking the rest of the screen. Each card shows the room's name, level and status line. Who is on station is shown on the room's own panel. The active missions strip appears above the rooms on every screen and lists everything currently away or under repair. Clicking an entry in the strip jumps to the relevant room.")
+table(["ROOM","FUNCTION"],[["Gate Room","Dialing computer, gate controls, iris, starmap, mission builder and the Operations log. The only way in or out."],["Briefing Room","Off-world teams with live timers, overdue teams, relations with factions, Hammond's paperwork and the Mission log."],["Barracks","Raise teams, review rosters, open team stats, rename teams and members, issue armory loadouts."],["Quartermaster","Supplies, power, naquadah converter, Air Force Logistics requests and the Gate Room upgrade ladder."],["Infirmary","Injured personnel and their healing timers."],["Science Lab","Research projects, Lab upgrades, permanent staff and the research points pool. Each project line has an ASK CARTER button."],["Armory","Researched gear bought with supplies and held as stock until issued to a team."],["Motor Pool","MALP stock and MALP tiers, vehicle purchases and upgrades."],["Archeology Office","Permanent staff, inscriptions found on Exploration missions, glyph decoding and the artifact collection. A Linguist must be on station to decode."]])
+h2("Permanent staff")
+p("Named staff from the show are assigned to a room and are not part of a team. They are always on station and count as a scientist in the Lab or a Linguist in the Archeology Office. Colonel Carter is in the Lab from the start; the others are assigned from the room's panel for supplies once the game reaches the level shown.")
+table(["STAFF","ROOM","UNLOCKS","COST"],[["Col. Samantha Carter","Science Lab","From the start","Free"],["Dr. Bill Lee","Science Lab","Level 4","400 supplies"],["Dr. Catherine Langford","Archeology Office","Level 2","150 supplies"]])
+h2("Keyboard shortcuts")
+table(["KEY","ACTION"],[["1 to 9","Jump to a room: 1 Gate Room, 2 Briefing Room, 3 Barracks, 4 Quartermaster, 5 Infirmary, 6 Science Lab, 7 Armory, 8 Motor Pool, 9 Archeology Office"],["B","Facility screen"],["G","Gate Room"],["F","Full screen"],["S","Settings"],["Esc","Open the menu, or close an open panel"]])
+small("Shortcuts are ignored while typing in a text field and when Ctrl, Cmd or Alt is held.")
+endsec()
+
+sec(4,"Resources")
+table(["RESOURCE","WHAT IT IS FOR","HOW YOU GET IT"],[["Supplies","Raising and sending teams, assault fees, rescue fees, MALPs, replacing a killed member, vehicle repair, Armory purchases, Lab upgrades","Exploration returns, Tel'tak runs, logistics shipments, factions at Sworn"],["Power","Dialing. Each gate activation costs power for the destination.","Regenerates 12 per minute, faster with Reactor tiers. Naquadah converts to 15 power."],["Naquadah","Converted to power in the Quartermaster","Some exploration returns"],["Research points","Science Lab projects, Gate Room ladder tiers, vehicles and Tel'tak restoration","100 per clean exploration return (scaled by hazard), faction payments at Sworn"],["Camaraderie","Per team. Reduces ambush chance and injury risk. Cannot exceed 500.","Completed Recon, Assault, Security and Assist missions"],["Standing","Per faction. Sets its tier and perks.","Diplomacy missions"]])
+h2("Camaraderie tiers")
+table(["CAMARADERIE","TIER","REDUCTION TO AMBUSH AND INJURY RISK"],[["0 to 49","0","0%"],["50 to 162","1","5%"],["163 to 274","2","16.25%"],["275 to 387","3","27.5%"],["388 to 499","4","38.75%"],["500","5","50%"]])
+small("Exploration and Diplomat teams do not use camaraderie.")
+endsec()
+
+sec(5,"Teams and Camaraderie")
+p("Teams are the only people who go off-world. Each team has four members in fixed roles. A team can only be sent on a mission type it fits, and it can only be on one mission at a time. Each type is limited to the current campaign level: at Level 1 you may have one team of each type, at Level 2 two, and so on. Exploration is the exception: you start with two Exploration teams, so its limit is never below two.")
+table(["TEAM","BRANCH","RAISE COST","SEND COST","ROLE"],[["Exploration","Military and science","80","5","Explores regular worlds. Required for every exploration mission. Earns no camaraderie. You start with two."],["Recon","Air Force Special Forces","20","3","Surveys worlds to reveal intel. Cuts ambush chance. Earns camaraderie."],["Assault","Marines","40","8","Attacks known strongholds. Earns camaraderie."],["Security","Air Force Security Forces","25","5","Escorts and fights. Neutralises most ambushes on exploration. Earns camaraderie."],["Diplomat","Diplomatic Corps","50","10","Runs diplomatic missions with faction worlds. Earns no camaraderie."]])
+h2("Linked team groups")
+p("In the Barracks, under the Teams list, **NEW GROUP** links teams that are on station into a group. A team belongs to one group and there is no cap on group size. Groups can be renamed (default names are like Exploration Group 1) and unlinked, but only while their teams are on station. In the mission builder a ready group appears as one GROUP row that adds every team in it at once. A group is offered only when every member is ready and eligible for the chosen mission type; while a member is away or stood down, the rest can still be sent as individual teams, and the group is available again when they are all back.")
+h2("Raise costs")
+p("The first team of each type you raise costs its listed raise cost (for Exploration, the first team beyond the two you start with). Each additional team of the same type costs 50% more than the base, so the next costs 1.5 times the base, then 2 times, and so on. Raised teams are named and their members are assigned roles automatically. Team and member names can be changed in the Barracks.")
+h2("Camaraderie")
+ul(["Recon, Assault and Security teams gain 10 camaraderie for a clean mission and 5 when a member is injured.","An Assault mission gains 10 for a win and 5 for a loss, per team.","Each killed or captured member costs the team 25 camaraderie.","Camaraderie never drops below zero and never exceeds 500."])
+h2("Injury and standing down")
+p("A team with an injured member stands down until the member has healed. Injured members heal in the Infirmary (see Section 15). A team with a killed member cannot be sent until the member is replaced. A team with a captured member cannot be sent until the member is freed, by a successful assault on that stronghold or by a Special Operations rescue (Section 11).")
+endsec()
+
+sec(6,"The Gate and Dialing")
+h2("Addresses")
+p("Every world has a seven-symbol address. You dial it on the dialing computer by rotating the ring and locking each symbol in turn. The ring is rotated in steps of 1 or 5 with the rotate keys. The status strip shows how many chevrons are locked and what the next action is.")
+h2("Power cost")
+p("Dialing costs 8 power per light year of the destination world's distance. Each world's distance is its star system's distance plus a fixed offset from -0.4 to +0.4 light years, based on its orbit order.")
+table(["LEVEL","SYSTEM","DISTANCE","GATE COST RANGE"],[["1","Alpha Centauri","4.4 ly","32 to 38"],["2","Barnard's Star","6.0 ly","45 to 51"],["3","Sirius","8.6 ly","66 to 72"],["4","Epsilon Eridani","10.5 ly","81 to 87"],["5","Tau Ceti","11.9 ly","92 to 98"]])
+h2("Power economy")
+ul(["Power starts at 80 and cannot exceed 120.","Base regeneration is 12 per minute. Reactor I, II and III raise it to 24, 36 and 48 per minute once each is routed. Power routing presets and the Level 5 artifact bonus (+6) also change it (Section 16).","Auto-dial adds 5 power to the cost of any activation, including the automatic dial-out of a rescue team.","A failed lock costs 2 power.","Naquadah converts to 15 power. Conversion is blocked at the cap."])
+note("PLANNING NOTE","At the 120 cap, a Level 5 dial (92 to 98 power) leaves 22 to 28 power, so a second Level 5 dial has to wait for regeneration. A Level 1 dial (32 to 38) allows three from a full pool.")
+h2("Dialing controls")
+ul(["**LOCK** locks the symbol under the chevron. A correct lock advances the chevron.","**AUTO-DIAL** locks each symbol automatically. Auto-dial adds 5 power to the cost.","**CANCEL DIALING** stops a manual or automatic dial and resets the chevrons. It is available only while a dial is in progress.","**DISENGAGE WORMHOLE** closes an open wormhole.","**IRIS** opens or closes the iris. A closed iris keeps arriving teams out.","**COMM 1** and **COMM 2** sit on the left of the keyboard, one above the other. COMM 1 flashes red when the wormhole is open to a planet with an overdue team. COMM 2 lights blue when the gate is dialed to a planet with a team on it. Both are greyed out otherwise (Section 16)."])
+h2("Wormholes")
+ul(["Once a wormhole is open it stays open for up to 5 minutes, then shuts down. The footer and arc count down, turning red in the last minute.","Sending a team or a MALP does not close the gate. You can send several missions through one open wormhole."])
+h2("Incoming activations")
+p("The gate also receives unscheduled incoming wormholes. The first can arrive no sooner than 20 minutes into play, and thereafter they arrive every 20 to 30 minutes. An incoming activation that falls due while the gate is dialing or open is postponed by a full interval. The alert shows the IDC transponder on the dialing computer: AWAITING IDC while the signal is coming in, IDC CONFIRMED with a team or allied name for a friendly signal, and NO IDC - UNRECOGNIZED SIGNATURE for a hostile one.")
+h2("Returning teams")
+p("Teams do not appear automatically when their mission ends. When a mission finishes, the team is marked RETURNING and the gate calls in an inbound activation. Its IDC transponder arrives partway through. Open the iris after the IDC shows and the team comes through, and rewards, research and injuries are applied on arrival.")
+ul(["Teams on the same world that are due together return in one activation.","If the gate is busy, the return waits for it to go idle. The exception is an open wormhole to that team's own world, in which case the team comes through it.","If the iris stays closed, the team is turned away. Recon and Assault teams lose 5 camaraderie, Exploration teams lose none, and the gate calls again one minute later.","The iris closes automatically when a return activation begins, so you must open it after the IDC appears."])
+note("HARRIMAN","Until Chief Master Sergeant Walter Harriman is installed as iris operator (Gate Room ladder, tier 2), you open the iris yourself. With him on station the iris opens on a valid IDC and closes on a hostile signal.")
+endsec()
+
+sec(7,"The Starmap, Systems and Worlds")
+p("The starmap is a permanent panel in the Gate Room. It has two layers. The galaxy chart shows the five star systems as a local neighbourhood, and the system view shows the worlds, moons and orbital stations of the system you are in. Click a star to enter its system and use the GALAXY CHART button to return. Systems you have not reached show as uncharted dots. Map controls are on the map itself: zoom with the mouse wheel or the + and - buttons, pan by dragging, and use the recentre icon to reset the view.")
+h2("Systems")
+p("A system shows **CLEARED** on the galaxy chart (a green ring and check) and in its header while every world in it is at peace. A raid that breaks a treaty drops the marker until peace returns. The Ancient Lab and the Ancient research ship count once explored.")
+table(["LEVEL","SYSTEM","PLANETS","STRONGHOLDS","FACTION WORLDS","NOTES"],[["1","Alpha Centauri","5","1","1 (Langaran)","Starting system"],["2","Barnard's Star","7","2","1 (Tollan)","Overdue ambushes begin on worlds at this level and above"],["3","Sirius","5","3","0","Three strongholds, no faction world"],["4","Epsilon Eridani","6","1","2 (Tok'ra, Free Jaffa)",""],["5","Tau Ceti","10","4","2 (Asgard, Nox)","Fifth and last system"]])
+small("Counts include strongholds and faction worlds.")
+h2("World kinds")
+ul(["**Normal worlds** are explored by Exploration teams for supplies, naquadah and research.","**Strongholds** are Goa'uld bases. They cannot be explored. They can only be attacked by an assault. Surveys reveal them.","**Faction worlds** belong to a friendly faction and are reached by diplomacy (Section 10).","**Peaceful worlds** have no ambushes. Captured strongholds become Peaceful, faction worlds become Peaceful at Partner tier, and regular worlds become Peaceful under a treaty (Section 10)."])
+h2("Hazard")
+p("Every world has a hidden hazard rating of low, medium or high. Hazard sets the base ambush chance and scales exploration yield.")
+table(["HAZARD","BASE AMBUSH CHANCE","EXPLORATION YIELD MULTIPLIER","NAQUADAH FIND CHANCE"],[["Low","30%","1.0x","60%"],["Medium","40%","1.25x","75%"],["High","50%","1.5x","90%"]])
+h2("Intel tiers")
+p("Worlds have five levels of intel. Intel is gathered by MALPs, Recon surveys and assist missions. Intel only goes up.")
+table(["TIER","WHAT IS REVEALED"],[["1","World name, type and environment (planet names such as P3X-3456 are visible from the start)"],["2","Whether the world is a stronghold or a faction world"],["3","Ambush risk hint and the hazard rating"],["4","Difficulty band (strongholds)"],["5","Exact stronghold defenses and the assault team limit"]])
+h2("Stronghold difficulty")
+p("Each level has a difficulty target. The Level 1 target is 15, and each later level is 10% higher. Each stronghold rolls within plus or minus 5% of its level target. Difficulty drives assault success odds.")
+endsec()
+
+sec(8,"Off-World Missions")
+p("Missions are chosen in the Gate Room mission builder. The builder works in three steps. **1 TYPE:** pick one of the six mission type cards, each with a one-line rule. **REPEAT LAST** reloads the previous send, drops anything no longer available, tells you what was dropped and jumps to the review. **2 ASSETS:** the TEAMS, VEHICLES and MALPS tabs list only what the chosen type accepts and what is on station, with linked groups as single rows. **3 REVIEW:** shows the type, destination, teams, vehicles, MALP, odds and cost, and SEND. BACK and NEXT move between steps, and the gate status and overdue section stay above the steps.")
+table(["MISSION TYPE","WHO GOES","TARGET","DURATION","NOTES"],[["Exploration","Exploration, Recon and Security teams. An Exploration team is required.","A normal world","2:00","Yields supplies, naquadah and research"],["Recon Survey","Recon teams only","Any world","2:00","Reveals intel up to tier 4 (tier 5 with a Thermal Imager)"],["Assault","Assault, Security and Recon teams, with an optional Exploration team","A known stronghold","2:00","See Section 9"],["Assist","Recon, Assault or Security teams","An overdue team","2:00","Rescue only. See Overdue Teams below."],["Special Ops rescue","A Special Operations team requested on the COMM 1 result screen","An overdue team or captured members","2:00","The gate dials out automatically. See Section 11."],["Diplomacy","One Diplomat team with at least one Security team","A known faction world below Sworn, or a surveyed regular world or stronghold","5:00","No ambush. Raises faction standing, or works toward a treaty. See Section 10."],["Defend","Security or Assault teams","A treaty world under a raid alert","2:00","No ambush. Repels the raid as the team goes through the gate. See Section 10."],["MALP","The MALP alone or riding with any team","Any world","Free to launch","Surveys the world. See Section 12."]])
+h2("Group rules")
+ul(["Every team sent together is one mission with one mission log entry and one return.","There is one ambush roll for the whole group. The group uses the lowest ambush chance among its teams, so the best protection in the group applies.","A delay applies to everyone. Each team rolls its own injury chance. A group goes overdue as one.","Vehicles, up to two per send, benefit the whole group."])
+h2("Ambush")
+p("Ambush chance starts from the world's hazard and is then reduced in this order:")
+ul(["**Recon:** the first Recon team multiplies the chance by 0.9. Each extra Recon team takes off a further 5 percentage points, with a floor of 5%.","**Drone:** each drone tier takes 3 points off, and two drones stack.","**Optics:** Tactical Optics takes 2 points, Night Vision 4 points, and the Thermal Imager 6 points.","**Camaraderie:** the team's camaraderie tier then reduces the chance by its percentage, relatively.","**Security:** on an Exploration mission, any Security team in the group neutralises 80% of ambushes. The effect does not stack."])
+p("An ambush does not always end in a casualty. An ambushed group that fights clear returns 1 to 3 minutes late. No mission goes overdue on a world below Level 2; ambushes there only delay and injure.")
+h2("Injury")
+p("After an ambush or a hit, each team has a 50% chance of an injury roll before reductions; if the roll applies, one member is injured unless camaraderie and armor prevent it. An injured member stands the team down until healed.")
+h2("Overdue teams")
+p("From Level 2 on, one ambush in 25 leaves the team stuck on the planet instead of delaying it. A stuck team does not report. Its mission shows PAST DUE (a plain late marker, with no ambush shown) once its scheduled return time passes, and it is flagged overdue 3:30 after that. The 15-minute self-return timer starts at the flag. Nothing about an ambush appears in the logs until you establish radio contact or the team comes home.")
+ol(["**Contact.** The overdue panel in the Gate Room has a DIAL button that sets the destination to the team's world. Dial as usual, then press COMM 1 with the wormhole open and play the radio minigame (Section 16). A successful fix gives a status report, including any casualty.","**Recall.** After contact, RECALL brings the team home in 1:00.","**Assist.** SEND ASSIST sends Recon, Assault or Security teams to rescue the team.","**Special Ops rescue.** After a COMM 1 fix, request a Special Operations team from the result screen (Section 11)."])
+p("Assist teams cost 2 supplies each. They cannot include Exploration or Diplomat teams. A rescue clears the ambush and brings the overdue team home with its assisting teams. The overdue team's 15-minute timer pauses while an assist is en route. A Recon-only assist has a 10% ambush chance. Adding an Assault or Security team to the assist removes that chance. There is a 0.5% chance of a double ambush, which hits every assist team. An assist team that is ambushed goes overdue itself, and the original team's timer resumes.")
+h2("Rescue record")
+p("Each team keeps a record of assists performed (Barracks, Team details) and of times it was rescued. Only assists performed earn rewards, at 1, 3, 6, 10 and 15 assists: the titles Rescuer, Lifeline, Guardian, Sentinel and Angel of the Gate. Reaching a title pays 25, 50, 75, 100 or 150 supplies plus the same in research points at once, and makes that team's assist travel 5% faster per title (25% at Angel of the Gate), applied on top of the COMM 1 fix band. A mixed assist group travels at its best rescuer's bonus. Special Operations units do not earn titles.")
+h2("Return and rewards")
+ul(["**Exploration:** yield is 20 to 40 supplies, multiplied by hazard and vehicle bonuses. A pack caps how many supplies one return can carry. An injured team yields 70% of the supplies. A clean return earns 100 research multiplied by hazard. A team with an injured member earns no research.","**Recon:** survey intel tiers 1 to 4 (5 with a Thermal Imager).","**Assist:** a rescued team returns with its full yield and is not penalised for injuries unless a member is killed. Assist teams bring back no yield. A rescued team earns its regular camaraderie, and a failed assist earns none.","**Diplomacy:** a faction gains 3 standing; a regular world or stronghold gains 1 and may sign a treaty. Security escorts earn 10 camaraderie, or 5 if injured.","**Defend:** no yield. Each team earns 10 camaraderie."])
+p("Each mission has an ID in the Mission log, with its timestamped events, yield, intel and team stats at launch and return.")
+endsec()
+
+sec(9,"Strongholds and Assaults")
+h2("Assault cost")
+p("An assault costs the send cost of every team in the group, plus a stronghold fee of 150 supplies at Level 1. The fee rises by 25% per level: 150, 188, 234, 293 and so on.")
+h2("Success odds")
+p("The estimate shown before sending is the average of three scores:")
+ul(["**Camaraderie:** the average camaraderie of the attacking teams as a percentage of 500.","**Team size:** the weighted team count as a percentage of twice the current level. Security teams count as 95% of a team.","**Defenses:** 100 minus the stronghold's difficulty."])
+p("Weapon points from Armory gear, the Free Jaffa perk and the ATV vehicle bonus are added on top. The estimate is capped at 100%. Only the odds are estimated. The result is rolled.")
+h2("Reconnaissance drone")
+p("Once a stronghold is surveyed (intel tier 2 or higher) and a wormhole to it is open, the **DRONE** key on the dialing computer launches a reconnaissance flight. Tag every contact on the ground (guards, patrols and towers) with the drone, and stay out of their red view cones. Flying low and slow is quiet. An amber DEFENDER NEARBY warning shows before a defender can see you, and exposure drains quickly once you are clear.")
+table(["CONTACTS TAGGED","ASSAULT SUCCESS","INTEL"],[["All","+15 points","Tier 5"],["70% or more","+10 points","Tier 4"],["40% or more","+5 points","Unchanged"],["Under 40%","None","Unchanged"]])
+ul(["**Spotted.** If the drone is spotted, the bonus is halved (rounded down), no intel is gained, and the assault success estimate drops by a further 10 points.","**Cooldown.** The drone needs 5 minutes between recon flights. Rescue flights are exempt, and aborting a flight does not start the cooldown.","**Expiry.** The recon result applies to the next assault sent to that world."])
+h2("Casualties")
+table(["OUTCOME","KILLED","CAPTURED","INJURED"],[["Failed assault (per member)","10%","10%","25%"],["Successful assault (per member)","2.5%","2.5%","6.25%"]])
+small("Camaraderie and armor reduce these odds relatively. The percentages above are before those reductions.")
+ul(["A killed member is replaced instantly for 15 supplies, or free with the Free Jaffa Sworn perk, once per level.","A captured member returns after a successful assault on that stronghold, or sooner through a Special Operations rescue.","Vehicles that join a failed assault are each lost with a 25% chance. The rest return damaged."])
+h2("Cooldown")
+p("After any assault, win or lose, all assaults are blocked for 20 minutes.")
+h2("Capturing a stronghold")
+ul(["The stronghold becomes Peaceful. There are no more ambushes there.","Its intel is raised to tier 4.","Held MALPs there are recovered.","Captured members are recovered.","When every stronghold in the level is captured, the next system unlocks with its worlds, and the team limit rises by one per type."])
+note("FINAL STRONGHOLD","The last stronghold of a level stays locked until 75% of the system's regular (non-stronghold) worlds, rounded down, have been explored or captured. The lock is shown on the starmap, and the blocked message says how many more worlds are needed.")
+endsec()
+
+sec(10,"Factions and Diplomacy")
+p("Factions are friendly peoples who can be won over by diplomacy. Each faction has a standing score that rises with diplomatic missions. Standing never falls, and tiers never fall back.")
+table(["TIER","STANDING NEEDED","EFFECT"],[["Contact","1","Relations established. Standing begins to accrue."],["Partner","5","Faction world becomes Peaceful. First perk active."],["Ally","12","Second perk level"],["Sworn","25","Third perk level and income. No further diplomatic missions."]])
+h2("Diplomatic missions")
+p("A diplomatic mission needs exactly one Diplomat team, accompanied by at least one Security team, to a known faction world below Sworn. It takes 5:00, has no ambush roll, and returns as one group. Each completed mission adds 3 standing. Vehicles cannot join a diplomatic mission.")
+h2("Treaties with regular worlds and strongholds")
+p("Diplomacy also works on surveyed regular worlds and strongholds (intel tier 2 or higher) on the current level. Each completed mission adds 1 standing with that world. Before the mission is resolved the game rolls for a treaty; the chance depends on the standing the world already had, and a treaty is guaranteed when standing reaches the threshold. A world under treaty cannot be targeted again.")
+table(["","REGULAR WORLD","STRONGHOLD"],[["Treaty chance per mission","10% + 15% per standing held","5% + 10% per standing held"],["Guaranteed at standing","4","6"],["Average missions to a treaty","About 3","About 4"],["Extra mission cost","None","10 supplies"],["Raid check (every 15:00)","15%","30%"]])
+ul(["**Regular world:** becomes Peaceful, so ambushes stop. It still has to be explored to count as explored.","**Stronghold:** stays hostile and must still be assaulted to clear the level. While under treaty it counts as one resolved world toward the final-stronghold lock, and it is not treated as the final stronghold. Sending an assault against it voids the treaty."])
+h2("Raids and the raid alert")
+p("Every 15 minutes each treaty world on the current level is checked for a raid. A raid starts a 2:00 alert, shown as a RAID ALERT badge on the world and a chip in the active strip. To answer it, send a DEFEND mission with a Security or Assault team to that world: the raid is repelled the moment the team goes through the gate, and the team returns after 2:00 with 10 camaraderie. If nothing goes through in time, the treaty is void and the world's standing is halved, rounded down. A voided stronghold treaty stops counting toward the lock. The gate must be free and powered to dial within the 2:00, so a busy gate can cost you the treaty.")
+p("The first time a faction becomes known, by any route, the log records that your team discovered it and that it seemed open to diplomacy. An Exploration visit to a faction world identifies it, so it appears in Faction Relations and a Diplomat mission can be sent.")
+h2("Perks")
+table(["FACTION","LEVEL 1 PERK (PARTNER)","LEVEL 2 PERK (ALLY)","LEVEL 3 PERK (SWORN)"],[["Langaran","Exploration supply yield +10%","+20%","+30%"],["Tollan","Research projects 10% faster","20% faster","30% faster"],["Tok'ra","Stronghold strength revealed on known strongholds","Ambush odds revealed on every world","Stronghold defenses 10% weaker"],["Free Jaffa","Assault odds +5 points","+10 points","+15 points and one free casualty replacement per level"],["Asgard","Missions, recalls and rescues 10% faster","20% faster","30% faster"],["Nox","Infirmary healing 10% faster","20% faster","30% faster"]])
+h2("Sworn income")
+p("At Sworn, a faction pays out every 10 minutes. The first payment arrives 10 minutes after reaching Sworn. Langaran pays 250 supplies, Tollan pays 250 research points, and the other four pay 50 supplies each.")
+small("Faction placement: Langaran on Alpha Centauri, Tollan on Barnard's Star, Tok'ra and Free Jaffa on Epsilon Eridani, Asgard and Nox on Tau Ceti. Faction worlds are only identified at intel tier 2, so a survey or MALP must find them before a diplomatic mission can be sent.")
+endsec()
+
+sec(11,"Logistics, Tel'tak Runs and Rescue Teams")
+h2("Air Force Logistics")
+p("From the Quartermaster you can request supplies from six real Air Force bases. Requests are free. Shipments arrive after a delivery time, and supplies are credited on arrival with an Operations log entry.")
+table(["UNIT","DISTANCE","TRANSPORT","DELIVERY","LOAD","UNLOCKS AT LEVEL"],[["Peterson SFB, Colorado","10 km","Truck","1:00","12","1"],["Hill AFB, Utah","800 km","Helicopter","4:00","25","1"],["Travis AFB, California","1,600 km","C-130","7:00","55","2"],["Wright-Patterson AFB, Ohio","1,900 km","C-130","8:00","70","3"],["Ramstein AB, Germany","8,000 km","C-17","14:00","125","4"],["Kadena AB, Japan","9,500 km","C-17","16:00","150","5"]])
+ul(["Each unit carries one shipment at a time, and no more than two shipments can be in transit at once.","When any shipment arrives, all logistics requests are blocked for that transport's cooldown: Truck 2:00, Helicopter 3:00, C-130 5:00, C-17 8:00.","A second arrival during a cooldown extends it to the longer remaining time."])
+h2("Special Operations rescue teams")
+p("Five Special Operations teams can be requested to rescue an overdue team or to free captured members on a stronghold. The request is made only from the COMM 1 result screen: dial the world, play COMM 1 (Section 16), and once the fix is made a Request Rescue list appears under the Sitrep. COMM 1 works on a world with an overdue team and on a world that holds captured members, and the list offers each target found there. Each unit unlocks at its level. Rescue requests have their own limits and do not use the logistics cap or cooldowns.")
+table(["LEVEL","UNIT","BASE","TRAVEL TO SGC","FEE","DELAY CHANCE"],[["1","Army Rangers (75th Ranger Regiment)","Fort Moore, Georgia","5:00","10","40%"],["2","Air Force Pararescue (23rd Special Tactics Squadron)","Hurlburt Field, Florida","4:00","15","30%"],["3","Marine Raiders (MARSOC)","Camp Lejeune, North Carolina","3:00","20","20%"],["4","Navy SEALs (Naval Special Warfare)","Coronado, California","2:00","25","10%"],["5","Delta Force (1st SFOD-D)","Fort Liberty, North Carolina","1:00","30","None"]])
+ul(["The request is free. The fee is paid when the team goes through the gate.","On arrival at the SGC the team stands by. As soon as the gate is idle, there is no incoming activation, power covers the dial (gate cost plus 5 for auto-dial) and supplies cover the fee, the gate dials out on its own, visibly, and sends the team. The card shows what is holding it if it has to wait.","A rescue always succeeds. The mission takes 2:00. A team can be delayed on the way to the SGC by 1 to 3 minutes, with the chance shown in the table. The top team is never delayed.","An overdue team is rescued as with an assist: the ambush is cleared, its 15-minute timer pauses while the rescue runs, and it comes home through the gate as usual. Captured members are freed on the spot and are ready for duty.","If the target no longer needs rescue when the team is ready to go through the gate (the overdue team returned on its own, or the stronghold fell), the team stands down. No fee is charged. A team can be requested again as soon as its rescue is done."])
+h2("Tel'tak cargo ships")
+p("Two Tel'tak cargo ships are wrecks that can be restored in the Lab. One is recovered from the Level 2 stronghold and one from the Level 3 stronghold. Each costs 600 research points, takes 12:00, and costs 200 supplies to finish. Once restored, a Tel'tak runs independent supply missions to an explored world you choose.")
+ul(["Each run costs 2 supplies and takes 2 minutes per light year of round trip.","A run returns the world's maximum supply roll: 100 multiplied by the hazard multiplier.","One run in five is delayed by 1 to 3 minutes. Tel'tak runs are never ambushed and never damaged.","Each run has its own mission ID and a TEL'TAK tab in the Mission log, showing the ship and which wreck it came from, the destination, launch and end times, any delay, the supplies returned and the departure, arrival, delay and return events."])
+endsec()
+
+sec(12,"Motor Pool: MALPs and Vehicles")
+h2("MALPs")
+p("A MALP is a remote survey probe. You start with one, you can hold up to three, and you can buy more for 25 supplies each. Only one MALP goes through each activation. Extras stay home as spares. A MALP can go alone or ride with any team.")
+ul(["A MALP that is lost is removed from stock. Buy a replacement in the Motor Pool.","A MALP held on a stronghold is recovered when that stronghold is captured.","Survey intel from a MALP depends on its tier. A MALP at tier 0 or 1 reveals intel 1. Tiers 2 to 5 reveal intel 2 to 5.","When a MALP is ambushed, it returns with the odds in the table below."])
+table(["MALP TIER","RESEARCH","SUPPLIES","PROJECT TIME","RETURN ODDS WHEN AMBUSHED","INTEL REVEALED"],[["0 (base)","none","none","none","30%","1"],["1","100","50","2:00","20%","1"],["2","200","100","6:30","40%","2"],["3","300","150","11:00","60%","3"],["4","400","200","15:30","80%","4"],["5","500","250","20:00","100%","5"]])
+small("A MALP tier is per unit. A rebuilt MALP starts again at tier 0. A MALP being upgraded sits in the Lab and cannot launch until the project finishes. MALP upgrades do not affect mission speed.")
+h2("Vehicles")
+p("Vehicles are bought with research points in the Motor Pool. Up to three of each type can be owned, and up to two vehicles can join one send. A vehicle's bonuses add together with those of the others on the same send, and the whole group benefits.")
+table(["VEHICLE","PER TIER EFFECT","PURCHASE AND UPGRADES"],[["Logistic Truck","+5% exploration yield","Buy 200 (tier 1), then tier 2 300, tier 3 450, tier 4 600, tier 5 750"],["Unmanned Drone","-3 points ambush chance","Same costs as the Truck"],["ATV / Side-by-side","-10% mission time (capped at 50%) and +3 points assault odds","Same costs as the Truck"]])
+ul(["Upgrades need the vehicle at home. A damaged vehicle must be repaired first.","An ambushed send damages its vehicles. Repair costs 10 supplies and takes 3 minutes, less with Armor parts.","A failed assault loses each vehicle with a 25% chance and damages the rest; Armor parts lower the loss chance.","Vehicles do not go on assists, MALP-only sends or diplomatic missions."])
+endsec()
+
+sec(13,"Research: Science Lab and Upgrades")
+h2("The research engine")
+p("The Science Lab runs timed research projects. A project costs research points and supplies up front, and runs at base pace. Scientists and linguists on station in the Lab cut project time by 15%. Colonel Carter is permanent Lab staff and always counts as a scientist on station. Research never pauses while the game is running. You can rush a project to finish it immediately for 20 research points per minute of remaining time, rounded up.")
+ul(["Only one project runs at a time at the base slot count. Lab upgrades add more slots.","Each extra scientist or linguist speeds one additional slot.","The same Armory item cannot be researched twice, and only one Gate Room upgrade can be in progress."])
+h2("Vehicle parts")
+p("Vehicle parts are extras on top of the five vehicle tiers. Each vehicle type has its own set: Armor, Engine and Cargo for the Truck and the ATV, and Armor, Engine and Sensors for the Drone. A part applies to every vehicle of that type. Each part has three levels. A level is **researched** in the Lab (VEHICLE PARTS tab) and then **fitted** in the Motor Pool (Vehicle parts section on the vehicle's tab). The next level can be researched once the previous one is fitted. Lab tier discounts and Carter's insight apply to the research.")
+table(["LEVEL","LAB RESEARCH","LAB TIME","FIT IN MOTOR POOL"],[["I","75 research + 25 supplies","3:00","25 supplies"],["II","150 research + 50 supplies","6:00","50 supplies"],["III","225 research + 75 supplies","9:00","75 supplies"]])
+table(["PART","EFFECT PER LEVEL","FITS"],[["Cargo","+5% exploration yield","Truck, ATV"],["Engine","-10% mission time (ATV); -5% (Truck, Drone). Total time cut stays capped at 50%","All three"],["Sensors","-3 points ambush chance","Drone"],["Armor","-33% repair time and -8 points on the failed-assault vehicle loss chance (25% falls to 17%, 9%, 1%). At level III repairs are free and instant, and ambush damage is repaired on return at no cost","All three"]])
+h2("Lab upgrades")
+p("The Lab has three upgrade tiers, bought with supplies and built over time. The Lab is offline during construction. Running projects pause, and rush is unavailable.")
+table(["TIER","SUPPLIES","BUILD TIME","EFFECT","PROJECT SLOTS"],[["0 (base)","none","none","Base pace, base cost","1"],["1","100","2:00","+5% pace, -5% project and rush cost","1"],["2","250","5:00","+10% pace, -10% project and rush cost","2"],["3","500","10:00","+15% pace, -15% project and rush cost","3"]])
+h2("Gate Room upgrade ladder")
+p("The Gate Room has a shared ladder of seven tiers. Each tier's research project must finish in the Lab before the tier can be bought. Security and Harriman are bought with supplies after research. The Reactor tiers are paid entirely in research.")
+table(["TIER","UPGRADE","RESEARCH","TIME","SUPPLIES","EFFECT"],[["1","Gate security detail","100","2:00","150","Security personnel stop intruders stealing supplies"],["2","Iris operator: Chief Master Sergeant Walter Harriman","200","4:00","200","Opens the iris on a valid IDC and closes it on a hostile signal"],["3","Dialing speed I","300","5:00","100","Auto-dial steps 60 ms, lock pause 400 ms"],["4","Reactor I","1,000","6:00","none","Power regeneration 24 per minute"],["5","Dialing speed II","500","8:00","200","Auto-dial steps 45 ms, lock pause 250 ms"],["6","Reactor II","1,000","10:00","none","Power regeneration 36 per minute"],["7","Reactor III","1,000","14:00","none","Power regeneration 48 per minute"]])
+h2("Power regeneration")
+p("Power regenerates at 12 per minute with no Reactor tier, 24 with Reactor I, 36 with Reactor II and 48 with Reactor III. A finished Reactor tier adds its power only after you route its connection at the Quartermaster (Section 16). Regeneration stops at the 120 power cap.")
+endsec()
+
+sec(14,"Armory and Alien Technology")
+h2("Equipment model")
+p("Gear is researched in the Lab, bought one unit at a time with supplies, and held in stock until you issue it to a team as a loadout in the Barracks. Each team has four slots: weapon, armor, pack (Exploration only) and optics. Each equipment line is researched in order, so the first item in a line must be researched before the second.")
+p("The first item in each line costs 100 research, 2 minutes and 40 supplies. Each later item costs 100 research, 2 minutes and 40 supplies more than the one before. The tables below give the exact costs for the first four items in each line.")
+h2("Packs (supply carry cap per Exploration return)")
+table(["ITEM","CAP","RESEARCH","TIME","SUPPLIES"],[["Field Pack (default)","30","none","none","none"],["Rucksack","45","100","2:00","40"],["Tactical Ruck","60","200","4:00","80"],["Expedition Pack","75","300","6:00","120"],["Heavy Haul Pack","95","400","8:00","160"]])
+h2("Body armor (cuts injury and casualty odds)")
+table(["ITEM","CUT","RESEARCH","TIME","SUPPLIES"],[["Flak Vest","5%","100","2:00","40"],["Interceptor Vest","10%","200","4:00","80"],["Plate Carrier","15%","300","6:00","120"],["Marine Trauma Plate Carrier","20%","400","8:00","160"]])
+h2("Weapons (assault points and injury cut)")
+table(["TEAM","ITEM","ASSAULT POINTS","INJURY CUT"],[["Exploration","MP5 / P90 submachine gun","none","3% / 6%"],["Recon","MP5SD suppressed / M110 sniper rifle","+3 / +7","3% / 6%"],["Assault and Security","M4A1 / M249 SAW / M203 grenade launcher","+4 / +8 / +11","3% / 6% / 8%"],["Recon, Assault or Security","Jaffa staff weapon (alien)","+15","10%"]])
+h2("Optics (ambush chance cut for the team)")
+table(["ITEM","AMBUSH CUT","SPECIAL"],[["Tactical Optics","2 points",""],["Night Vision","4 points",""],["Thermal Imager","6 points","A Recon survey also reveals intel tier 5"]])
+h2("Alien technology")
+ul(["**Goa'uld healing device** (200 research, 4:00, 150 supplies) halves Infirmary healing time. It is recovered as a fixed artifact from a Level 1 world.","**Jaffa staff weapon** (300 research, 6:00, 150 supplies) is a weapon for Recon, Assault and Security teams. It is recovered as a fixed artifact from a Level 2 world.","**Tel'tak cargo ships** (600 research, 12:00, 200 supplies each) are described in Section 11."])
+endsec()
+
+sec(15,"Infirmary and Healing")
+p("Injured members heal in the Infirmary. Base healing takes 5:00 per member. Maj. Hale, when on station, halves that to 2:30. The Goa'uld healing device halves it again. With both, healing takes 1:15. Nox's faction perks reduce healing further. Healing time runs only while the game is open, and it is saved with your game.")
+p("A team with an injured member stands down until that member heals, so it cannot be sent on missions. Killed members are not healed. They are replaced in the Barracks, and a replacement costs 15 supplies, or nothing once per level with the Free Jaffa Sworn perk.")
+endsec()
+
+sec(16,"Minigames and Optional Challenges")
+p("Six minigames sit on top of the base game. Radio contact (with its drone flight), reactor routing and glyph decoding are part of normal play. Hammond's paperwork, Carter's techno-babble and the After-Action Report are optional.")
+h2("Radio contact: COMM 1 and COMM 2")
+p("Radio is the only way to learn what happened to a team on the far side. Dial the planet, wait for the wormhole, then use the COMM keys on the dialing computer. The 5-minute wormhole timer keeps running, and the minigame ends with no contact if the gate closes first.")
+ul(["**COMM 1** is for overdue teams. First tune the frequency out of the static by holding the dial steady inside the window. Then a reconnaissance drone launches through the open wormhole and you fly it to the team (see Drone flight below).","**COMM 2** is for any other team on the planet. It is a simple tune-to-frequency task, followed by a recall prompt. A recalled team is home in 1:00 and brings back 80% of the full yield. COMM 2 can recall Exploration, Recon and Security missions, but not Assault, Assist, Diplomacy or Defend missions.","A team that is stuck but not yet flagged overdue does not answer COMM 2 and cannot be recalled. A team that was ambushed and fought clear reports that when you call.","Difficulty scales with the world's hazard rating. Medium hazard has about twice the search area of Low, and High has about three times, with heavier static and a faster sweep."])
+h2("Drone flight")
+p("The drone flies in a free first-person view of the planet, and the wormhole timer keeps running. The feed shows a signal strength that rises as the drone nears the team, and a SIG marker on the radar. Holding the reticle on the team's heat signature locks it, which counts as a Pinpoint fix. Alternatively, switch to the marker tool, place a fix marker on the radar and confirm it. If the wormhole closes first, the placed marker is scored as it stands, or Poor if none was placed. Link loss ends the flight.")
+ul(["**Controls.** W A S D fly, Q and E lower and raise, Shift boosts. Drag the feed or use the arrow keys to look, the wheel zooms, and T switches between optical and thermal.","**Drone tier.** The drone is as good as the best Unmanned Drone in the Motor Pool, or the basic drone if there is none. Higher tiers fly faster, see further and zoom more."])
+table(["FIX BAND","ERROR","ASSIST TRAVEL","RESCUED TEAM YIELD","ASSIST INTEL"],[["Pinpoint","Within 30 m","1:00","100%","Full set plus one extra tier"],["Good","30 to 80 m","1:30","90%","Full set"],["Rough","80 to 160 m","2:00","80%","One tier fewer"],["Poor","Over 160 m, or no marker","3:00","70%","None"]])
+small("A COMM 1 fix is also how Special Operations rescue teams are requested. COMM 1 works on a world that holds captured members as well as on one with an overdue team; with no overdue team the assist rows are not shown.")
+h2("Reactor power routing")
+p("The reactor feeds three outputs: the gate (power regeneration), the Lab (research pace) and the shields (fewer losses to ambush injuries and Goa'uld raids). Routing decides how power is split, and keeps the reactor stable.")
+ul(["**Power events.** After 11 to 15 wormhole activations, outbound or incoming, the reactor becomes unstable. When the gate next sits closed and idle, the conduit puzzle opens. The count restarts when you solve a routing puzzle.","**Conduit puzzle.** A 4 by 4 grid of conduits. Fill each with a value from 1 to 5. No value may repeat in a row or column, and every row and column must add up to its target. Some conduits are locked. Click a conduit, then pick a value or press 1 to 5.","**Unanswered events.** Choosing ABANDON, instead of solving the puzzle, knocks one output offline at random, but never the output your current preset boosts. A Gate output offline stops power regeneration (the gate can still be dialed). A Lab output offline pauses research. A Shields output offline gives no reduction. RE-ROUTE POWER at the Quartermaster opens the puzzle again and restores everything when solved. Escape does not abandon an event.","**Relay puzzle.** Installing a Reactor tier or the ZPM opens a relay puzzle: each relay sends its full capacity to one output, and every output must reach its exact load. A new Reactor tier adds its power only after its relay puzzle is solved. You can close the puzzle and return to it later with no penalty. The ZPM has no gameplay effect yet; routing it is only a record of the install.","**Presets.** The first solved puzzle unlocks presets, which you can change at any time at no cost from the Quartermaster."])
+table(["PRESET","GATE REGENERATION","LAB PACE","SHIELD REDUCTION"],[["Balanced","Base","Base","10%"],["Gate-heavy","+50%","-25%","7.5%"],["Lab-heavy","-25%","+50%","7.5%"],["Shield-heavy","-25%","-25%","15%"]])
+small("Shields cut the odds of an ambush injury by the reduction shown. An unanswered Goa'uld raid on a treaty world is absorbed by the shields with the same percentage chance, and the treaty holds. Shields do not affect assault casualties.")
+h2("Glyph decoding and artifacts")
+p("Ten collectable artifacts, two per star system, are hidden behind inscriptions. They are separate from the alien technology in the Armory. Decoding never affects the Ancient Facility on Level 5, though Level 5 inscriptions mention it.")
+ul(["**Finding inscriptions.** Each level has one fixed normal world whose first successful Exploration mission always finds the first inscription of that level. The second is a chance find on any other normal world of that level: 5% on the first Exploration mission, rising 15 points for each mission that misses, and resetting on a find.","**Decoding.** Open the Archeology Office and press DECODE. A Linguist must be on station, and Dr. Langford counts. Attempts are unlimited and carry no penalty. Each artifact uses one of three puzzles, in the order 1, 2, 3, 2, 3, 1, 1, 2, 3, 2.","**Fragment matching.** Match six broken fragments to the whole glyphs they were cut from. Four mistakes are allowed.","**Tablet reassembly.** A carved stone slab is cut into 3 by 3 tiles. Click two tiles to swap them until the inscription is whole, within 14 moves.","**Cipher deduction.** Find a four-glyph code from six glyphs, with no repeats, in 8 guesses. Green marks the right glyph in the right place and amber the right glyph in the wrong place.","**Hints.** Every failed or abandoned tablet unlocks one of three text hints for that artifact, and each hint also solves one piece in later attempts (a pair, a tile or a code position). CONSULT LIBRARY BOOK gives a visual hint once per attempt.","**Recovering the artifact.** A successful decode reveals an ARTIFACT SITE, a normal world of that level. A second successful Exploration mission there recovers the artifact."])
+table(["LEVEL","BONUS WHEN BOTH ARTIFACTS ARE COLLECTED"],[["1","+15% supply yield on Exploration missions"],["2","+10% research points from Exploration missions"],["3","Ambush chance 5 points lower for all teams"],["4","Assault injury and casualty odds 10% lower (stacks with armor)"],["5","+6 gate power regeneration per minute"]])
+p("Collecting all ten puts the Ancient Repository Stone on display in the Archeology Office. It adds +10% camaraderie gain for all teams and +5% research yield.")
+h2("Hammond's paperwork")
+p("An optional challenge in the Briefing Room. Twelve forms arrive, and you have 90 seconds to deal with them. Stamp each form with the stamp matching its type (1 Supply, 2 Personnel, 3 Medical, 4 Operations), or press D to deny it. Four of the twelve are flawed and must be denied: a stated total that does not equal quantity times unit cost, a missing signature, a form routed to the wrong department, or an expired date. Ten correct answers pass, and a third mistake fails it.")
+ul(["**Reward.** 50 supplies, and the next 2 missions that include a Logistic Truck, launched within 15 minutes, carry 75% more supplies. The bonus adds to the truck's tier bonus (+5% per tier), and raises that mission's carry cap by 75%. Unused charges are lost when the window ends.","**Cooldown.** 10 missions, counted from missions launched after you finish. Every launched mission, including assists, counts. Failing or walking away has no cooldown."])
+h2("After-Action Report")
+p("An optional typing task in the Briefing Room. Open a closed Exploration, Recon, Assist or Assault mission in the mission log and press COMPLETE AAR. Type the mission details into the report from the log: type, launch and return times, teams, world, injuries, casualties, yield and intel tier. Case does not matter. There is no time limit, and one report can be filed per mission.")
+table(["ACCURACY","RESULT","SUPPLIES","RESEARCH","CAMARADERIE"],[["95% or more","Excellent","15","15","+6"],["85% or more","Standard","10","10","+4"],["70% or more","Rough","5","5","+2"],["Under 70%","Rejected","Retry free","",""]])
+small("Camaraderie goes to each Recon, Assault and Security team on the mission. Exploration teams earn none.")
+h2("Carter's techno-babble")
+p("An optional challenge in the Science Lab. While Colonel Carter is on station, each research project has a small ASK CARTER button on its title line. She gives four explanations of the project and only one is real science. Pick the real one.")
+ul(["**Right answer.** The project gets a flat research bonus, paid when it completes: 25, 50, 75, 100 or 125 research points for project tiers 1 to 5. One-off projects such as Armory items count as tier 3.","**Wrong answer.** The project is delayed by 10% of its total time, rounded up to 30 seconds.","Each project can be asked about once. The cooldown is 20 missions, counted separately from Hammond's paperwork."])
+endsec()
+
+sec(17,"Logs, Shortcuts and Quick Reference")
+h2("Logs")
+ul(["**Mission Briefing** is the second tab of the Operations log panel, on both the Facility and Gate Room screens. When a mission ends, the base computer files a briefing with the team, world, outcome, yield, intel change, injuries and casualties, and a button that opens that mission in the mission log. The base computer also files a short note the first time something new happens, such as the first dial, the first stronghold survey or the first reactor event. A NEW count on the tab shows unread briefings.","**Operations log** shows a running list of events. It sits under the Gate Room controls and across the bottom of the Facility screen.","**Mission log** is in the Briefing Room. Each Exploration, Recon, Assist, Assault, Diplomacy, Rescue and MALP mission has an ID. Opening an ID shows its summary, yield and intel, a timestamped event list, and each team's stats at launch and return. The log keeps the latest 150 missions."])
+h2("Quick reference")
+table(["ITEM","VALUE"],[["Starting supplies / power / research","60 / 80 / 0"],["Starting teams","Two Exploration teams, one MALP"],["Power cap and base regeneration","120 / 12 per minute"],["Power per light year of dialing","8 (auto-dial +5, failed lock 2)"],["Wormhole time limit","5 minutes"],["Incoming activations","First after 20 minutes, then every 20 to 30 minutes"],["Mission duration","2:00 (Exploration, Recon, Assault, Assist, Rescue)"],["Diplomacy duration","5:00"],["Treaty raid check / alert window","Every 15:00 / 2:00"],["Ambush delay on a non-overdue return","1 to 3 minutes"],["Ambush injury chance","50% before camaraderie and armor"],["Overdue chance","1 in 25 ambushes from Level 2 on"],["Overdue flag","3:30 after the scheduled return (stuck teams only)"],["Overdue self-return","15 minutes from the flag"],["Recall time","1:00 (COMM 2 recall returns 80% of the yield)"],["Power events","After 11 to 15 wormhole activations"],["Drone recon cooldown","5 minutes"],["Hammond's paperwork cooldown","10 missions"],["Carter cooldown","20 missions"],["Artifacts","10 total, 2 per level"],["Assault cooldown","20 minutes after any assault"],["Stronghold fee","150 at Level 1, +25% per level"],["Final stronghold unlock","75% of regular worlds explored, rounded down"],["Camaraderie cap","500"],["Healing time","5:00 base (2:30 with Hale, 1:15 with Hale and the device)"],["Replacement cost for a killed member","15 supplies"],["Team limit per type","Equal to the current level (Exploration never below 2)"],["MALP purchase and stock","25 supplies each, up to 3 held"],["Vehicles per send","2"],["Logistics requests in transit","2"],["Special Ops rescue","Request free; fee 10 to 30 at dispatch; travel 5:00 to 1:00 by level"]])
+p("This guide describes Stargate Command build " + BUILD + ". Figures are taken from the build's rules and may change in later builds.")
+endsec()
+out.append('</div>')
+
+CSS = '''
+@page { size: Letter; margin: 0.85in 0.7in 0.8in; 
+  @top-left { content: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 100 100'><polygon points='50,4 91,27 91,73 50,96 9,73 9,27' fill='%230a2238' stroke='%2318b6cc' stroke-width='8'/></svg>") "  STARGATE COMMAND  //  GAME GUIDE"; font: 600 6.8pt Inter, sans-serif; letter-spacing: 1.6pt; color: #0a2238; border-bottom: 0.6pt solid #18b6cc; padding-bottom: 5pt; vertical-align: bottom; }
+  @top-right { content: "BUILD 0.8.9  //  TRAINING COPY"; font: 500 6.5pt Inter, sans-serif; letter-spacing: 1.4pt; color: #5b7384; border-bottom: 0.6pt solid #18b6cc; padding-bottom: 5pt; vertical-align: bottom; }
+  @bottom-left { content: "CHEYENNE MOUNTAIN COMPLEX  //  CLASSIFIED"; font: 500 6.5pt Inter, sans-serif; letter-spacing: 1.4pt; color: #5b7384; border-top: 0.6pt solid #18b6cc; padding-top: 5pt; vertical-align: top; }
+  @bottom-right { content: "PAGE " counter(page); text-align: right; font: 700 7pt Inter, sans-serif; letter-spacing: 1.6pt; color: #0a2238; border-top: 0.6pt solid #18b6cc; padding-top: 5pt; vertical-align: top; }
+}
+@page cover { margin: 0; @top-left { content: none; border: 0 } @top-right { content: none; border: 0 } @bottom-left { content: none; border: 0 } @bottom-right { content: none; border: 0 } }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; background: #fff; color: #1b2433; font-family: Inter, "Helvetica Neue", Arial, sans-serif; font-size: 9.4pt; line-height: 1.55; }
+.cover { page: cover; height: 11in; width: 8.5in; background: radial-gradient(ellipse at 50% 20%, #15506f 0%, #0a2238 40%, #040b14 100%); color: #cfefff; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; break-after: page; overflow: hidden; }
+.cover .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(92,242,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(92,242,255,.06) 1px, transparent 1px); background-size: 0.5in 0.5in; }
+.cover .emb { position: relative; filter: drop-shadow(0 0 14px #5cf2ff); margin-bottom: 40px; }
+.ctitle { position: relative; font-size: 34pt; font-weight: 800; letter-spacing: 9pt; color: #eaffff; text-shadow: 0 0 16px rgba(92,242,255,.8); }
+.crule { position: relative; width: 5.6in; height: 2px; background: linear-gradient(90deg, transparent, #5cf2ff, transparent); margin: 24px 0 22px; }
+.csub { position: relative; font-size: 15pt; font-weight: 600; letter-spacing: 8pt; color: #5cf2ff; }
+.csub2 { position: relative; font-size: 8pt; letter-spacing: 3.2pt; margin-top: 14px; color: #9fc6d6; }
+.cfoot { position: absolute; left: 0.7in; right: 0.7in; bottom: 0.75in; border-top: 1px solid #284a5e; padding-top: 12px; display: flex; justify-content: space-between; font-size: 7pt; letter-spacing: 2.2pt; color: #8bb4c4; }
+.banner { display: flex; align-items: center; gap: 16pt; background: linear-gradient(100deg, #0a2238, #12405c); color: #fff; padding: 14pt 18pt; border-radius: 3pt; border-bottom: 3pt solid #5cf2ff; }
+.hexnum { position: relative; width: 46pt; height: 46pt; flex: none; } .hexnum .hx { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 0 4px rgba(92,242,255,.7)); }
+.hexnum span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16pt; color: #5cf2ff; }
+.seclabel { font-size: 7pt; font-weight: 600; letter-spacing: 3.2pt; color: #5cf2ff; }
+h1 { font-size: 20pt; font-weight: 800; letter-spacing: .5pt; margin: 2pt 0 0; color: #fff; line-height: 1.15; }
+.chev { display: block; width: 100%; height: 5pt; margin: 3pt 0 14pt; }
+.sec { break-before: auto; margin-top: 22pt; }
+.banner, .chev { break-after: avoid; break-inside: avoid; }
+.sec > p:first-of-type { break-before: avoid; }
+h2 { font-size: 9pt; font-weight: 700; letter-spacing: 1.6pt; text-transform: uppercase; margin: 18pt 0 7pt; padding: 3pt 0 3pt 9pt; border-left: 4pt solid #18b6cc; background: linear-gradient(90deg, #e6f6fa, transparent 70%); color: #0a2238; break-after: avoid; }
+p { margin: 0 0 8pt; orphans: 3; widows: 3; } p.small { font-size: 8pt; color: #5b7384; }
+b { font-weight: 700; color: #0a2238; }
+ul, ol { margin: 0 0 9pt; padding-left: 16pt; } li { margin-bottom: 4pt; padding-left: 2pt; }
+ul li::marker { color: #18b6cc; content: "◆  "; font-size: 7pt; } ol li::marker { color: #0f8da0; font-weight: 800; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 8pt 0 12pt; font-size: 8.2pt; line-height: 1.4; border: 0.6pt solid #cfdde5; border-radius: 3pt; overflow: hidden; }
+table.keep { break-inside: avoid; }
+tr { break-inside: avoid; }
+thead { display: table-header-group; }
+thead th { background: #0a2238; color: #bff3fa; text-align: left; padding: 6pt 7pt; font-weight: 600; letter-spacing: 1pt; font-size: 6.8pt; text-transform: uppercase; border-bottom: 2pt solid #18b6cc; }
+tbody td { padding: 5pt 7pt; border-bottom: 0.5pt solid #dfe9ee; vertical-align: top; }
+tbody td:first-child { font-weight: 600; color: #0a2238; }
+tbody tr:nth-child(even) td { background: #f2f8fb; }
+tbody tr:last-child td { border-bottom: 0; }
+table.kv td { border-bottom: 0.5pt dotted #b7ccd8; background: transparent !important; padding: 3pt 5pt; } table.kv td.k { color: #0f8da0; letter-spacing: 1pt; width: 1.05in; font-size: 7.4pt; }
+.note { border: 0.6pt solid #f0cf8f; border-left: 4pt solid #e2a53a; background: #fff8e8; padding: 8pt 11pt; margin: 11pt 0; font-size: 8.8pt; border-radius: 2pt; break-inside: avoid; } .note .nt { font-size: 7pt; font-weight: 700; letter-spacing: 2.2pt; color: #a8700e; margin-bottom: 3pt; }
+.tocpage { break-after: page; }
+.toc { display: block; margin-top: 4pt; }
+.te { display: flex; align-items: baseline; gap: 10pt; padding: 4.5pt 2pt; border-bottom: 0.5pt solid #dbe7ed; font-size: 10.5pt; }
+.te .tn { font-weight: 800; color: #fff; background: #0a2238; border-bottom: 2pt solid #18b6cc; font-size: 8pt; padding: 2pt 6pt; border-radius: 2pt; min-width: 22pt; text-align: center; }
+.te .tt { font-weight: 600; color: #0a2238; } .te .tl { flex: 1; border-bottom: 1pt dotted #9fb6c3; transform: translateY(-3pt); } .te .tp { font-weight: 700; color: #0f8da0; }
+.tocnote { margin-top: 12pt; padding: 10pt 13pt; background: #eef7fa; border-left: 4pt solid #18b6cc; font-size: 8.8pt; color: #33485a; }
+'''
+doc = f'<!doctype html><html><head><meta charset="utf-8"><title>Stargate Command - Game Guide</title><style>{CSS}</style></head><body>' + '\n'.join(out) + '</body></html>'
+open('guide.html','w').write(doc)
+print(len(doc))

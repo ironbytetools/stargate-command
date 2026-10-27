@@ -1,0 +1,29 @@
+#rxbody { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+#rxfit { position: relative; flex: none; }
+#rxdev { position: absolute; left: 0; top: 0; width: 720px; height: 540px; transform-origin: 0 0; box-sizing: border-box; border-radius: 26px; background: linear-gradient(145deg, #2c343b, #161b20); border: 3px solid #3b454e; box-shadow: inset 0 0 0 7px #0e1215, inset 0 0 34px #000, 0 6px 30px rgba(0, 0, 0, 0.65); user-select: none; -webkit-user-select: none; touch-action: none; }
+#rxdev i { position: absolute; display: block; background: #3a2f25; }
+#rxdev .rxb1 { left: -3px; top: -3px; width: 34px; height: 34px; border-radius: 26px 0 14px 0; }
+#rxdev .rxb2 { right: -3px; top: -3px; width: 34px; height: 34px; border-radius: 0 26px 0 14px; }
+#rxdev .rxb3 { left: -3px; bottom: -3px; width: 34px; height: 34px; border-radius: 0 14px 0 26px; }
+#rxdev .rxb4 { right: -3px; bottom: -3px; width: 34px; height: 34px; border-radius: 14px 0 26px 0; }
+#rxdev .rxcon { left: -13px; width: 14px; height: 56px; border-radius: 4px 0 0 4px; background: #1d2429; border: 2px solid #3b454e; border-right: 0; }
+#rxdev .rxcon.c1 { top: 130px; }
+#rxdev .rxcon.c2 { top: 290px; }
+#rxscr { position: absolute; left: 30px; top: 30px; width: 560px; height: 380px; overflow: hidden; border-radius: 6px; background: #04101a; box-shadow: 0 0 0 6px #0b0f12, 0 0 0 8px #3b454e, inset 0 0 40px rgba(127, 251, 255, 0.12); }
+#rxscr::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0 1px, transparent 1px 3px); }
+#rxsvg { display: block; }
+#rxside { position: absolute; left: 614px; top: 32px; width: 78px; display: grid; grid-template-rows: repeat(8, 40px); gap: 8px; }
+#rxdev .rxbt, #rxdev .rxk { margin: 0; padding: 0; min-width: 0; border-radius: 9px; border: 1px solid #5b6770; background: linear-gradient(#444e57, #2a3138); color: var(--accent); font: inherit; font-size: 12px; letter-spacing: 0.08em; box-shadow: 0 3px 0 #0c1013, inset 0 1px 0 rgba(255, 255, 255, 0.12); cursor: pointer; }
+#rxdev .rxbt:active, #rxdev .rxk:active { transform: translateY(2px); box-shadow: 0 1px 0 #0c1013; }
+#rxdev .rxbt.abort { color: #ff8f8f; border-color: #7a4646; }
+#rxdev .rxbt.sel { color: var(--ok, #5dffa0); }
+#rxkeys { position: absolute; left: 30px; top: 436px; display: flex; gap: 8px; }
+#rxdev .rxk { width: 56px; height: 50px; font-size: 18px; }
+#rxknobs { position: absolute; left: 392px; top: 424px; display: flex; gap: 14px; }
+.rxknob { width: 82px; text-align: center; cursor: ns-resize; }
+.rxknob.off { opacity: 0.35; cursor: default; }
+.rxdial { position: relative; width: 62px; height: 62px; margin: 0 auto; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #5a656e, #20272d 70%); border: 2px solid #5b6770; box-shadow: 0 3px 0 #0c1013; }
+.rxdial::before { content: ""; position: absolute; left: 50%; top: 4px; width: 4px; height: 20px; margin-left: -2px; border-radius: 2px; background: var(--accent); }
+.rxknob.sel .rxdial { border-color: var(--glow, #bff); box-shadow: 0 0 10px rgba(127, 251, 255, 0.5), 0 3px 0 #0c1013; }
+.rxknl { margin-top: 5px; font-size: 11px; letter-spacing: 0.1em; color: var(--dim); }
+.rxknob.sel .rxknl { color: var(--glow, #bff); }

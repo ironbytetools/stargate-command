@@ -1,0 +1,9 @@
+.DS_Store
+builds/archive/
+dist/*.zip
+assets/soundtrack/
+assets/reference/*.mp3
+assets/mockups/audio-samples/
+__pycache__/
+*.pyc
+node_modules/

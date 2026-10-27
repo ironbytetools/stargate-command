@@ -1,0 +1,17 @@
+body.sc { padding-left: 272px; box-sizing: border-box; }
+body.sc #scbar { display: block; }
+#scbar { display: none; position: fixed; left: 0; top: 0; bottom: 0; width: 272px; z-index: 500; overflow-y: auto; background: #050d15; border-right: 1px solid var(--steel); padding: 12px 12px 24px; }
+#scbar .sct { font-size: 15px; letter-spacing: 0.22em; color: var(--glow); }
+#scbar .scs { font-size: 10px; letter-spacing: 0.16em; color: var(--dim); margin: 2px 0 8px; }
+#scbar .scn { font-size: 11px; color: var(--dim); line-height: 1.5; border-bottom: 1px solid var(--steel-dim); padding-bottom: 10px; }
+#scbar .scsec { margin-top: 14px; }
+#scbar .scst { font-size: 11px; letter-spacing: 0.16em; color: var(--accent); }
+#scbar .scsd { font-size: 11px; color: var(--dim); line-height: 1.45; margin: 3px 0 6px; }
+#scbar .scb { display: flex; flex-direction: column; align-items: flex-start; width: 100%; margin: 0 0 5px; padding: 7px 10px; text-align: left; }
+#scbar .scb b { font-weight: 600; letter-spacing: 0.06em; }
+#scbar .scb small { color: var(--dim); font-size: 10px; letter-spacing: 0.04em; }
+#scbar .scb.on { border-color: var(--glow); box-shadow: 0 0 0 1px var(--glow); }
+#scbar .scb:disabled { opacity: 0.45; }
+#scbar .scseg { display: flex; gap: 4px; margin: 0 0 6px; }
+#scbar .scseg button { flex: 1; padding: 4px 2px; min-width: 0; font-size: 10px; }
+#scbar .scseg button.on { border-color: var(--glow); color: var(--glow); }

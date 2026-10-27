@@ -1,0 +1,14 @@
+<div class="cols">
+    <div class="panel">
+      <h2>DRONE 1 // LIVE FEED</h2>
+      <div class="feed" id="dr_feed">
+        <canvas id="dr_cv" width="800" height="500"></canvas>
+        <div class="scan"></div>
+        <div class="zv" id="dr_zv"><div class="zt" id="dr_zvt">ZOOM VIEW</div><canvas id="dr_tv" width="300" height="152"></canvas></div>
+        <div class="hint" id="dr_hint"><h2>DRONE CONTROLS</h2><div>W A S D FLY THE DRONE</div><div>Q AND E LOWER AND RAISE IT // SHIFT BOOSTS</div><div>DRAG THE FEED OR USE THE ARROW KEYS TO LOOK</div><div>WHEEL TO ZOOM // T SWITCHES OPTICAL AND THERMAL</div><div>FOLLOW THE SIG MARKER AND THE SIGNAL STRENGTH</div><div>HOLD THE RETICLE ON THE HEAT SIGNATURE TO LOCK</div><div>ASSAULT RECON: TAG EVERY CONTACT, STAY OUT OF THE RED CONES, LOW AND SLOW IS QUIET</div><div style="margin-top:10px"><button onclick="DRONE.hideHint()">GOT IT</button></div></div>
+      </div>
+      <div class="tele" id="dr_tele"></div>
+      <div class="ctl"><button id="dr_bmode" onclick="DRONE.toggleMode()">OPTICAL</button><button id="dr_bml" onclick="DRONE.mouseLook()">MOUSE LOOK</button><span class="dim">WASD FLY // Q E ALTITUDE // SHIFT BOOST // DRAG OR ARROWS LOOK // WHEEL ZOOM // T THERMAL</span></div>
+    </div>
+    <div class="panel" id="dr_side"><h2 id="dr_sh"></h2><div id="dr_stier"></div><div id="dr_srx"></div><canvas id="dr_radar" width="260" height="260"></canvas><div id="dr_sbody"></div></div>
+  </div>

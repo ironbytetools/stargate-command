@@ -1,0 +1,143 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Mission Panel Mockups</title>
+<style>
+:root{--bg:#030a14;--panel:#06101c;--in:#081626;--steel:#2a4560;--line:#1d3550;--acc:#7ffbff;--txt:#bfe9f2;--dim:#5f7d96;--ok:#6dff9e;--warn:#ffb84d;--bad:#ff4d4d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:12px/1.35 "Courier New",ui-monospace,monospace;padding:24px}
+h1{font-size:15px;letter-spacing:.3em;color:var(--acc);margin:0 0 4px}
+.lead{color:var(--dim);margin:0 0 22px;max-width:900px}
+.opt{display:flex;gap:28px;align-items:flex-start;margin-bottom:34px;flex-wrap:wrap}
+.notes{max-width:330px}
+.notes h2{font-size:13px;letter-spacing:.2em;color:var(--acc);margin:0 0 8px}
+.notes p,.notes li{color:var(--txt);margin:0 0 6px}
+.notes ul{padding-left:16px;margin:0}
+.notes .con{color:var(--warn)}
+.frame{width:616px;height:236px;background:var(--panel);border:1px solid var(--steel);padding:8px 10px;position:relative;overflow:hidden;flex:none}
+.ttl{font-size:10px;letter-spacing:.3em;color:var(--acc);margin-bottom:6px;display:flex;justify-content:space-between}
+.ttl span{color:var(--dim);letter-spacing:.12em}
+button{font:inherit;color:var(--acc);background:transparent;border:1px solid var(--steel);padding:3px 7px;cursor:pointer;letter-spacing:.08em;font-size:10.5px}
+button:hover{background:rgba(127,251,255,.1)}
+button.on{background:rgba(127,251,255,.2);border-color:var(--acc)}
+button:disabled{color:#34506a;border-color:#1a2c40;cursor:default;background:none}
+.send{border-color:var(--acc);font-weight:bold;letter-spacing:.18em}
+.dim{color:var(--dim)}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--in);padding:3px 6px;margin:0 4px 4px 0;cursor:pointer;font-size:10.5px;white-space:nowrap}
+.chip:hover{border-color:var(--acc)}
+.chip.in{border-color:var(--acc);background:rgba(127,251,255,.14)}
+.chip.no{opacity:.35;cursor:default}
+.ic{width:15px;height:15px;border:1px solid currentColor;display:inline-grid;place-items:center;font-size:8px;flex:none}
+.lbl{font-size:9px;letter-spacing:.2em;color:var(--dim);margin:2px 0 3px}
+.stat{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:2px 0;font-size:10.5px}
+.stat b{font-weight:normal}
+/* A */
+.A{display:grid;grid-template-columns:96px 1fr 168px;gap:8px;height:204px}
+.A .types{display:flex;flex-direction:column;gap:3px}
+.A .types button{text-align:left;padding:4px 6px}
+.A .pool{overflow:auto;border:1px solid var(--line);padding:5px;background:#050d18}
+.A .man{border:1px solid var(--line);padding:5px;display:flex;flex-direction:column;background:#050d18}
+.A .man .send{margin-top:auto;padding:6px}
+/* B */
+.B .dest{display:flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--in);padding:4px 8px;margin-bottom:6px;font-size:10.5px}
+.B .dest b{color:var(--acc);font-weight:normal;letter-spacing:.1em}
+.B .typebar{display:flex;gap:3px;margin-bottom:6px}.B .typebar button{flex:1}
+.B .slots{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:6px}
+.B .slot{height:62px;border:1px dashed var(--steel);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:9.5px;text-align:center;cursor:pointer;color:var(--dim);position:relative}
+.B .slot.f{border:1px solid var(--acc);color:var(--txt);background:rgba(127,251,255,.07)}
+.B .slot .k{font-size:8.5px;letter-spacing:.15em;color:var(--dim)}
+.B .slot .x{position:absolute;top:1px;right:3px;color:var(--dim);font-size:10px}
+.B .pick{position:absolute;left:10px;right:10px;top:118px;background:#071423;border:1px solid var(--acc);padding:6px;z-index:3;box-shadow:0 6px 18px #000}
+.B .bar{display:flex;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:6px;font-size:10.5px}
+.B .bar .send{margin-left:auto;padding:6px 14px}
+/* C */
+.C .steps{display:flex;margin-bottom:6px}
+.C .steps div{flex:1;padding:3px 6px;border:1px solid var(--line);font-size:9.5px;letter-spacing:.14em;color:var(--dim);cursor:pointer}
+.C .steps div.on{color:var(--acc);border-color:var(--acc);background:rgba(127,251,255,.1)}
+.C .steps div.done{color:var(--ok)}
+.C .body{height:150px;border:1px solid var(--line);background:#050d18;padding:6px;overflow:auto}
+.C .row{display:flex;align-items:center;gap:8px;padding:3px 4px;border-bottom:1px solid var(--line);font-size:10.5px}
+.C .row .grow{flex:1}
+.C .foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.C table{width:100%;border-collapse:collapse;font-size:10.5px}
+.C td{padding:2px 4px;border-bottom:1px solid var(--line)}
+.C .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.C .tcard{border:1px solid var(--line);padding:6px;cursor:pointer}
+.C .tcard.on{border-color:var(--acc);background:rgba(127,251,255,.1)}
+.C .tcard b{color:var(--acc);font-weight:normal;letter-spacing:.12em;display:block;margin-bottom:2px}
+</style></head><body>
+<h1>MISSION PANEL // LAYOUT MOCKUPS</h1>
+<p class="lead">Each frame is drawn at the real size of the Gate Room's Mission panel (about 616 × 236). They're clickable: add and remove items, change mission type. Test destination is P3X-4471, medium hazard, Level 2. Numbers are placeholders.</p>
+
+<div class="opt">
+ <div class="frame" id="fa"></div>
+ <div class="notes"><h2>A // ASSET BOARD</h2>
+ <p>Three columns: mission type down the left, everything on station shown as chips in the middle, and the manifest with live odds on the right.</p>
+ <ul><li>No dropdowns. You see all available teams, vehicles and MALPs at once; ineligible ones are greyed out for the selected type.</li>
+ <li>The manifest shows ambush chance, yield, power cost and ETA before you send.</li>
+ <li class="con">Gets busy once you have 8+ teams. The chip pool scrolls.</li></ul></div>
+</div>
+
+<div class="opt">
+ <div class="frame B" id="fb"></div>
+ <div class="notes"><h2>B // LOADOUT SLOTS</h2>
+ <p>Destination strip on top, mission type bar, then six fixed slots, like gear slots on a squad card. Click an empty slot to pick what fills it. A summary bar with SEND runs along the bottom.</p>
+ <ul><li>Cleanest look, and closest to the Armory loadout style already in the game.</li>
+ <li>Slot rules come from the type: Assault opens more team slots, Recon Survey only one.</li>
+ <li class="con">One extra click per item (open slot, then pick).</li></ul></div>
+</div>
+
+<div class="opt">
+ <div class="frame C" id="fc"></div>
+ <div class="notes"><h2>C // BRIEFING STEPS</h2>
+ <p>A three-step flow: 1 TYPE, 2 ASSETS, 3 REVIEW. Each step fills the panel: type cards with a one-line rule, an asset checklist with stats per row, then a review table with the odds and SEND.</p>
+ <ul><li>Most room per step, and the easiest to learn. Rules text lives on the type cards instead of a loose help line.</li>
+ <li class="con">Slowest for repeat missions. Could remember the last setup so repeats are TYPE → SEND.</li></ul></div>
+</div>
+
+<script>
+const TEAMS=[{n:'SG-1',t:'EXP',c:72},{n:'SG-2',t:'EXP',c:55},{n:'SG-5',t:'REC',c:61},{n:'SG-3',t:'ASL',c:80},{n:'SG-7',t:'SEC',c:40},{n:'SG-9',t:'EXP',c:30,away:1}];
+const VEH=[{n:'Truck T2',t:'TRK'},{n:'Drone T1',t:'DRN'},{n:'ATV T1',t:'ATV',rep:1}];
+const MALPS=[{n:'MALP 1 // T3',t:'MLP'},{n:'MALP 2 // T0',t:'MLP'}];
+const TYPES={EXP:{n:'Exploration',ok:['EXP','REC','SEC'],need:'EXP',rule:'Needs an Exploration team. Recon and Security may join.',slots:[ 'TEAM','TEAM','TEAM','VEH','VEH','MALP']},
+ REC:{n:'Recon Survey',ok:['REC'],need:'REC',rule:'Recon teams only. Reveals all intel tiers.',slots:['TEAM','TEAM','VEH','VEH','MALP','—']},
+ ASL:{n:'Assault',ok:['ASL','SEC','REC','EXP'],need:'ASL',rule:'Stronghold only. 150 fee plus send costs.',slots:['TEAM','TEAM','TEAM','TEAM','VEH','VEH']},
+ AST:{n:'Assist',ok:['REC','ASL'],need:null,rule:'Rescue an overdue team. 2 supplies per team.',slots:['TEAM','TEAM','TEAM','VEH','VEH','—']}};
+const S={a:{ty:'EXP',sel:['SG-1']},b:{ty:'EXP',sel:['SG-1','Truck T2'],pick:-1},c:{ty:'EXP',sel:['SG-1'],step:0}};
+const icon=t=>`<span class="ic">${t[0]}</span>`;
+function stats(st){const tm=TEAMS.filter(x=>st.sel.includes(x.n));const v=VEH.filter(x=>st.sel.includes(x.n));const ok=TYPES[st.ty].need?tm.some(x=>x.t===TYPES[st.ty].need):tm.length>0;
+ let amb=40;if(tm.some(x=>x.t==='REC'))amb=Math.round(amb*0.9);if(v.some(x=>x.t==='DRN'))amb-=3;if(tm.some(x=>x.t==='SEC'))amb=Math.round(amb*0.2);
+ const sup=Math.round(30*(v.some(x=>x.t==='TRK')?1.1:1)*1.25);const cost=tm.length*(tm.some(x=>x.t==='ASL')?5:2)+(st.ty==='ASL'?150:0);
+ return {ok,amb,sup,cost,pw:38,eta:v.some(x=>x.t==='ATV')?'1:48':'2:00',n:tm.length}}
+function tog(k,n){const s=S[k].sel;const i=s.indexOf(n);i<0?s.push(n):s.splice(i,1);render()}
+function setT(k,t){S[k].ty=t;const ok=TYPES[t].ok;S[k].sel=S[k].sel.filter(n=>{const tm=TEAMS.find(x=>x.n===n);return !tm||ok.includes(tm.t)});render()}
+function elig(k,x){return !x.away&&!x.rep&&(!x.t||!TYPES[S[k].ty].ok||['TRK','DRN','ATV','MLP'].includes(x.t)||TYPES[S[k].ty].ok.includes(x.t))}
+function chips(k,list){return list.map(x=>{const e=elig(k,x);const on=S[k].sel.includes(x.n);return `<span class="chip ${on?'in':''} ${e?'':'no'}" ${e?`onclick="tog('${k}','${x.n}')"`:''}>${icon(x.t)}${x.n}${x.c!=null?` <span class="dim">${x.t} ${x.c}</span>`:''}${x.away?' <span class="warn">AWAY</span>':''}${x.rep?' <span class="warn">REPAIR</span>':''}</span>`}).join('')}
+function rA(){const st=S.a,s=stats(st);
+ document.getElementById('fa').innerHTML=`<div class="ttl">MISSION <span>P3X-4471 // MED HAZARD // 38 PWR</span></div><div class="A">
+ <div class="types">${Object.keys(TYPES).map(t=>`<button class="${st.ty===t?'on':''}" onclick="setT('a','${t}')">${TYPES[t].n.toUpperCase()}</button>`).join('')}</div>
+ <div class="pool"><div class="lbl">TEAMS ON STATION</div>${chips('a',TEAMS)}<div class="lbl">VEHICLES</div>${chips('a',VEH)}<div class="lbl">MALPS</div>${chips('a',MALPS)}</div>
+ <div class="man"><div class="lbl">MANIFEST // ${st.sel.length}</div>${st.sel.map(n=>`<div class="stat"><b>${n}</b><span class="dim" style="cursor:pointer" onclick="tog('a','${n}')">✕</span></div>`).join('')||'<div class="dim">Nothing added.</div>'}
+ <div style="margin-top:6px"><div class="stat"><b>Ambush</b><span class="${s.amb>30?'warn':'ok'}">${s.amb}%</span></div><div class="stat"><b>Yield</b><span>~${s.sup} sup</span></div><div class="stat"><b>Cost</b><span>${s.cost} sup</span></div><div class="stat"><b>ETA</b><span>${s.eta}</span></div></div>
+ <button class="send" ${s.ok?'':'disabled'}>SEND ${s.n} TEAM${s.n===1?'':'S'}</button></div></div>`}
+function rB(){const st=S.b,s=stats(st),T=TYPES[st.ty];
+ const items=st.sel.slice();const vt=items.filter(n=>!TEAMS.find(x=>x.n===n));const tt=items.filter(n=>TEAMS.find(x=>x.n===n));
+ const fill={TEAM:tt.slice(),VEH:vt.filter(n=>!n.startsWith('MALP')),MALP:vt.filter(n=>n.startsWith('MALP'))};
+ let sl=T.slots.map((k,i)=>{if(k==='—')return `<div class="slot" style="opacity:.25;cursor:default">—</div>`;const n=fill[k].shift();
+  if(n){const tm=TEAMS.find(x=>x.n===n);return `<div class="slot f"><span class="x" onclick="tog('b','${n}')">✕</span><span class="k">${k}</span>${icon(tm?tm.t:(VEH.concat(MALPS).find(x=>x.n===n)||{t:'M'}).t)}${n}${tm?`<span class="dim">CAM ${tm.c}</span>`:''}</div>`}
+  return `<div class="slot" onclick="S.b.pick=${i};S.b.pk='${k}';render()"><span class="k">${k}</span>+ ADD</div>`}).join('');
+ let pk='';if(st.pick>=0){const k=st.pk;const L=k==='TEAM'?TEAMS:k==='VEH'?VEH:MALPS;pk=`<div class="pick"><div class="lbl" style="display:flex;justify-content:space-between">SELECT ${k} <span style="cursor:pointer" onclick="S.b.pick=-1;render()">✕ CLOSE</span></div>${L.filter(x=>!st.sel.includes(x.n)).map(x=>{const e=elig('b',x);return `<span class="chip ${e?'':'no'}" ${e?`onclick="S.b.pick=-1;tog('b','${x.n}')"`:''}>${icon(x.t)}${x.n}${x.c!=null?` <span class="dim">${x.t} ${x.c}</span>`:''}${x.away?' <span class="warn">AWAY</span>':''}${x.rep?' <span class="warn">REPAIR</span>':''}</span>`}).join('')}</div>`}
+ document.getElementById('fb').innerHTML=`<div class="ttl">MISSION <span>${T.rule}</span></div>
+ <div class="dest"><b>P3X-4471</b><span>Barnard's Star // L2</span><span class="warn">MED HAZARD</span><span>INTEL 3/5</span><span style="margin-left:auto">38 PWR // 6 LY</span></div>
+ <div class="typebar">${Object.keys(TYPES).map(t=>`<button class="${st.ty===t?'on':''}" onclick="setT('b','${t}');S.b.pick=-1">${TYPES[t].n.toUpperCase()}</button>`).join('')}</div>
+ <div class="slots">${sl}</div>${pk}
+ <div class="bar"><span>AMBUSH <span class="${s.amb>30?'warn':'ok'}">${s.amb}%</span></span><span>YIELD ~${s.sup}</span><span>COST ${s.cost}</span><span>ETA ${s.eta}</span><button class="send" ${s.ok?'':'disabled'}>SEND</button></div>`}
+function rC(){const st=S.c,s=stats(st),T=TYPES[st.ty];const steps=['1 // TYPE','2 // ASSETS','3 // REVIEW'];
+ let body='';
+ if(st.step===0)body=`<div class="tgrid" style="grid-template-columns:1fr 1fr">${Object.keys(TYPES).map(t=>`<div class="tcard ${st.ty===t?'on':''}" onclick="setT('c','${t}')"><b>${TYPES[t].n.toUpperCase()}</b><span class="dim">${TYPES[t].rule}</span></div>`).join('')}</div>`;
+ else if(st.step===1)body=TEAMS.concat(VEH,MALPS).map(x=>{const e=elig('c',x),on=st.sel.includes(x.n);return `<div class="row" style="${e?'':'opacity:.35'}">${icon(x.t)}<span class="grow">${x.n}</span><span class="dim">${x.c!=null?x.t+' // CAM '+x.c:'EQUIPMENT'}</span>${x.away?'<span class="warn">AWAY</span>':x.rep?'<span class="warn">REPAIR</span>':`<button class="${on?'on':''}" onclick="tog('c','${x.n}')">${on?'✓ ADDED':'ADD'}</button>`}</div>`}).join('');
+ else body=`<table><tr><td class="dim">Destination</td><td>P3X-4471 // Barnard's Star // MED hazard</td></tr><tr><td class="dim">Type</td><td>${T.n}</td></tr><tr><td class="dim">Assets</td><td>${st.sel.join(', ')||'None'}</td></tr><tr><td class="dim">Ambush chance</td><td class="${s.amb>30?'warn':'ok'}">${s.amb}%</td></tr><tr><td class="dim">Expected yield</td><td>~${s.sup} supplies</td></tr><tr><td class="dim">Cost // Power</td><td>${s.cost} supplies // ${s.pw} power</td></tr><tr><td class="dim">Mission time</td><td>${s.eta}</td></tr></table>`;
+ document.getElementById('fc').innerHTML=`<div class="ttl">MISSION <span>P3X-4471 // ${T.n.toUpperCase()} // ${st.sel.length} ADDED</span></div>
+ <div class="steps">${steps.map((x,i)=>`<div class="${st.step===i?'on':(i<st.step?'done':'')}" onclick="S.c.step=${i};render()">${i<st.step?'✓ ':''}${x}</div>`).join('')}</div>
+ <div class="body">${body}</div>
+ <div class="foot"><button ${st.step===0?'disabled':''} onclick="S.c.step--;render()">◀ BACK</button><span class="dim">AMBUSH ${s.amb}% // COST ${s.cost}</span>${st.step<2?`<button onclick="S.c.step++;render()">NEXT ▶</button>`:`<button class="send" ${s.ok?'':'disabled'}>SEND</button>`}</div>`}
+function render(){rA();rB();rC()}render();
+</script></body></html>
