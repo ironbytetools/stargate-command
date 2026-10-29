@@ -1,4 +1,4 @@
-# Hidden worlds and decoded faction contact (design, not built)
+# Hidden worlds and decoded faction contact (built in 0.9.17, not released)
 
 Decided with Brad, Oct 26 2026.
 
@@ -19,3 +19,10 @@ Open questions (Brad to decide before building):
 - Hidden world count per system beyond the minimum of one.
 
 Related: docs/design/faction-design.md, docs/design/minigames-design.md (glyph decoding), docs/design/galaxy-design.md.
+
+## Decisions, Oct 27 2026 (Brad)
+- Build slot: 0.9.17 (hidden worlds and decoded faction contact).
+- 0.8.10 faction leads on Exploration returns are removed. Faction contact comes only from decoding. Factions already met in older saves stay met.
+- Each hidden world: first-decode popup with a mini-story, a brief history of the faction, and the rewards and bonuses the faction offers; plus a one-time reward of supplies or research.
+- New artifacts are authored for the hidden worlds (separate from the existing ten bonus glyph artifacts).
+- Placement stays as the current assignment: L1 Langaran, L2 Tollan, L4 Tok'ra and Free Jaffa, L5 Asgard and Nox. Level 3 gets a story-only hidden world with no faction.

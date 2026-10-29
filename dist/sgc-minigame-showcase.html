@@ -227,6 +227,7 @@ body.showhelp .help { display: block; }
 .hud .dim { font-size: var(--fs-sm); }
 .log { height: 130px; }
 .mc { position: absolute; z-index: 5; display: flex; gap: 6px; }
+.mc[hidden] { display: none; }
 .mc button { min-height: 0; height: 34px; min-width: 34px; padding: 0 10px; font-size: 15px; background: rgba(6, 16, 28, 0.88); border: 1px solid #3d6a82; color: #bfe9f2; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); border-radius: 4px; }
 .mc.zoom { right: 10px; top: 10px; flex-direction: column; gap: 0; }
 .mc.zoom button { border-radius: 0; }
@@ -495,6 +496,10 @@ body:not(.gv) .cl { white-space: nowrap; }
 #rxgame .titlebox { width: min(560px, 100%); }
 #glgame { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 18px; background: rgba(2, 6, 12, 0.96); }
 #glgame[hidden] { display: none; }
+#hwpop { position: fixed; inset: 0; z-index: 95; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 18px; background: rgba(2, 6, 12, 0.94); }
+#hwpop[hidden] { display: none; }
+#hwpop .titlebox { width: min(600px, 100%); margin-block: auto; }
+#hwpop .panel p { margin: 8px 0; }
 #glgame .titlebox { width: min(600px, 100%); }
 .glsvg { display: block; color: var(--glow); }
 #hpgame, #ctgame { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 18px; background: rgba(2, 6, 12, 0.96); }
@@ -956,7 +961,7 @@ body.sc #scbar { display: block; }
     <svg class="emblem" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M24 8 L37.5 15.8 V32.2 L24 40 L10.5 32.2 V15.8 Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><circle cx="35.26" cy="19.50" r="1.6" fill="currentColor"/><circle cx="32.36" cy="16.04" r="1.6" fill="currentColor"/><circle cx="28.45" cy="13.78" r="1.6" fill="currentColor"/><circle cx="24.00" cy="13.00" r="1.6" fill="currentColor"/><circle cx="19.55" cy="13.78" r="1.6" fill="currentColor"/><circle cx="15.64" cy="16.04" r="1.6" fill="currentColor"/><circle cx="12.74" cy="19.50" r="1.6" fill="currentColor"/><path d="M15.5 32 L24 19.5 L32.5 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter"/><path d="M24 28 L26.8 31.4 L24 34.8 L21.2 31.4 Z" fill="currentColor"/></svg>
     <div class="txt">
       <div class="title">STARGATE COMMAND</div>
-      <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.14</div>
+      <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.22</div>
     </div>
   </div>
   <div id="status" class="status"></div>
@@ -1141,7 +1146,7 @@ body.sc #scbar { display: block; }
   <div class="titlebox">
     <svg class="emblem big" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M24 8 L37.5 15.8 V32.2 L24 40 L10.5 32.2 V15.8 Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><circle cx="35.26" cy="19.50" r="1.6" fill="currentColor"/><circle cx="32.36" cy="16.04" r="1.6" fill="currentColor"/><circle cx="28.45" cy="13.78" r="1.6" fill="currentColor"/><circle cx="24.00" cy="13.00" r="1.6" fill="currentColor"/><circle cx="19.55" cy="13.78" r="1.6" fill="currentColor"/><circle cx="15.64" cy="16.04" r="1.6" fill="currentColor"/><circle cx="12.74" cy="19.50" r="1.6" fill="currentColor"/><path d="M15.5 32 L24 19.5 L32.5 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter"/><path d="M24 28 L26.8 31.4 L24 34.8 L21.2 31.4 Z" fill="currentColor"/></svg>
     <div class="title">STARGATE COMMAND</div>
-    <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.14</div>
+    <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.22</div>
     <div class="panel" id="titlebody"></div>
   </div>
 </div>
@@ -1283,7 +1288,7 @@ const SYSTEMS = [
   { lv: 1, star: 'Alpha Centauri', ly: 4.4, bearing: 220, planets: 5, holds: 1, factions: ["Langaran"], lab: false, col: '#ffe9a8', names: ['Veyra', 'Dunmar', 'Ostrel', 'Kheda', 'Ilumen'] },
   { lv: 2, star: "Barnard's Star", ly: 6.0, bearing: 269, planets: 7, holds: 2, factions: ["Tollan"], lab: false, col: '#ff9a7a', names: ['Tessar', 'Brovik', 'Aldane', 'Qorith', 'Maelen', 'Sunder', 'Ixia'] },
   { lv: 3, star: 'Sirius', ly: 8.6, bearing: 101, planets: 5, holds: 3, factions: [], lab: false, col: '#dff1ff', names: ['Corvane', 'Halith', 'Zephyra', 'Marrow', 'Ostin'] },
-  { lv: 4, star: 'Epsilon Eridani', ly: 10.5, bearing: 53, planets: 6, holds: 1, factions: ["Tok'ra", 'Free Jaffa'], lab: false, col: '#ffc27a', names: ['Lorrin', 'Vantis', 'Eskar', 'Daryn', 'Thessaly', 'Orrum'] },
+  { lv: 4, star: 'Epsilon Eridani', ly: 10.5, bearing: 53, planets: 6, holds: 2, factions: ["Tok'ra", 'Free Jaffa'], lab: false, col: '#ffc27a', names: ['Lorrin', 'Vantis', 'Eskar', 'Daryn', 'Thessaly', 'Orrum'] },
   { lv: 5, star: 'Tau Ceti', ly: 11.9, bearing: 26, planets: 10, holds: 4, factions: ['Asgard', 'Nox'], lab: true, col: '#fff0b8', names: ['Kalos', 'Ardent', 'Ismara', 'Velkor', 'Nethys', 'Thalos', 'Ordane', 'Yrien', 'Caldus', 'Sorrel'] }
 ];
 const LORDS = [
@@ -1314,7 +1319,7 @@ const GATE_TIERS = [
   { n: 1, name: 'Gate security detail', rp: 100, ms: 120000, sup: 150, desc: 'Security personnel in the gate room stop intruders from stealing supplies.' },
   { n: 2, name: 'Iris operator: Chief Master Sergeant Walter Harriman', rp: 200, ms: 240000, sup: 200, desc: 'Fully operates the iris: opens it on a valid IDC transponder and closes it when no IDC arrives.' },
   { n: 3, name: 'Dialing speed I', rp: 300, ms: 300000, sup: 100, desc: 'Auto-dial steps take 60 ms and the lock pause is 400 ms.' },
-  { n: 4, name: 'Reactor I', rp: 1000, ms: 360000, sup: 0, desc: 'Power regeneration rises to 24 per minute.' },
+  { n: 4, name: 'Reactor I', rp: 600, ms: 360000, sup: 0, desc: 'Power regeneration rises to 24 per minute.' },
   { n: 5, name: 'Dialing speed II', rp: 500, ms: 480000, sup: 200, desc: 'Auto-dial steps take 45 ms and the lock pause is 250 ms.' },
   { n: 6, name: 'Reactor II', rp: 1000, ms: 600000, sup: 0, desc: 'Power regeneration rises to 36 per minute.' },
   { n: 7, name: 'Reactor III', rp: 1000, ms: 840000, sup: 0, desc: 'Power regeneration rises to 48 per minute.' }
@@ -1365,6 +1370,7 @@ const MTYPES = {
 };
 const PACK_BASE_CAP = 30;
 const TK_FEE = 2;
+const TK_FUEL_LY = 4;
 const TK_MS_PER_LY = 120000;
 const TK_DELAY_P = 0.2;
 const TK_BASE = 100;
@@ -1426,7 +1432,7 @@ ROOMS.ops = { name: 'Off-World Operations', lvl: 'LEVEL 22', desc: 'Forward Oper
 const ROOM_ORDER = ['gate', 'brief', 'barracks', 'quarter', 'med', 'lab', 'arm', 'motor', 'arch', 'ops'];
 
 function opsOpen() {
-  return Object.keys(state.fobs || {}).length > 0 || state.worlds.some(w => w.stronghold && w.status === 'captured');
+  return Object.keys(state.fobs || {}).length > 0 || opCount() > 0 || state.worlds.some(w => w.stronghold && w.status === 'captured');
 }
 
 function roomList() {
@@ -3007,7 +3013,34 @@ const GL_ARTS = [
   { n: 7, lv: 4, type: 1, name: 'Nox Glyph Tablet', lore: 'A gentle script from a people who rarely leave records.' },
   { n: 8, lv: 4, type: 2, name: 'Asgard Rune Plate', lore: 'A plate of star-charts and engineering notes.', tech: 'The inscription also mentions defense technology.' },
   { n: 9, lv: 5, type: 3, name: 'Ancient Archive Plate', lore: 'A sealed archive of the Ancients.', facility: true },
-  { n: 10, lv: 5, type: 2, name: 'Repository Key Tablet', lore: 'A key tablet in the Ancients\' own script.', facility: true }
+  { n: 10, lv: 5, type: 2, name: 'Repository Key Tablet', lore: 'A key tablet in the Ancients\' own script.', facility: true },
+  { n: 11, lv: 1, type: 1, hid: true, fac: 'Langaran', wname: 'Langara', name: 'Kelownan Survey Plate', lore: 'A survey plate from a Kelownan archive, stamped with a gate address that was never logged.',
+    story: 'Cross-referencing the plate against the Stargate database, the Archeology Office found an address no team has dialed: Langara, a world that grew up cut off from the Goa\'uld and stayed hidden because its gate sat buried for generations.',
+    hist: 'Langara is home to three nations, Kelowna, Terrania and the Andari Federation, held in an uneasy alliance by a Joint Ruling Council after long wars. It is the only known source of naquadria, a volatile derivative of naquadah, and its people have a mid-twentieth-century culture that the Goa\'uld never shaped.',
+    rew: ['supplies', 100] },
+  { n: 12, lv: 2, type: 2, hid: true, fac: 'Tollan', wname: 'Tollana', name: 'Tollana Registry Tablet', lore: 'A registry tablet of fine alloy, broken into tiles.',
+    story: 'The reassembled tablet lists a world whose gate was removed from public records. The Tollan kept their home quiet to protect technology they considered too dangerous for younger worlds.',
+    hist: 'The Tollan are an advanced human people known for phase-shift technology and the Ion Cannon defense that kept the Goa\'uld at bay. They are cautious about sharing it, judging other worlds not yet ready for it.',
+    rew: ['research', 120] },
+  { n: 13, lv: 3, type: 3, hid: true, fac: null, wname: 'Abydos', name: 'Abydonian Cartouche', lore: 'A royal cartouche carved with a sealed code of symbols.',
+    story: 'The cartouche carries the seven symbols of the first world ever reached through the Stargate. Abydos was once a mining colony of Ra, and a team stepped through the gate there that began everything.',
+    hist: '', rew: ['supplies', 200] },
+  { n: 14, lv: 4, type: 3, hid: true, fac: "Tok'ra", wname: 'Vorash', name: "Tok'ra Memory Crystal", lore: 'A crystal case sealed with a lock of symbols.',
+    story: 'The crystal holds a cipher-locked record of a refuge reached by a tunnel network. Its deduction code opens an address the Tok\'ra protect with great care.',
+    hist: 'The Tok\'ra are symbiotes who broke from the Goa\'uld in the days of the queen Egeria. They work as infiltrators against the System Lords and are slow to trust, but Earth earned their alliance through shared enemies.',
+    rew: ['research', 150] },
+  { n: 15, lv: 4, type: 1, hid: true, fac: 'Free Jaffa', wname: 'Chulak', name: 'Jaffa Rebellion Tablet', lore: 'An oath tablet cracked in transit, with the mark of a free Jaffa cell.',
+    story: 'The tablet names a rally point for Jaffa who turned against their false gods. Its fragments match a gate address held back from Goa\'uld spies.',
+    hist: 'The Free Jaffa are warriors who rejected the gods they once served. Led by veterans such as Bra\'tac and Teal\'c, they fight to break the symbiote hold on their people and to win freedom for the Jaffa nation.',
+    rew: ['supplies', 250] },
+  { n: 16, lv: 5, type: 2, hid: true, fac: 'Asgard', wname: 'Orilla', name: 'Asgard Beam Chart', lore: 'A plate of beaming coordinates and engineering notes.',
+    story: 'The reassembled chart shows beam coordinates and a gate address inside protected space. The Asgard have kept their last homeworld off every public map.',
+    hist: 'The Asgard are a technologically advanced race who shielded young worlds, Earth among them, under a protection treaty. Their cloned bodies are failing, and they have long sought help against the genetic decay that threatens them.',
+    rew: ['research', 250] },
+  { n: 17, lv: 5, type: 3, hid: true, fac: 'Nox', wname: 'Nox Haven', name: 'Nox Forest Tablet', lore: 'A tablet in a gentle script, locked by a cipher of leaves.',
+    story: 'The cipher opens a record of a forest world that no scanner can see. The Nox hide in plain sight and rarely leave a trace behind them.',
+    hist: 'The Nox are a peaceful people who refuse to fight and cloak themselves from outsiders. Their healing is far beyond Earth medicine, and they once restored a fallen member of SG-1 to life.',
+    rew: ['supplies', 300] }
 ];
 const GL_TYPES = { 1: 'FRAGMENT MATCHING', 2: 'TABLET REASSEMBLY', 3: 'CIPHER DEDUCTION' };
 const GL_LEVEL_BONUS = {
@@ -3047,19 +3080,20 @@ const GL_HINTS = {
 let GLG = null;
 
 function glFresh() {
-  return { a: GL_ARTS.map(() => ({ f: false, d: false, c: false, fails: 0 })), miss: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+  return { a: GL_ARTS.map(() => ({ f: false, d: false, c: false, fails: 0 })), miss: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, hm: 0 };
 }
 function glLoad(d) {
   const b = glFresh();
   if (!d) return b;
   (d.a || []).forEach((x, i) => { if (b.a[i]) Object.assign(b.a[i], x); });
   Object.assign(b.miss, d.miss || {});
+  b.hm = d.hm | 0;
   return b;
 }
 function glArt(n) { return state.glyph ? state.glyph.a[n - 1] : { f: false, d: false, c: false, fails: 0 }; }
 function glDone(lv) { return glArt(lv * 2 - 1).c && glArt(lv * 2).c; }
-function glAll() { return !!state.glyph && state.glyph.a.every(x => x.c); }
-function glCount() { return state.glyph ? state.glyph.a.filter(x => x.c).length : 0; }
+function glAll() { return !!state.glyph && state.glyph.a.slice(0, 10).every(x => x.c); }
+function glCount() { return state.glyph ? state.glyph.a.slice(0, 10).filter(x => x.c).length : 0; }
 function glSup() { return glDone(1) ? GL_SUP : 0; }
 function glRp() { return (glDone(2) ? GL_RP : 0) + (glAll() ? GL_RELIC_RP : 0); }
 function glAmb() { return glDone(3) ? GL_AMB : 0; }
@@ -3112,7 +3146,152 @@ function glExplore(w) {
     if (glDone(ar.lv)) log('Archeology bonus unlocked for Level ' + ar.lv + ': ' + GL_LEVEL_BONUS[ar.lv] + '.', 'ok');
     if (glAll()) log('All 10 artifacts recovered. The ' + GL_RELIC + ' now sits in the Archeology Office. Camaraderie gain +10% and research +5% for all teams.', 'ok');
   }
+  msg += hwFind(w);
   return msg;
+}
+
+function hwFind(w) {
+  if (!w || w.kind !== 'normal' || !state.glyph) return '';
+  const p = GL_ARTS.filter(a => a.hid && a.lv <= state.level && !glArt(a.n).f).sort((a, b) => a.n - b.n)[0];
+  if (!p) return '';
+  const chance = HW_CHANCE_BASE + HW_CHANCE_STEP * (state.glyph.hm | 0);
+  if (Math.random() >= chance) { state.glyph.hm = (state.glyph.hm | 0) + 1; return ''; }
+  state.glyph.hm = 0;
+  glArt(p.n).f = true;
+  sfx.chime();
+  const t = ' An inscription was found: ' + p.name + '. It speaks of a hidden world. Decode it in the Archeology Office.';
+  log('Inscription found on ' + wname(w) + ': ' + p.name + '. It speaks of a hidden world. Decode it in the Archeology Office.', 'ok');
+  return t;
+}
+
+const HW_CHANCE_BASE = 0.4;
+const HW_CHANCE_STEP = 0.3;
+
+function hwOf(n) { return state.worlds.find(w => w.hart === n) || (state.hidden || []).find(w => w.hart === n) || null; }
+
+function hwBuild(ar, extra) {
+  const s = sysOf(ar.lv);
+  const used = new Set(state.worlds.concat(state.hidden || [], extra || []).map(w => addrKey(w.addr)));
+  let addr;
+  do { addr = newTarget(); } while (used.has(addrKey(addr)));
+  const idx = GL_ARTS.filter(a => a.hid && a.lv === ar.lv && a.n < ar.n).length;
+  return {
+    id: 'w' + (++worldSeq),
+    code: 'A' + String(worldSeq).padStart(2, '0'),
+    name: ar.wname,
+    sector: s.star,
+    addr,
+    level: ar.lv,
+    kind: ar.fac ? 'faction' : 'normal',
+    faction: ar.fac || null,
+    stronghold: false,
+    diff: 0,
+    type: WTYPES[Math.floor(Math.random() * WTYPES.length)],
+    env: WENVS[Math.floor(Math.random() * WENVS.length)],
+    hazard: ['low', 'med', 'high'][Math.floor(Math.random() * 3)],
+    intel: 0,
+    status: 'unexplored',
+    orb: { r: 236 + idx * 14, a: 0.6 + ar.lv * 1.3 + idx * 2.4 },
+    moons: [],
+    stn: [],
+    fresh: false,
+    hart: ar.n
+  };
+}
+
+function hwEnsure(lv, extra) {
+  if (!state.hidden) state.hidden = [];
+  GL_ARTS.filter(a => a.hid && a.lv === lv).forEach(ar => {
+    if (hwOf(ar.n)) return;
+    const w = hwBuild(ar, extra);
+    if (glArt(ar.n).d) { w.intel = ar.fac ? 2 : 1; state.worlds.push(w); } else state.hidden.push(w);
+  });
+}
+
+function hwMigrate() {
+  if (!state.hidden) state.hidden = [];
+  const busy = id => state.dest === id || state.teams.some(t => t.mission && t.mission.worldId === id);
+  state.worlds.slice().forEach(w => {
+    if (w.kind !== 'faction' || w.hart) return;
+    const ar = GL_ARTS.find(a => a.hid && a.fac === w.faction);
+    if (!ar) return;
+    w.hart = ar.n;
+    if (w.intel >= 2 || (state.fac.met && state.fac.met[w.faction]) || busy(w.id)) {
+      const a = glArt(ar.n);
+      a.f = true; a.d = true; a.c = true;
+      if (w.intel < 2) w.intel = 2;
+    } else {
+      state.worlds.splice(state.worlds.indexOf(w), 1);
+      state.hidden.push(w);
+    }
+  });
+  for (let lv = 1; lv <= state.level; lv++) hwEnsure(lv);
+}
+
+function hwReveal(n) {
+  const ar = GL_ARTS[n - 1];
+  let w = (state.hidden || []).find(x => x.hart === n);
+  if (w) {
+    state.hidden.splice(state.hidden.indexOf(w), 1);
+    w.fresh = true;
+    w.intel = Math.max(w.intel, ar.fac ? 2 : 1);
+    state.worlds.push(w);
+  } else w = hwOf(n);
+  if (w && ar.fac) factionContact(w, 'The Archeology Office', null);
+  return w;
+}
+
+function hwPopHtml(ar, w) {
+  let h = '<p>' + ar.story + '</p>';
+  if (ar.fac) {
+    const F = FACTIONS[ar.fac];
+    h += '<h2>The ' + ar.fac + '</h2><p>' + ar.hist + '</p>';
+    h += '<h2>What they offer</h2>';
+    ['Partner', 'Ally', 'Sworn'].forEach((t, i) => { h += '<div class="res-row"><span>' + t + '</span><span>' + F.perk[i] + '</span></div>'; });
+    h += '<div class="res-row"><span>Sworn income</span><span>' + F.pay[1] + ' ' + (F.pay[0] === 'research' ? 'research points' : 'supplies') + ' every 10 minutes</span></div>';
+    h += '<p class="dim small">Send a Diplomat team with a Security team to raise standing. A Partner world cannot be lost.</p>';
+  } else {
+    h += '<p class="dim small">This world is open to Exploration missions like any other gate address.</p>';
+  }
+  h += '<div class="res-row"><span>Discovery reward</span><span class="ok">+' + ar.rew[1] + ' ' + (ar.rew[0] === 'research' ? 'research points' : 'supplies') + '</span></div>';
+  return h;
+}
+
+function hwPop(n, first) {
+  const ar = GL_ARTS[n - 1];
+  const w = hwOf(n);
+  let el = document.getElementById('hwpop');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'hwpop';
+    el.innerHTML = '<div class="titlebox"><div class="title" id="hwtitle"></div><div class="sub" id="hwsub"></div><div class="panel" id="hwbody"></div><div class="controls" style="margin-top:10px"><button onclick="hwClose()">CLOSE</button></div></div>';
+    document.body.appendChild(el);
+  }
+  document.getElementById('hwtitle').textContent = (first ? 'HIDDEN WORLD LOCATED // ' : 'HIDDEN WORLD // ') + (w ? w.name : ar.wname).toUpperCase();
+  document.getElementById('hwsub').textContent = (w ? w.sector : sysOf(ar.lv).star).toUpperCase() + ' // LEVEL ' + ar.lv;
+  document.getElementById('hwbody').innerHTML = hwPopHtml(ar, w);
+  el.hidden = false;
+}
+function hwClose() {
+  const el = document.getElementById('hwpop');
+  if (el) el.hidden = true;
+}
+
+function hwRowHtml(n) {
+  const a = glArt(n);
+  const ar = GL_ARTS[n - 1];
+  const here = glLinguists() > 0;
+  let st;
+  let btn = '';
+  if (a.d) {
+    const w = hwOf(n);
+    st = '<span class="ok">WORLD REVEALED // ' + (w ? wname(w) : ar.wname) + '</span>';
+    btn = '<button onclick="hwPop(' + n + ', false)">READ</button>';
+  } else if (a.f) {
+    st = '<span class="warn">INSCRIPTION FOUND' + (a.fails ? ' // ' + a.fails + ' failed' : '') + '</span>';
+    btn = '<button onclick="glOpen(' + n + ')" ' + (here ? '' : 'disabled title="A Linguist must be on station"') + '>DECODE</button>';
+  } else st = '<span class="dim">○ NO INSCRIPTION YET</span>';
+  return '<div class="dispatch-row"><div><b>' + (a.f ? ar.name : 'Hidden world artifact') + '</b> <span class="dim">Level ' + ar.lv + ' // ' + GL_TYPES[ar.type] + '</span><div class="mrow">' + st + '</div></div><div>' + btn + '</div></div>';
 }
 
 function glSite(n) {
@@ -3128,6 +3307,19 @@ function glDecoded(n) {
   const a = glArt(n);
   const ar = GL_ARTS[n - 1];
   a.d = true;
+  if (ar.hid) {
+    a.c = true;
+    const hw = hwReveal(n);
+    if (ar.rew[0] === 'research') state.research += ar.rew[1];
+    else state.res.supplies += ar.rew[1];
+    const nm = hw ? wname(hw) : ar.wname;
+    const t = 'Decoded: ' + ar.name + '. The address of ' + nm + (ar.fac ? ', home of the ' + ar.fac + ',' : '') + ' is now on the starmap. +' + ar.rew[1] + ' ' + (ar.rew[0] === 'research' ? 'research points' : 'supplies') + '.';
+    log(t, 'ok');
+    if (GLG) GLG.out = t;
+    sfx.chime();
+    hwPop(n, true);
+    return;
+  }
   const w = glSite(n);
   if (w) {
     w.gsite = n;
@@ -3303,6 +3495,7 @@ function gdLordWorld(n) {
   return state.worlds.find(w => w.lord === name && w.stronghold && w.status !== 'captured' && w.intel < 2) || (window.SC ? { id: -99, intel: 0 } : null);
 }
 function gdMarkInit() {
+  if (GL_ARTS[GLG.n - 1].hid) { GLG.mark = null; return; }
   const lw = gdLordWorld(GLG.n);
   GLG.mark = lw ? { lv: GL_ARTS[GLG.n - 1].lv, wid: lw.id, done: false } : null;
 }
@@ -3765,6 +3958,11 @@ function glPanelHtml() {
   const lv = +sel.slice(1);
   h += '<div class="res-row"><span>Level ' + lv + ' bonus</span><span class="' + (glDone(lv) ? 'ok' : 'dim') + '">' + (glDone(lv) ? GL_LEVEL_BONUS[lv] : '○ ' + GL_LEVEL_BONUS[lv]) + '</span></div>';
   h += glRowHtml(lv * 2 - 1) + glRowHtml(lv * 2);
+  const hws = GL_ARTS.filter(a => a.hid && a.lv === lv);
+  if (hws.length) {
+    h += '<h2>Hidden worlds</h2><p class="dim small">A decoded inscription of this kind reveals a hidden world and its address. Inscriptions turn up on Exploration missions.</p>';
+    hws.forEach(a => { h += hwRowHtml(a.n); });
+  }
   return h;
 }
 
@@ -4776,7 +4974,7 @@ const VEH_REPAIR_COST = 10;
 const VEH_REPAIR_MS = 180000;
 const VEH_LOSS_P = 0.25;
 const VEH_TIME_CAP = 0.5;
-const BUILD_VER = '0.9.14';
+const BUILD_VER = '0.9.22';
 const VP_PARTS = { truck: ['armor', 'engine', 'cargo'], drone: ['armor', 'engine', 'sensors'], atv: ['armor', 'engine', 'cargo'] };
 const VP_NAMES = { armor: 'Armor', engine: 'Engine', cargo: 'Cargo', sensors: 'Sensors' };
 const VP_SHORT = { truck: 'Truck', drone: 'Drone', atv: 'ATV' };
@@ -4793,7 +4991,7 @@ const VP_LOSS_CUT = 0.08;
 const VEH = {
   truck: { name: 'Logistic Truck', desc: 'Hauls supplies and heavy gear. Raises mission yield.', perTier: { yield: 0.05 } },
   drone: { name: 'Unmanned Drone', desc: 'Scouts the far side. Lowers the ambush chance.', perTier: { cut: 0.03 } },
-  atv: { name: 'ATV / Side-by-side', desc: 'Covers ground fast. Shortens missions and helps assaults.', perTier: { time: 0.10, assault: 0.03 } }
+  atv: { name: 'ATV / Side-by-side', desc: 'Covers ground fast. Shortens missions and helps assaults.', perTier: { time: 0.10, assault: 0.02 } }
 };
 const KLABEL = { def: 'Defense', dip: 'Diplomacy', exp: 'Exploration', rec: 'Recon', assist: 'Assist', assault: 'Assault', malp: 'MALP', tk: "Tel'tak" };
 const RECALL_MS = 60000;
@@ -4811,7 +5009,8 @@ function shuffle(a) {
 function world(id) { return state.worlds.find(w => w.id === id); }
 function wname(w) { return w.name; }
 function destLabel() { return state.dest ? wname(world(state.dest)) : 'NONE SELECTED'; }
-function levelTarget(lv) { return Math.min(100, BASE_DIFF * Math.pow(DIFF_STEP, lv - 1)); }
+const DIFF_LATE = { 4: 65, 5: 80 };
+function levelTarget(lv) { return Math.min(100, DIFF_LATE[lv] || BASE_DIFF * Math.pow(DIFF_STEP, lv - 1)); }
 function assaultCost(w) { return Math.round(ASSAULT_BASE * Math.pow(ASSAULT_MULT, w.level - 1) * (w.lord ? LORD_FEE : 1)); }
 function addrKey(a) { return a.join('-'); }
 
@@ -4829,7 +5028,6 @@ function makeLevel(lv) {
   const n = s.planets;
   const kinds = [];
   for (let i = 0; i < s.holds; i++) kinds.push('stronghold');
-  s.factions.forEach(() => kinds.push('faction'));
   if (s.lab) kinds.push('lab');
   while (kinds.length < n) kinds.push('normal');
   shuffle(kinds);
@@ -4874,6 +5072,7 @@ function makeLevel(lv) {
       fresh: lv > 1
     });
   }
+  hwEnsure(lv, out);
   tagArmory(out);
   return out;
 }
@@ -5317,7 +5516,12 @@ function selMalp() {
   return hm.find(x => x.id === state.malpPick) || hm[0];
 }
 
-function regenPerMin() { return REGEN_BASE * (1 + [4, 6, 7].filter(n => state.gt.tier >= n && n <= rxRouted()).length) + glRegen(); }
+function relayRegen() {
+  if (!state.fobs) return 0;
+  const n = Object.values(state.fobs).filter(f => f.role === 'pw' && !f.dry).length;
+  return Math.min(FOB_RELAY_CAP, n * FOB_RELAY);
+}
+function regenPerMin() { return REGEN_BASE * (1 + [4, 6, 7].filter(n => state.gt.tier >= n && n <= rxRouted()).length) + glRegen() + relayRegen(); }
 function autoStepMs() { return state.gt.tier >= 5 ? 45 : (state.gt.tier >= 3 ? 60 : 90); }
 function autoLockMs() { return state.gt.tier >= 5 ? 250 : (state.gt.tier >= 3 ? 400 : 550); }
 function projLabel(p) { return p.kind === 'vpart' ? (VP_SHORT[p.vt] + ' ' + VP_NAMES[p.pt]).toUpperCase() + ' ' + VP_ROM[p.lv - 1] : p.kind === 'gate' ? 'GATE T' + p.tier : (p.kind === 'arm' ? armItem(p.item).name.toUpperCase() : 'MALP T' + p.tier); }
@@ -6276,6 +6480,34 @@ const FOB_HOLD = 6;
 const FOB_HEAL_MS = 120000;
 const FOB_PERK_SUP = 20;
 const FOB_PERK_RP = 10;
+const FOB_UPKEEP = 15;
+const FOB_UPKEEP_STEP = 5;
+const FOB_ROLE_COST = 100;
+const FOB_RELAY = 2;
+const FOB_RELAY_CAP = 8;
+const FOB_ROLE_DEF = {
+  sup: { name: 'Supply depot', short: 'SUPPLY', sup: 150, rp: 30 },
+  rp: { name: 'Research outpost', short: 'RESEARCH', sup: 60, rp: 100 },
+  pw: { name: 'Power relay', short: 'POWER', sup: 70, rp: 40 }
+};
+const FOB_ROLE_KEYS = ['sup', 'rp', 'pw'];
+function fobUpkeepOf(id) { return FOB_UPKEEP + FOB_UPKEEP_STEP * Math.max(0, Object.keys(state.fobs || {}).indexOf(id)); }
+function fobUpkeepTotal() { return Object.keys(state.fobs || {}).reduce((a, id) => a + fobUpkeepOf(id), 0); }
+function fobSetRole(id, role) {
+  const f = state.fobs && state.fobs[id];
+  if (!f || !FOB_ROLE_DEF[role] || f.role === role || state.res.supplies < FOB_ROLE_COST) return;
+  state.res.supplies -= FOB_ROLE_COST;
+  const lost = f.stock.sup;
+  const lostr = f.stock.rp;
+  f.role = role;
+  f.stock = { sup: 0, rp: 0 };
+  log(`The base on ${wname(world(id))} was converted to a ${FOB_ROLE_DEF[role].name}. Cost ${FOB_ROLE_COST} supplies; the stockpile of ${lost} supplies and ${lostr} research points was cleared.`, 'warn');
+  renderAll();
+}
+const FOB_TRUCK_SUP = 250;
+const FOB_TRUCK_RP = 125;
+const TK_CAP_SUP = 400;
+const TK_CAP_RP = 200;
 const FOB_ROLES = ['Garrison Commander', 'Scientist', 'Archeologist', 'Doctor', 'Medic', 'Medic'];
 
 function fobOn(w) { return !!(w && state.fobs && state.fobs[w.id]); }
@@ -6283,28 +6515,30 @@ function lordWorld(lv) { return state.worlds.find(x => x.level === lv && x.lord)
 function lordAlive(w) { const l = lordWorld(w.level); return !!l && l.status !== 'captured'; }
 function fobStaffNew() { return FOB_ROLES.map(r => ({ role: r, name: freshSurname() })); }
 
-function fobEstablish(wid) {
+function fobEstablish(wid, role) {
   const w = world(wid);
   if (!w || !w.stronghold || w.status !== 'captured' || fobOn(w) || state.res.supplies < FOB_COST) return;
   state.res.supplies -= FOB_COST;
   const now = Date.now();
   if (!state.fobs) state.fobs = {};
-  state.fobs[wid] = { staff: fobStaffNew(), guard: FOB_GUARD, wnd: 0, dead: 0, stock: { sup: 0, rp: 0 }, next: now + FOB_MS, heal: 0, rt: now + RAID_CHECK_MS };
+  state.fobs[wid] = { role: FOB_ROLE_DEF[role] ? role : 'sup', staff: fobStaffNew(), guard: FOB_GUARD, wnd: 0, dead: 0, stock: { sup: 0, rp: 0 }, next: now + FOB_MS, heal: 0, rt: now + RAID_CHECK_MS };
   const f = state.fobs[wid];
   sfx.chime();
-  log(`A Forward Operating Base was established on ${wname(w)}: ${f.staff[0].role} ${f.staff[0].name}, a scientist, an archeologist, a doctor, two medics and ${FOB_GUARD} security personnel. Cost ${FOB_COST} supplies. It produces ${FOB_SUP + FOB_PERK_SUP} supplies and ${FOB_RP + FOB_PERK_RP} research points every ${fmt(FOB_MS)}; a Tel'tak collects the stockpile.`, 'ok');
+  log(`A Forward Operating Base was established on ${wname(w)}: ${f.staff[0].role} ${f.staff[0].name}, a scientist, an archeologist, a doctor, two medics and ${FOB_GUARD} security personnel. Cost ${FOB_COST} supplies. Role: ${FOB_ROLE_DEF[f.role].name}, ${FOB_ROLE_DEF[f.role].sup} supplies and ${FOB_ROLE_DEF[f.role].rp} research points every ${fmt(FOB_MS)}${f.role === 'pw' ? ', and +' + FOB_RELAY + ' gate power per minute' : ''}; a Tel'tak collects the stockpile.`, 'ok');
   renderAll();
 }
 
 function fobReplace(wid) {
   const f = state.fobs && state.fobs[wid];
   if (!f || f.dead < 1) return;
-  const cost = f.dead * REPLACE_COST;
-  if (state.res.supplies < cost) return;
-  state.res.supplies -= cost;
-  f.guard += f.dead;
-  log(`${f.dead} security personnel were posted to ${wname(world(wid))} as replacements. Cost ${cost} supplies.`, '');
-  f.dead = 0;
+  const rc = replaceCost();
+  if (state.res.supplies < rc) return;
+  if (rc === 0) state.fac.freeRepl[state.level] = true;
+  state.res.supplies -= rc;
+  f.dead--;
+  f.guard++;
+  sfx.chime();
+  log(`A replacement security officer was posted to ${wname(world(wid))}. Cost ${rc} supplies.${rc === 0 ? ' Free Jaffa courtesy.' : ''}`, 'ok');
   renderAll();
 }
 
@@ -6344,16 +6578,21 @@ function fobRaid(w) {
   f.wnd += wd;
   f.dead += kl;
   f.rt = Date.now() + RAID_CHECK_MS;
+  const ls = Math.floor(f.stock.sup / 2);
+  const lr = Math.floor(f.stock.rp / 2);
+  f.stock.sup -= ls;
+  f.stock.rp -= lr;
   if (f.guard <= 0) { fobOverrun(w); return; }
   const loss = n ? ` ${wd} wounded and ${kl} killed.` : ' No casualties.';
-  log(`No team answered the raid on ${wname(w)}. The garrison ${strong ? 'drove the attackers off' : 'barely held'} with ${f.guard} fit defenders left.${loss}`, strong ? 'warn' : 'alert');
+  const loot = ls || lr ? ` The raiders carried off ${ls} supplies and ${lr} research points from the stockpile.` : '';
+  log(`No team answered the raid on ${wname(w)}. The garrison ${strong ? 'drove the attackers off' : 'barely held'} with ${f.guard} fit defenders left.${loss}${loot}`, strong ? 'warn' : 'alert');
   renderAll();
 }
 
 function fobTruck(w, yl) {
   const f = state.fobs[w.id];
-  const a = Math.min(f.stock.sup, FOB_SUP + FOB_PERK_SUP);
-  const r = Math.min(f.stock.rp, FOB_RP + FOB_PERK_RP);
+  const a = Math.min(f.stock.sup, FOB_TRUCK_SUP);
+  const r = Math.min(f.stock.rp, FOB_TRUCK_RP);
   if (!a && !r) return ' The truck found the base stockpile empty.';
   f.stock.sup -= a;
   f.stock.rp -= r;
@@ -6362,6 +6601,271 @@ function fobTruck(w, yl) {
   yl.supplies = (yl.supplies || 0) + a;
   yl.research = (yl.research || 0) + r;
   return ` The truck hauled ${a} supplies and ${r} research points from the base stockpile.`;
+}
+
+
+const OP_COST = 60;
+const OP_COST_STEP = 20;
+const OP_MS = 390000;
+const OP_UPKEEP = 10;
+const OP_UPKEEP_LV = 3;
+const OP_GUARD = 4;
+const OP_REPL = 20;
+const OP_EV_MS = 120000;
+const OP_EVP = { low: 0.15, med: 0.25, high: 0.35 };
+const RV_P = 0.5;
+const OP_YIELD = {
+  'Temperate forest': { sup: 45 },
+  'Arid desert': { sup: 15, nq: 1 },
+  'Frozen tundra': { sup: 15, rp: 30 },
+  'Ocean archipelago': { sup: 30, rp: 15 },
+  'Volcanic highlands': { sup: 10, nq: 2 },
+  'Jungle lowlands': { sup: 30, rp: 10 },
+  'Mountain plateau': { sup: 15, rp: 10, nq: 1 },
+  'Ancient ruins field': { rp: 45 }
+};
+function opScale(w) { return 1 + 0.25 * (w.level - 1); }
+function opOn(w) { return !!(w && state.outposts && state.outposts[w.id]); }
+function opCount() { return Object.keys(state.outposts || {}).length; }
+function opCost() { return OP_COST + OP_COST_STEP * opCount(); }
+function opUpkeep(w) { return OP_UPKEEP + OP_UPKEEP_LV * (w.level - 1); }
+function opYieldOf(w) {
+  const y = OP_YIELD[w.type] || { sup: 25 };
+  const k = opScale(w);
+  return { sup: Math.round((y.sup || 0) * k), rp: Math.round((y.rp || 0) * k), nq: Math.round((y.nq || 0) * k) };
+}
+function opYieldText(y) {
+  const p = [];
+  if (y.sup) p.push(y.sup + ' SUP');
+  if (y.rp) p.push(y.rp + ' RP');
+  if (y.nq) p.push(y.nq + ' NAQ');
+  return p.join(' // ') || 'NOTHING';
+}
+function opCands() {
+  return state.worlds.filter(w => w.kind === 'normal' && !w.stronghold && w.status === 'explored' && !opOn(w) && !fobOn(w));
+}
+function opEstablish(wid) {
+  const w = world(wid);
+  if (!w || opOn(w) || w.kind !== 'normal' || w.stronghold || w.status !== 'explored') return;
+  const c = opCost();
+  if (state.res.supplies < c) return;
+  state.res.supplies -= c;
+  if (!state.outposts) state.outposts = {};
+  state.outposts[wid] = { guard: OP_GUARD, next: Date.now() + OP_MS, dry: false, down: false, ev: null, last: null };
+  sfx.chime();
+  log(`An outpost was established on ${wname(w)} (${w.type}): ${OP_GUARD} security personnel. Cost ${c} supplies. Output ${opYieldText(opYieldOf(w))} per ${fmt(OP_MS)}, upkeep ${opUpkeep(w)} supplies.`, 'ok');
+  renderAll();
+}
+function opAbandon(wid) {
+  if (!state.outposts || !state.outposts[wid]) return;
+  if (state.opConfirm !== wid) { state.opConfirm = wid; renderRoom(); return; }
+  state.opConfirm = null;
+  delete state.outposts[wid];
+  log(`The outpost on ${wname(world(wid))} was abandoned.`, 'warn');
+  renderAll();
+}
+function opReplace(wid) {
+  const f = state.outposts && state.outposts[wid];
+  if (!f || f.guard >= OP_GUARD || state.res.supplies < OP_REPL) return;
+  state.res.supplies -= OP_REPL;
+  f.guard++;
+  log(`A security officer was posted to the outpost on ${wname(world(wid))}. Cost ${OP_REPL} supplies.`, 'ok');
+  renderAll();
+}
+function opLost(w, why) {
+  delete state.outposts[w.id];
+  sfx.fail();
+  log(`The outpost on ${wname(w)} was overrun. ${why} The site must be built again.`, 'alert');
+}
+const OP_EVS = {
+  raid: {
+    title: 'RAID',
+    text: w => `Goa'uld scouts are probing the outpost on ${wname(w)}.`,
+    a: w => ({ label: 'REINFORCE', cost: Math.round(40 * opScale(w)), tip: 'Spend supplies to drive them off' }),
+    b: { label: 'HOLD', tip: 'The garrison fights alone and may take losses' }
+  },
+  trader: {
+    title: 'TRADER',
+    text: w => `A trader has reached the outpost on ${wname(w)} with salvage and star charts.`,
+    a: w => ({ label: 'TRADE', cost: Math.round(50 * opScale(w)), tip: 'Pay supplies for research points' }),
+    b: { label: 'DECLINE', tip: 'Send the trader on' }
+  },
+  cache: {
+    title: 'SITE FOUND',
+    text: w => `Sensors on the outpost at ${wname(w)} picked up a buried site nearby.`,
+    a: w => ({ label: 'SURVEY', cost: Math.round(20 * opScale(w)), tip: 'Send a survey party' }),
+    b: { label: 'IGNORE', tip: 'Leave it' }
+  },
+  quake: {
+    title: 'TREMORS',
+    text: w => `Tremors damaged the generator at the outpost on ${wname(w)}.`,
+    a: w => ({ label: 'REPAIR', cost: Math.round(50 * opScale(w)), tip: 'Spend supplies to keep output running' }),
+    b: { label: 'WAIT', tip: 'Output is paused for one interval' }
+  }
+};
+function opEvWeights(w) {
+  return {
+    raid: { low: 1, med: 2, high: 3 }[w.hazard] || 1,
+    trader: w.env === 'Scattered settlements, old roads' ? 4 : 1,
+    cache: ['Ancient ruins field', 'Mountain plateau', 'Arid desert'].includes(w.type) ? 3 : 1,
+    quake: w.env === 'Seismic activity, unstable ground' ? 4 : 0.5
+  };
+}
+function opPickEv(w) {
+  const wt = opEvWeights(w);
+  const ks = Object.keys(wt);
+  let r = Math.random() * ks.reduce((a, k) => a + wt[k], 0);
+  for (const k of ks) { r -= wt[k]; if (r <= 0) return k; }
+  return ks[0];
+}
+function opChoose(wid, ch, auto) {
+  const w = world(wid);
+  const f = state.outposts && state.outposts[wid];
+  if (!w || !f || !f.ev) return;
+  const k = f.ev.k;
+  const sc = opScale(w);
+  const A = OP_EVS[k].a(w);
+  if (ch === 'a' && state.res.supplies < A.cost) return;
+  f.ev = null;
+  const nm = wname(w);
+  if (k === 'raid') {
+    if (ch === 'a') {
+      state.res.supplies -= A.cost;
+      log(`The outpost on ${nm} was reinforced and drove the raiders off. Cost ${A.cost} supplies.`, 'ok');
+    } else {
+      const n = Math.min(f.guard, Math.floor(Math.random() * 3));
+      f.guard -= n;
+      if (f.guard <= 0) { opLost(w, auto ? 'The raid went unanswered.' : 'The garrison fell.'); renderAll(); return; }
+      log(`The garrison on ${nm} held${auto ? ' alone' : ''}. ${n ? n + ' security personnel lost.' : 'No casualties.'}`, n ? 'warn' : 'ok');
+    }
+  } else if (k === 'trader') {
+    if (ch === 'a') {
+      const rp = Math.round(80 * sc);
+      state.res.supplies -= A.cost;
+      state.research += rp;
+      log(`Traded ${A.cost} supplies for ${rp} research points at the outpost on ${nm}.`, 'ok');
+    } else log(`The trader at ${nm} moved on.`, 'ok');
+  } else if (k === 'cache') {
+    if (ch === 'a') {
+      state.res.supplies -= A.cost;
+      const r = Math.random();
+      if (r < 0.5) { const rp = Math.round(100 * sc); state.research += rp; log(`The survey party near ${nm} recovered old data: +${rp} research points. Cost ${A.cost} supplies.`, 'ok'); }
+      else if (r < 0.8) { const sp = Math.round(80 * sc); state.res.supplies += sp; log(`The survey party near ${nm} found a supply cache: +${sp} supplies. Cost ${A.cost} supplies.`, 'ok'); }
+      else { const nq = 1 + w.level; state.res.naquadah += nq; log(`The survey party near ${nm} found a naquadah seam: +${nq} naquadah. Cost ${A.cost} supplies.`, 'ok'); }
+    } else log(`The site near ${nm} was left alone.`, 'ok');
+  } else if (k === 'quake') {
+    if (ch === 'a') { state.res.supplies -= A.cost; log(`The generator on ${nm} was repaired. Cost ${A.cost} supplies.`, 'ok'); }
+    else { f.down = true; log(`The outpost on ${nm} will skip its next delivery.`, 'warn'); }
+  }
+  renderAll();
+}
+function opTick() {
+  if (!state.started || !state.outposts) return;
+  const now = Date.now();
+  let ch = false;
+  Object.keys(state.outposts).forEach(id => {
+    const w = world(id);
+    const f = state.outposts[id];
+    if (!w) { delete state.outposts[id]; return; }
+    if (f.ev && now >= f.ev.until) { opChoose(id, 'b', true); ch = true; if (!state.outposts[id]) return; }
+    if (now >= f.next) {
+      f.next = now + OP_MS;
+      const upk = opUpkeep(w);
+      if (state.res.supplies < upk) {
+        if (!f.dry) log(`The outpost on ${wname(w)} could not be supplied (${upk} supplies upkeep) and delivered nothing.`, 'warn');
+        f.dry = true;
+      } else {
+        state.res.supplies -= upk;
+        f.dry = false;
+        if (f.down) { f.down = false; f.last = null; log(`The outpost on ${wname(w)} delivered nothing this interval.`, 'warn'); }
+        else {
+          const y = opYieldOf(w);
+          state.res.supplies += y.sup;
+          state.research += y.rp;
+          state.res.naquadah += y.nq;
+          f.last = y;
+        }
+        if (!f.ev && Math.random() < (OP_EVP[w.hazard] || 0.2)) {
+          const k = opPickEv(w);
+          f.ev = { k, until: now + OP_EV_MS };
+          sfx.fail();
+          log(`OUTPOST ${OP_EVS[k].title}: ${OP_EVS[k].text(w)} Decide in the Off-World Operations room within ${fmt(OP_EV_MS)}.`, k === 'raid' ? 'alert' : 'warn');
+        }
+      }
+      ch = true;
+    }
+  });
+  if (ch) renderAll();
+}
+function opEvHtml(id, f) {
+  const w = world(id);
+  const E = OP_EVS[f.ev.k];
+  const A = E.a(w);
+  const can = state.res.supplies >= A.cost;
+  return `<div class="dispatch-row" style="text-align:left"><div><b class="warn">${E.title}</b> <span class="dim">decide in <span data-eta="${f.ev.until}">${fmt(Math.max(0, f.ev.until - Date.now()))}</span></span><div class="mrow">${E.text(w)}</div></div></div>`
+    + `<div class="controls" style="margin:6px 0 12px;justify-content:flex-start"><button onclick="opChoose('${id}','a')" ${can ? '' : 'disabled'} title="${A.tip}">${A.label} // ${A.cost} SUP</button><button onclick="opChoose('${id}','b')" title="${E.b.tip}">${E.b.label}</button></div>`;
+}
+function opLeftHtml() {
+  const ids = Object.keys(state.outposts || {});
+  let tot = 0;
+  let h = '';
+  ids.forEach(id => {
+    const w = world(id);
+    const f = state.outposts[id];
+    if (!w) return;
+    tot += opUpkeep(w);
+    const st = f.ev ? '<span class="warn">EVENT</span>' : (f.dry ? '<span class="warn">UNSUPPLIED</span>' : '<span class="ok">ACTIVE</span>');
+    h += `<div class="staff-row nob"><span><b>${wname(w)}</b> <span class="dim">${sysOf(w.level).star} // ${w.type}</span></span>${st}</div>`;
+    if (f.ev) h += opEvHtml(id, f);
+    h += `<div class="res-row"><span>Garrison</span><span>${f.guard} / ${OP_GUARD} FIT</span></div>`;
+    h += `<div class="res-row"><span>Output</span><span>${opYieldText(opYieldOf(w))}${f.down ? ' // <span class="warn">PAUSED</span>' : ''}</span></div>`;
+    h += `<div class="res-row"><span>Next delivery</span><span data-eta="${f.next}">${fmt(Math.max(0, f.next - Date.now()))}</span></div>`;
+    h += `<div class="res-row"><span>Upkeep</span><span>${opUpkeep(w)} SUP / ${fmt(OP_MS)} // ${w.hazard.toUpperCase()} HAZARD</span></div>`;
+    h += `<div class="controls" style="margin:6px 0 12px;justify-content:flex-start"><button onclick="opReplace('${id}')" ${f.guard < OP_GUARD && state.res.supplies >= OP_REPL ? '' : 'disabled'}>POST 1 // ${OP_REPL} SUP</button><button onclick="opAbandon('${id}')">${state.opConfirm === id ? 'CONFIRM ABANDON' : 'ABANDON'}</button></div>`;
+  });
+  return `<h2>Outposts <span class="dim">${ids.length}${ids.length ? ' // UPKEEP ' + tot + ' SUP' : ''}</span></h2>${h || '<p class="dim">No outposts yet. Pick an explored world to build one.</p>'}`;
+}
+function opRightHtml() {
+  const cand = opCands();
+  let h = '';
+  cand.forEach(w => {
+    h += `<div class="staff-row nob"><span><b>${wname(w)}</b> <span class="dim">${sysOf(w.level).star} // ${w.type} // ${w.hazard.toUpperCase()} HAZARD</span></span></div>`;
+    h += `<div class="controls" style="margin:0 0 12px;justify-content:flex-start"><button onclick="opEstablish('${w.id}')" ${state.res.supplies >= opCost() ? '' : 'disabled'}>BUILD // ${opCost()} SUP // ${opYieldText(opYieldOf(w))}</button></div>`;
+  });
+  return `<h2>Outpost sites <span class="dim">${cand.length}</span></h2>${h || '<p class="dim">Explore regular worlds to unlock outpost sites.</p>'}<p class="dim small help">Outposts are small bases on explored regular worlds. The world type sets the output, delivered through the gate every ${fmt(OP_MS)} after upkeep, and higher levels pay more. Each outpost after the first costs ${OP_COST_STEP} more. A random event comes up now and then; answer it here before the timer runs out or the default applies.</p>`;
+}
+function revisitEvent(w, was, yl) {
+  if (!was || !w || w.kind !== 'normal' || w.stronghold || Math.random() >= RV_P) return '';
+  const sc = opScale(w);
+  const wt = {
+    cache: 2 + (w.type === 'Arid desert' ? 1 : 0),
+    data: 1 + (['Ancient ruins field', 'Mountain plateau'].includes(w.type) ? 3 : 0),
+    trader: 1 + (w.env === 'Scattered settlements, old roads' ? 3 : 0),
+    patrol: w.hazard === 'high' ? 3 : (w.hazard === 'med' ? 1 : 0.3)
+  };
+  const ks = Object.keys(wt);
+  let r = Math.random() * ks.reduce((a, k) => a + wt[k], 0);
+  let k = ks[0];
+  for (const x of ks) { r -= wt[x]; if (r <= 0) { k = x; break; } }
+  const ty = w.type.toLowerCase();
+  if (k === 'cache') {
+    const v = Math.round(35 * sc);
+    state.res.supplies += v; yl.supplies = (yl.supplies || 0) + v;
+    return ` Revisit: in the ${ty} the team found an abandoned supply cache. +${v} supplies.`;
+  }
+  if (k === 'data') {
+    const v = Math.round(45 * sc);
+    state.research += v; yl.research = (yl.research || 0) + v;
+    return ` Revisit: a second look at the ${ty} turned up recoverable data. +${v} research points.`;
+  }
+  if (k === 'trader') {
+    const v = 1 + (sc >= 1.5 ? 1 : 0);
+    state.res.naquadah += v; yl.naquadah = (yl.naquadah || 0) + v;
+    return ` Revisit: local traders swapped naquadah for field rations. +${v} naquadah.`;
+  }
+  const v = Math.min(state.res.supplies, Math.round(20 * sc));
+  state.res.supplies -= v; yl.supplies = (yl.supplies || 0) - v;
+  return ` Revisit: a Goa'uld patrol forced the team to drop gear and run. ${v} supplies lost.`;
 }
 
 function fobTick() {
@@ -6374,11 +6878,21 @@ function fobTick() {
     if (!w) { delete state.fobs[id]; return; }
     if (now >= f.next) {
       f.next = now + FOB_MS;
-      if (f.stock.sup < FOB_CAP_SUP || f.stock.rp < FOB_CAP_RP) {
-        f.stock.sup = Math.min(FOB_CAP_SUP, f.stock.sup + FOB_SUP + FOB_PERK_SUP);
-        f.stock.rp = Math.min(FOB_CAP_RP, f.stock.rp + FOB_RP + FOB_PERK_RP);
+      if (!f.role) f.role = 'sup';
+      const upk = fobUpkeepOf(id);
+      if (state.res.supplies < upk) {
+        if (!f.dry) log(`The base on ${wname(w)} could not be supplied (${upk} supplies upkeep) and produced nothing.`, 'warn');
+        f.dry = true;
         ch = true;
-        if (f.stock.sup >= FOB_CAP_SUP && f.stock.rp >= FOB_CAP_RP) log(`The stockpile on ${wname(w)} is full. Production is paused until a Tel'tak collects it.`, 'warn');
+      } else {
+        state.res.supplies -= upk;
+        f.dry = false;
+        ch = true;
+        if (f.stock.sup < FOB_CAP_SUP || f.stock.rp < FOB_CAP_RP) {
+          f.stock.sup = Math.min(FOB_CAP_SUP, f.stock.sup + FOB_ROLE_DEF[f.role].sup);
+          f.stock.rp = Math.min(FOB_CAP_RP, f.stock.rp + FOB_ROLE_DEF[f.role].rp);
+          if (f.stock.sup >= FOB_CAP_SUP && f.stock.rp >= FOB_CAP_RP) log(`The stockpile on ${wname(w)} is full. Production is paused until a Tel'tak collects it.`, 'warn');
+        }
       }
     }
     if (f.wnd > 0) {
@@ -6402,7 +6916,7 @@ function opsRoomHtml() {
   const F = state.fobs || {};
   const ids = Object.keys(F);
   const cand = state.worlds.filter(w => w.stronghold && w.status === 'captured' && !F[w.id]);
-  const help = `<p class="dim small help">A base makes ${FOB_SUP + FOB_PERK_SUP} supplies and ${FOB_RP + FOB_PERK_RP} research points every ${fmt(FOB_MS)} until its stockpile holds ${FOB_CAP_SUP} and ${FOB_CAP_RP}. A Tel'tak sent to the world collects everything; a Logistic Truck sent with an Exploration team collects one payout. The scientist and archeologist add ${FOB_PERK_RP} RP and ${FOB_PERK_SUP} supplies to each output. While the System Lord of that level lives, the base is raided: answer with a Defend mission, or the garrison fights alone. Wounded recover slowly; killed are replaced for ${REPLACE_COST} supplies each. If every defender falls the stronghold is lost.</p>`;
+  const help = `<p class="dim small help">Each base is built as a Supply depot (${FOB_ROLE_DEF.sup.sup} supplies and ${FOB_ROLE_DEF.sup.rp} research points per ${fmt(FOB_MS)}), a Research outpost (${FOB_ROLE_DEF.rp.sup} and ${FOB_ROLE_DEF.rp.rp}) or a Power relay (${FOB_ROLE_DEF.pw.sup} and ${FOB_ROLE_DEF.pw.rp}, and +${FOB_RELAY} gate power per minute, up to +${FOB_RELAY_CAP} in total). Changing a base's role costs ${FOB_ROLE_COST} supplies and clears its stockpile. Output stops when the stockpile holds ${FOB_CAP_SUP} supplies and ${FOB_CAP_RP} research points. Upkeep is ${FOB_UPKEEP} supplies per ${fmt(FOB_MS)} for the first base and ${FOB_UPKEEP_STEP} more for each base built before it; if the SGC cannot pay, that base produces nothing for the interval. A Tel'tak sent to the world loads up to ${TK_CAP_SUP} supplies and ${TK_CAP_RP} research points; a Logistic Truck sent with an Exploration team collects up to ${FOB_TRUCK_SUP} and ${FOB_TRUCK_RP}. Whatever is not loaded stays in the stockpile. While the System Lord of that level lives, the base is raided: answer with a Defend mission, or the garrison fights alone and the raiders carry off half the stockpile. Wounded recover slowly; killed are replaced one at a time for ${REPLACE_COST} supplies each, as with SGC teams. If every defender falls the stronghold is lost.</p>`;
   let hb = '';
   ids.forEach(id => {
     const w = world(id);
@@ -6414,17 +6928,21 @@ function opsRoomHtml() {
     hb += `<div class="res-row"><span>Garrison</span><span>${b.guard} / ${FOB_GUARD} FIT${b.wnd ? ' // ' + b.wnd + ' WOUNDED' : ''}${b.dead ? ' // ' + b.dead + ' LOST' : ''}</span></div>`;
     hb += `<div class="res-row"><span>Stockpile</span><span>${b.stock.sup} / ${FOB_CAP_SUP} SUP // ${b.stock.rp} / ${FOB_CAP_RP} RP</span></div>`;
     hb += `<div class="res-row"><span>Next output</span>${full ? '<span class="warn">STOCKPILE FULL</span>' : `<span data-eta="${b.next}">${fmt(Math.max(0, b.next - Date.now()))}</span>`}</div>`;
+    hb += `<div class="res-row"><span>Role</span><span>${FOB_ROLE_DEF[b.role || 'sup'].name.toUpperCase()} // ${FOB_ROLE_DEF[b.role || 'sup'].sup} SUP ${FOB_ROLE_DEF[b.role || 'sup'].rp} RP${(b.role || 'sup') === 'pw' ? ' // +' + FOB_RELAY + ' POWER/MIN' : ''}</span></div>`;
+    hb += `<div class="res-row"><span>Upkeep</span><span>${fobUpkeepOf(id)} SUP / ${fmt(FOB_MS)}${b.dry ? ' // <span class="warn">UNSUPPLIED</span>' : ''}</span></div>`;
     hb += `<div class="res-row"><span>Raid check</span>${lordAlive(w) ? `<span data-eta="${b.rt}">${fmt(Math.max(0, b.rt - Date.now()))}</span>` : '<span class="ok">ENDED // LORD DEFEATED</span>'}</div>`;
     hb += `<div class="dim small" style="margin:4px 0;text-align:left">${b.staff.map(m => m.role + ' ' + m.name).join(' // ')}</div>`;
-    hb += `<div class="controls" style="margin:6px 0 12px;justify-content:flex-start"><button onclick="fobReplace('${id}')" ${b.dead && state.res.supplies >= b.dead * REPLACE_COST ? '' : 'disabled'}>REPLACE ${b.dead} // ${b.dead * REPLACE_COST} SUP</button><button onclick="fobRecall('${id}')">${state.fobConfirm === id ? 'CONFIRM RECALL' : 'RECALL BASE'}</button></div>`;
+    hb += `<div class="controls" style="margin:6px 0 12px;justify-content:flex-start"><button onclick="fobReplace('${id}')" ${b.dead && state.res.supplies >= replaceCost() ? '' : 'disabled'}>REPLACE 1 // ${replaceCost()} SUP${b.dead ? ' (' + b.dead + ' LOST)' : ''}</button><button onclick="fobRecall('${id}')">${state.fobConfirm === id ? 'CONFIRM RECALL' : 'RECALL BASE'}</button></div>`;
+    hb += `<div class="controls" style="margin:0 0 12px;justify-content:flex-start">${FOB_ROLE_KEYS.filter(k => k !== (b.role || 'sup')).map(k => `<button onclick="fobSetRole('${id}','${k}')" ${state.res.supplies >= FOB_ROLE_COST ? '' : 'disabled'}>TO ${FOB_ROLE_DEF[k].short} // ${FOB_ROLE_COST} SUP</button>`).join('')}</div>`;
   });
   let hc = '';
   cand.forEach(w => {
-    hc += `<div class="staff-row"><span><b>${wname(w)}</b> <span class="dim">${sysOf(w.level).star} // captured</span></span><button onclick="fobEstablish('${w.id}')" ${state.res.supplies >= FOB_COST ? '' : 'disabled'}>ESTABLISH // ${FOB_COST} SUP</button></div>`;
+    hc += `<div class="staff-row nob"><span><b>${wname(w)}</b> <span class="dim">${sysOf(w.level).star} // captured</span></span></div>`;
+    hc += `<div class="controls" style="margin:0 0 12px;justify-content:flex-start">${FOB_ROLE_KEYS.map(k => `<button onclick="fobEstablish('${w.id}','${k}')" ${state.res.supplies >= FOB_COST ? '' : 'disabled'}>${FOB_ROLE_DEF[k].short} // ${FOB_COST} SUP</button>`).join('')}</div>`;
   });
-  const left = `<h2>Active bases <span class="dim">${ids.length}</span></h2>${hb || '<p class="dim">No base established yet. Pick a captured stronghold to build one.</p>'}`;
+  const left = `<h2>Active bases <span class="dim">${ids.length}${ids.length ? ' // UPKEEP ' + fobUpkeepTotal() + ' SUP PER ' + fmt(FOB_MS) + (relayRegen() ? ' // RELAYS +' + relayRegen() + ' POWER/MIN' : '') : ''}</span></h2>${hb || '<p class="dim">No base established yet. Pick a captured stronghold to build one.</p>'}`;
   const right = `<h2>Available sites <span class="dim">${cand.length}</span></h2>${hc || '<p class="dim">Every captured stronghold already has a base.</p>'}${help}`;
-  return `<div class="rgrid"><div>${left}</div><div>${right}</div></div>`;
+  return `<div class="rgrid"><div>${left}${opLeftHtml()}</div><div>${right}${opRightHtml()}</div></div>`;
 }
 
 function dipTick() {
@@ -6507,6 +7025,9 @@ function factionContact(w, by, mid) {
 }
 
 function facLead(w, t, mid) {
+  return '';
+}
+function facLeadOld(w, t, mid) {
   if (!w || w.kind !== 'normal' || !state.fac) return '';
   const fw = state.worlds.filter(x => x.kind === 'faction' && x.intel < 2 && x.level <= state.level).sort((a, b) => a.level - b.level)[0];
   if (!fw) return '';
@@ -6523,7 +7044,7 @@ function facKnown(n) {
 function factionsHtml() {
   const list = Object.keys(FACTIONS).filter(facKnown);
   let h = '<h2>Faction relations</h2>';
-  if (!list.length) return h + '<p class="dim">No factions contacted yet. Survey worlds to find them.</p>';
+  if (!list.length) return h + '<p class="dim">No factions contacted yet. Decode inscriptions in the Archeology Office to find their hidden worlds.</p>';
   const keys = list.map((n, i) => 'f' + i);
   const sel = tabSel('fac', keys, keys[0]);
   h += tabCardsHtml('fac', list.map((n, i) => { const tt = facTier(n); return { k: 'f' + i, name: n.toUpperCase(), sub: tt ? FAC_TIERS[tt] : 'UNMET', cls: tt >= 2 ? 'ok' : 'dim' }; }), sel);
@@ -6914,6 +7435,7 @@ function finishMission(t) {
         const rp = Math.round(RESEARCH_PER_EXPLORE * hm * (1 + glRp()) * (m.rescued && fixBandOf(m) ? fixBandOf(m).yield : 1) * (m.com2 ? COM_RECALL_YIELD : 1));
         state.research += rp;
         yl.research = rp;
+        const rvWas = w.status === 'explored';
         if (w.status !== 'captured') w.status = 'explored';
         if (w.kind === 'lab') { revealAtlantis(); revealShip(); }
         if (w.kind === 'ship' && !state.zpm.found) { state.zpm.found = true; msg += ' A Zero Point Module was recovered from the ship.'; log('A Zero Point Module (ZPM) was recovered from the Ancient research ship. Install it onto the reactor in the Quartermaster.', 'ok'); }
@@ -6921,6 +7443,7 @@ function finishMission(t) {
         msg += armArtifact(w);
         msg += armWreck(w);
         msg += glExplore(w);
+        msg += revisitEvent(w, rvWas, yl);
         msg += facLead(w, t, m.lid);
       } else {
         msg += ' Exploration failed: no research earned.';
@@ -7148,6 +7671,7 @@ function worldBadges(w) {
   if (w.status === 'captured') b.push('<span class="badge ok">CAPTURED</span>');
   else if (w.stronghold && w.intel >= 2) b.push('<span class="badge danger">STRONGHOLD</span>');
   if (fobOn(w)) b.push('<span class="badge ok">FOB</span>');
+  if (opOn(w)) b.push('<span class="badge ok">OUTPOST</span>');
   if (w.lord && w.intel >= 2) b.push(w.status === 'captured' ? `<span class="badge ok">${w.lord.toUpperCase()} DEFEATED</span>` : `<span class="badge danger">SYSTEM LORD: ${w.lord.toUpperCase()}</span>`);
   if (w.status === 'explored') b.push('<span class="badge ok">EXPLORED</span>');
   else if (!(w.stronghold && w.intel >= 2) && w.status !== 'captured') b.push('<span class="badge dim">UNEXPLORED</span>');
@@ -7848,7 +8372,10 @@ function cardStatus(k) {
     const nb = Object.keys(state.fobs || {}).length;
     const rd = Object.keys(state.dipl.alerts).filter(id => state.fobs && state.fobs[id]).length;
     if (rd) return `<span class="danger">${rd} RAID${rd === 1 ? '' : 'S'} INBOUND</span>`;
-    return nb ? `${nb} BASE${nb === 1 ? '' : 'S'} ACTIVE` : 'NO BASES YET';
+    const no = opCount();
+    const oe = Object.keys(state.outposts || {}).filter(id => state.outposts[id].ev).length;
+    if (oe) return `<span class="warn">${oe} OUTPOST EVENT${oe === 1 ? '' : 'S'}</span>`;
+    return nb || no ? `${nb} BASE${nb === 1 ? '' : 'S'} // ${no} OUTPOST${no === 1 ? '' : 'S'}` : 'NO BASES YET';
   }
   if (k === 'quarter') {
     const sh = state.arm.ships;
@@ -8774,9 +9301,10 @@ function tkPickDest(id, wid) {
   TKUI.open = null;
   renderRoom();
 }
+function tkFuel(w) { return Math.max(1, Math.ceil(tkLy(w) / TK_FUEL_LY)); }
 function tkWorldInfo(w) {
   const tail = fobOn(w) ? 'FOB STOCKPILE ' + state.fobs[w.id].stock.sup + ' SUP // ' + state.fobs[w.id].stock.rp + ' RP' : (w.intel >= 3 ? HAZ_LABEL[w.hazard] + ' HAZARD // ' + tkYield(w) + ' SUP' : 'HAZARD UNKNOWN');
-  return tkLy(w) + ' LY // ' + fmt(tkRoundMs(w)) + ' ROUND TRIP // ' + tail;
+  return tkLy(w) + ' LY // ' + fmt(tkRoundMs(w)) + ' ROUND TRIP // ' + tkFuel(w) + ' NAQ // ' + tail;
 }
 function tkHtml() {
   const A = state.arm;
@@ -8791,7 +9319,7 @@ function tkHtml() {
     const home = x.status === 'home';
     const w = tkDest(x);
     const open = TKUI.open === x.id && home;
-    h += `<div class="staff-row nob"><span><b>${tkName(x)}</b> ${tkStatus(x)}</span>${home ? `<button ${w && state.res.supplies >= TK_FEE ? '' : 'disabled'} onclick="sendTeltak('${x.id}')">SEND // ${TK_FEE} SUP</button>` : ''}</div>`;
+    h += `<div class="staff-row nob"><span><b>${tkName(x)}</b> ${tkStatus(x)}</span>${home ? `<button ${w && state.res.supplies >= TK_FEE && state.res.naquadah >= tkFuel(w) ? '' : 'disabled'} onclick="sendTeltak('${x.id}')">SEND // ${TK_FEE} SUP + ${w ? tkFuel(w) : '?'} NAQ</button>` : ''}</div>`;
     if (home) h += `<div class="res-row"><span>Destination</span><button class="tkd" onclick="tkOpen('${x.id}')">${open ? 'CLOSE LIST' : (w ? wname(w).toUpperCase() : (wl.length ? 'CHOOSE DESTINATION' : 'NO EXPLORED WORLDS'))}</button></div>`;
     if (open) {
       h += '<div class="scroll tklist">';
@@ -8801,25 +9329,27 @@ function tkHtml() {
       h += '</div>';
     }
   });
-  return h + `<p class="dim small help">A run brings back the world's maximum supply roll (${TK_BASE} times the world's hazard multiplier), with no carry cap. Travel is 2 minutes per light year, round trip. About 1 run in 5 is delayed 1 to 3 minutes. Tel'tak ships are never ambushed. A ship remembers its last destination.</p>`;
+  return h + `<p class="dim small help">A run to an explored world brings back its maximum supply roll (${TK_BASE} times the world's hazard multiplier). A run to a base loads up to ${TK_CAP_SUP} supplies and ${TK_CAP_RP} research points; the rest stays in the stockpile. Travel is 2 minutes per light year, round trip. About 1 run in 5 is delayed 1 to 3 minutes. Each run burns 1 naquadah per ${TK_FUEL_LY} light years of the system, rounded up, so the same naquadah cannot also be converted to power. Tel'tak ships are never ambushed. A ship remembers its last destination.</p>`;
 }
 
 function sendTeltak(sid) {
   const x = state.arm.ships.find(s => s.id === sid);
   const w = x ? tkDest(x) : null;
-  if (!x || x.status !== 'home' || !w || !tkWorlds().includes(w) || state.res.supplies < TK_FEE) return;
+  if (!x || x.status !== 'home' || !w || !tkWorlds().includes(w) || state.res.supplies < TK_FEE || state.res.naquadah < tkFuel(w)) return;
+  const fuel = tkFuel(w);
   state.res.supplies -= TK_FEE;
+  state.res.naquadah -= fuel;
   const ms = tkRoundMs(w);
   x.status = 'away';
   x.world = w.id;
   x.eta = Date.now() + ms;
   x.rolled = false;
   x.lid = openMission('tk', w, [], { ship: tkName(x) + ' (' + (x.id === 'tk2' ? 'Level 3' : 'Level 2') + ' wreck)' });
-  mev(x.lid, `${tkName(x)} departed for ${wname(w)}. Cost ${TK_FEE} supplies. Round trip ${fmt(ms)}.`);
+  mev(x.lid, `${tkName(x)} departed for ${wname(w)}. Cost ${TK_FEE} supplies and ${fuel} naquadah. Round trip ${fmt(ms)}.`);
   later(() => tkArrive(sid), Math.round(ms / 2));
   later(() => teltakDue(sid), ms);
   sfx.chime();
-  log(`${tkName(x)} departed on a supply run to ${wname(w)}. Cost ${TK_FEE} supplies. Round trip ${fmt(ms)}.`, '');
+  log(`${tkName(x)} departed on a supply run to ${wname(w)}. Cost ${TK_FEE} supplies and ${fuel} naquadah. Round trip ${fmt(ms)}.`, '');
   renderAll();
 }
 
@@ -8830,10 +9360,10 @@ function tkArrive(sid) {
   const w = world(x.world);
   if (w && fobOn(w)) {
     const f = state.fobs[w.id];
-    x.load = { sup: f.stock.sup, rp: f.stock.rp };
-    f.stock.sup = 0;
-    f.stock.rp = 0;
-    mev(x.lid, `Arrived at ${wname(w)}. Loaded ${x.load.sup} supplies and ${x.load.rp} research points from the base.`);
+    x.load = { sup: Math.min(f.stock.sup, TK_CAP_SUP), rp: Math.min(f.stock.rp, TK_CAP_RP) };
+    f.stock.sup -= x.load.sup;
+    f.stock.rp -= x.load.rp;
+    mev(x.lid, `Arrived at ${wname(w)}. Loaded ${x.load.sup} supplies and ${x.load.rp} research points from the base.${f.stock.sup || f.stock.rp ? ' ' + f.stock.sup + ' supplies and ' + f.stock.rp + ' research points remain in the stockpile.' : ''}`);
     renderAll();
   } else mev(x.lid, `Arrived at ${w ? wname(w) : 'the world'}. Cargo loading.`);
 }
@@ -9260,6 +9790,7 @@ setInterval(() => {
   checkArrival();
   facPay();
   fobTick();
+  opTick();
   if (state.gate === 'open' && !state.incoming && performance.now() - state.openT >= WORMHOLE_MS) {
     log('Wormhole time limit reached. Gate shut down.', 'warn');
     closeGate(true);
@@ -9446,6 +9977,7 @@ function snapshot(label) {
     dest: state.dest,
     level: state.level,
     worlds: state.worlds,
+    hidden: state.hidden || [],
     research: state.research,
     assaultCdLeft: Math.max(0, state.assaultCdUntil - now),
     malps,
@@ -9492,7 +10024,12 @@ function snapshot(label) {
     dipl: { alerts: Object.keys(state.dipl.alerts).reduce((o, k) => { o[k] = Math.max(0, state.dipl.alerts[k] - now); return o; }, {}), raid: Object.keys(state.dipl.raid).reduce((o, k) => { o[k] = Math.max(0, state.dipl.raid[k] - now); return o; }, {}) },
     fobs: Object.keys(state.fobs || {}).reduce((o, k) => {
       const f = state.fobs[k];
-      o[k] = { staff: f.staff.map(m => Object.assign({}, m)), guard: f.guard, wnd: f.wnd, dead: f.dead, stock: Object.assign({}, f.stock), nextLeft: Math.max(0, f.next - now), healLeft: f.heal ? Math.max(0, f.heal - now) : 0, rtLeft: Math.max(0, f.rt - now) };
+      o[k] = { role: f.role || 'sup', dry: !!f.dry, staff: f.staff.map(m => Object.assign({}, m)), guard: f.guard, wnd: f.wnd, dead: f.dead, stock: Object.assign({}, f.stock), nextLeft: Math.max(0, f.next - now), healLeft: f.heal ? Math.max(0, f.heal - now) : 0, rtLeft: Math.max(0, f.rt - now) };
+      return o;
+    }, {}),
+    outposts: Object.keys(state.outposts || {}).reduce((o, k) => {
+      const f = state.outposts[k];
+      o[k] = { guard: f.guard, dry: !!f.dry, down: !!f.down, nextLeft: Math.max(0, f.next - now), ev: f.ev ? { k: f.ev.k, left: Math.max(0, f.ev.until - now) } : null, last: f.last || null };
       return o;
     }, {}),
     fac: { pts: state.fac.pts, freeRepl: state.fac.freeRepl, met: state.fac.met, nextLeft: Object.keys(state.fac.next).reduce((o, k) => { o[k] = Math.max(0, state.fac.next[k] - now); return o; }, {}) },
@@ -9559,6 +10096,7 @@ function loadSave(slot) {
   state.dest = d.dest;
   state.level = d.level;
   state.worlds = d.worlds;
+  state.hidden = Array.isArray(d.hidden) ? d.hidden : [];
   upgradeWorlds(state.worlds);
   state.mapLayer = d.mapLayer || 'system';
   state.mapSys = Math.min(d.mapSys || d.level, MAX_LEVEL);
@@ -9646,6 +10184,7 @@ function loadSave(slot) {
   const sf = d.fac || {};
   state.fac = { pts: Object.assign({}, sf.pts), freeRepl: Object.assign({}, sf.freeRepl), next: {}, met: Object.assign({}, sf.met) };
   Object.keys(FACTIONS).forEach(n => { if (!state.fac.met[n] && facKnown(n)) state.fac.met[n] = { t: '', by: '' }; });
+  hwMigrate();
   Object.keys(sf.nextLeft || {}).forEach(k => { state.fac.next[k] = now + sf.nextLeft[k]; });
   state.vehSeq = d.vehSeq || 0;
   state.vp = vpLoad(d.vp);
@@ -9653,7 +10192,14 @@ function loadSave(slot) {
   Object.keys(d.fobs || {}).forEach(k => {
     const f = d.fobs[k];
     if (!world(k) || !f || !Array.isArray(f.staff)) return;
-    state.fobs[k] = { staff: f.staff, guard: f.guard | 0, wnd: f.wnd | 0, dead: f.dead | 0, stock: { sup: (f.stock && f.stock.sup) | 0, rp: (f.stock && f.stock.rp) | 0 }, next: now + (f.nextLeft || 0), heal: f.healLeft ? now + f.healLeft : 0, rt: now + (f.rtLeft || RAID_CHECK_MS) };
+    state.fobs[k] = { role: FOB_ROLE_DEF[f.role] ? f.role : 'sup', dry: !!f.dry, staff: f.staff, guard: f.guard | 0, wnd: f.wnd | 0, dead: f.dead | 0, stock: { sup: (f.stock && f.stock.sup) | 0, rp: (f.stock && f.stock.rp) | 0 }, next: now + (f.nextLeft || 0), heal: f.healLeft ? now + f.healLeft : 0, rt: now + (f.rtLeft || RAID_CHECK_MS) };
+  });
+  state.outposts = {};
+  Object.keys(d.outposts || {}).forEach(k => {
+    const f = d.outposts[k];
+    const w = world(k);
+    if (!w || !f) return;
+    state.outposts[k] = { guard: Math.max(0, Math.min(OP_GUARD, f.guard | 0)), dry: !!f.dry, down: !!f.down, next: now + (f.nextLeft | 0), ev: f.ev && OP_EVS[f.ev.k] ? { k: f.ev.k, until: now + (f.ev.left | 0) } : null, last: f.last || null };
   });
   state.selVeh = [];
   state.vehicles = (d.vehicles || []).map(v => {
@@ -9886,19 +10432,19 @@ function buildDC() {
     const cy = 90 + Math.floor(i / 4) * 38;
     s += `<g id="dccg${i}" class="dccg"><title>${EG_GL[i]}</title><rect x="${cx}" y="${cy}" width="47" height="34" rx="3"/><g class="dcsg" transform="translate(${cx + 23.5} ${cy + 17}) scale(1.15)">${GLYPHS[i]}</g></g>`;
   }
-  s += '<rect x="20" y="62" width="250" height="130" rx="3" class="dccell"/><text x="28" y="80" class="dct dim2 tiny">ACTIVE MISSIONS</text><text id="dcMsCount" x="262" y="80" class="dct tiny" text-anchor="end">0</text><line x1="24" y1="86" x2="266" y2="86" stroke="#1d4a5e" stroke-width="1"/>';
-  s += '<text id="dcMsNone" x="145" y="136" class="dct tiny dim2" text-anchor="middle">NO ACTIVE MISSIONS</text>';
+  s += '<rect x="20" y="62" width="230" height="130" rx="3" class="dccell"/><text x="28" y="80" class="dct dim2 tiny">ACTIVE MISSIONS</text><text id="dcMsCount" x="242" y="80" class="dct tiny" text-anchor="end">0</text><line x1="24" y1="86" x2="246" y2="86" stroke="#1d4a5e" stroke-width="1"/>';
+  s += '<text id="dcMsNone" x="135" y="136" class="dct tiny dim2" text-anchor="middle">NO ACTIVE MISSIONS</text>';
   for (let r = 0; r < 5; r++) {
     const y = 106 + r * 18;
-    s += `<text id="dcmn${r}" x="28" y="${y}" class="dct tiny dcmsn"></text><text id="dcmt${r}" x="140" y="${y}" class="dct tiny dim2"></text><text id="dcme${r}" x="262" y="${y}" class="dct tiny dcmse" text-anchor="end"></text>`;
+    s += `<text id="dcmn${r}" x="28" y="${y}" class="dct tiny dcmsn"></text><text id="dcmt${r}" x="122" y="${y}" class="dct tiny dim2"></text><text id="dcme${r}" x="242" y="${y}" class="dct tiny dcmse" text-anchor="end"></text>`;
   }
   s += '<text id="dcClock" x="20" y="222" class="dcmid">00:00:00</text>';
   s += '<text id="dcDate" x="20" y="242" class="dct dim2"></text>';
   const cells = [['pwr', 'POWER'], ['sup', 'SUPPLIES'], ['naq', 'NAQUADAH'], ['rp', 'RESEARCH'], ['away', 'TEAMS AWAY'], ['lvl', 'LEVEL']];
   cells.forEach((c, i) => {
-    const x = 20 + (i % 2) * 129;
+    const x = 20 + (i % 2) * 119;
     const y = 252 + Math.floor(i / 2) * 50;
-    s += `<rect x="${x}" y="${y}" width="121" height="46" rx="3" class="dccell"/><text x="${x + 6}" y="${y + 16}" class="dct dim2 tiny">${c[1]}</text><text id="dcv_${c[0]}" x="${x + 6}" y="${y + 38}" class="dcval">0</text><polyline id="dcs_${c[0]}" class="dcspark" points=""/>`;
+    s += `<rect x="${x}" y="${y}" width="111" height="46" rx="3" class="dccell"/><text x="${x + 6}" y="${y + 16}" class="dct dim2 tiny">${c[1]}</text><text id="dcv_${c[0]}" x="${x + 6}" y="${y + 38}" class="dcval">0</text><polyline id="dcs_${c[0]}" class="dcspark" points=""/>`;
   });
   const bits = ['10110010 0110', '01001101 1010', '11010011 0101', '00101110 1001', '10011010 0110'];
   bits.forEach((b, i) => { s += `<text x="20" y="${414 + i * 15}" class="dct tiny dim2">${b}</text>`; });
@@ -10071,9 +10617,9 @@ function dcSecond() {
     h.push(vals[c]);
     if (h.length > 24) h.shift();
     $('dcv_' + c).textContent = vals[c];
-    const x = 20 + (i % 2) * 129;
+    const x = 20 + (i % 2) * 119;
     const y = 252 + Math.floor(i / 2) * 50;
-    $('dcs_' + c).setAttribute('points', sparkPoints(h, x + 66, y + 24, 48, 14));
+    $('dcs_' + c).setAttribute('points', sparkPoints(h, x + 58, y + 24, 46, 14));
   });
 }
 
@@ -12262,12 +12808,6 @@ if (window.ResizeObserver) new ResizeObserver(fitStarmap).observe($('smpanel'));
       ['rd-1', 'COMM 1: overdue team', 'tune, then fly the drone', comm(1)],
       ['rd-2', 'COMM 2: recall a team', 'tune, then recall', comm(2)],
       ['rd-recon', 'Assault recon drone', 'stronghold survey', recon]
-    ] },
-    { t: 'PLANNED', d: 'Next minigame update.', items: [
-      ['p1', 'Tel\'tak asteroid run', 'planned', null],
-      ['p2', 'Dig site brushwork', 'planned', null],
-      ['p3', 'Mess hall card night', 'planned', null],
-      ['p4', 'Raid defense', 'planned', null]
     ] }
   ];
   const ACTIONS = {};

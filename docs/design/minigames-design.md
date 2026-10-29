@@ -146,8 +146,13 @@ Still open from round 1: MALP drive, Infirmary triage, Motor Pool diagnostics, I
 - Target range (Armory): zat and staff shooting range for a small morale or training reward.
 
 ## Planned future minigame update (Brad's picks, Oct 26 2026)
+Update Oct 28 2026: the asteroid run and Raid defense were built (0.9.20, 0.9.21) and then removed in 0.9.22; Dig site brushwork and Mess hall card night are dropped. This section and the Raid defense notes below are history only.
 - Tel'tak asteroid run (Brad's idea): optional on a supply run, fly through an asteroid field and dodge; proposal above (about 30% off the trip, hits cost time only).
 - Dig site brushwork (Archeology Office)
 - Mess hall card night (Barracks)
 - Raid defense (Operations, Forward Operating Base raids)
 Not picked, kept on the list: cargo hold packing, chevron rhythm, beacon sweep, envoy dinner, target range, MALP drive, Infirmary triage, Motor Pool diagnostics, IDC verification.
+
+## Raid defense (built 0.9.21, Oct 27 2026)
+Brad's reference: Canyon Defense (overhead tower defense, enemies on a canyon road, turrets on the rock beside it, coins from kills). Display: rugged tablet from Brad's photo. Triggered from a FOB raid alert in Off-World Operations. Waves, defenses, outcome mapping and quit rule are in CHANGELOG.md under 0.9.21. Open numbers are listed there.
+

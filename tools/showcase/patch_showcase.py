@@ -18,7 +18,9 @@ def rep(a, b, n=1):
 i = s.index('<script>const AUDIO_DATA')
 j = s.index('</script>', i) + len('</script>')
 s = s[:i] + '<script>const AUDIO_DATA={};</script>' + s[j:]
-rep('<title>Stargate Command 0.9.14</title>', '<title>Stargate Command Minigame Showcase</title>')
+import re
+s, nt = re.subn(r'<title>Stargate Command [0-9.]+</title>', '<title>Stargate Command Minigame Showcase</title>', s)
+assert nt == 1
 rep("const SAVE_KEY = 'sgc-command-save-';", "const SAVE_KEY = 'sgc-showcase-save-';")
 rep('<head>', '<head>\n<script>window.SC = true;</script>')
 rep('function autosaveNow() {\n', 'function autosaveNow() {\n  if (window.SC) return;\n')

@@ -174,12 +174,6 @@
       ['rd-1', 'COMM 1: overdue team', 'tune, then fly the drone', comm(1)],
       ['rd-2', 'COMM 2: recall a team', 'tune, then recall', comm(2)],
       ['rd-recon', 'Assault recon drone', 'stronghold survey', recon]
-    ] },
-    { t: 'PLANNED', d: 'Next minigame update.', items: [
-      ['p1', 'Tel\'tak asteroid run', 'planned', null],
-      ['p2', 'Dig site brushwork', 'planned', null],
-      ['p3', 'Mess hall card night', 'planned', null],
-      ['p4', 'Raid defense', 'planned', null]
     ] }
   ];
   const ACTIONS = {};
