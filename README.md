@@ -30,4 +30,4 @@ A Stargate SG-1 base-management game in a single HTML file. Current build: 0.9.2
 4. Rebuild the showcase: python3 tools/showcase/patch_showcase.py dist/sgc-command.html dist/sgc-minigame-showcase.html
 5. Rebuild the Game Guide in tools/guide/ and copy the PDF to dist/
 6. Update CHANGELOG.md, ROADMAP.md and the build number above
-7. Commit and push: git add -A, git commit -m "Release X.Y.Z", git tag vX.Y.Z, git push --follow-tags (the repo is private; builds/archive/ and assets/soundtrack/ stay local, so back them up separately)
+7. Commit and push: git add -A, git commit -m "Release X.Y.Z", git tag -a vX.Y.Z -m "Release X.Y.Z", git push --follow-tags (annotated tags only; a plain git tag is not pushed by --follow-tags) (the repo is private; builds/archive/ and assets/soundtrack/ stay local, so back them up separately)
