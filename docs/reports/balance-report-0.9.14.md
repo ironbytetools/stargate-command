@@ -140,3 +140,18 @@ Findings: the role plans give different Level 5 stockpiles, so the choice matter
 
 Delivered tools: tools/balance-sim/bot2.js and run2.js are updated for roles and fuel (config key roles, for example roles:["pw","rp","sup"]).
 
+## 0.9.23 follow-up (Oct 28 2026): 15 minute cooldown, Level 5 check
+
+Brad picked A as a flat 15 minute assault cooldown, left F as is, skipped G, and asked for a Level 5 retune. 30 full-game sessions on the 0.9.22 rules with the 15 minute cooldown (difficulty 80 on Level 5 unchanged), bot as before with scaleTeams and atv on:
+
+| | 0.9.15 (20 min, 10 sessions) | 0.9.23 (15 min, 30 sessions) |
+|---|---|---|
+| Level 5 cleared, median (range) | 405 (308 to 493) | 392 (259 to 546) |
+| Minutes per level, L1 to L5 | 45 / 47 / 92 / 58 / 106 | 45 / 54 / 86 / 60 / 130 |
+| Win rate, L4 / L5 | 77% / 71% | 64% / 66% |
+| Shown estimate, L4 / L5 | 69% / 66% | 64% / 63% |
+| Level 5 assaults in sample | 56 | 182 |
+
+Finding: Level 5 is on the 65% target with the larger sample, so no retune was applied. The 58% from the 0.9.16 runs came from 156 assaults pooled across different FOB role plans, which change how much research goes into ATV tiers. Clear time barely moved (13 minutes) because the bot already waits for 55% odds and the pace is also set by raising teams, gate power and research. Late stock is still large: 2,029 supplies and 11,509 RP unspent at clear.
+
+Runs: node run2.js out.json 15 800 '{"scaleTeams":true,"atv":true}' game.html, two processes in parallel.

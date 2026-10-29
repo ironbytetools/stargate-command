@@ -1484,3 +1484,19 @@ Game Guide: not rebuilt, and it never mentioned either game.
 - Game Guide rebuilt: tools/guide/patch_guide_0922.py applied to build_guide.py (build 0.9.22, 38 pages, was 35). Updated: Reactor I 600 RP, Level 4 second stronghold and lock count (3 of 4), hidden worlds and decoded faction contact (faction leads removed), revisit events, FOB roles, upkeep, Truck and Tel'tak caps, raid stockpile loss, replacement, Tel'tak naquadah fuel and SEND only, outposts with output table and events, ATV bonus +2, hidden-world table in the Archeology section, quick-reference rows. Contents page numbers settled over two renders and checked. Pages 19 to 21 and 35 reviewed as images.
 - Guide values mirror the shipped numbers. The open items (hidden-world rewards and odds, outpost numbers) are in it as they are today; a change to any of them needs a Guide refresh.
 - Not verified: the Guide text against hand play of every new screen, Safari, saves from 0.9.20 and 0.9.21 in 0.9.22.
+
+
+## 0.9.23 (BUILT Oct 28 2026, not released): assault cooldown 15 minutes
+
+File: builds/sgc-command-0.9.23.html (SHA-256 426274cf...). Source: builds/sgc-command-0.9.22.html patched by tools/patches/build-0.9.23/patch_0923.py. Rebuild: python3 tools/patches/build-0.9.23/patch_0923.py builds/sgc-command-0.9.22.html builds/sgc-command-0.9.23.html
+
+- Balance pick A, Brad's call: the assault cooldown is 15 minutes on every level (was 20). ASSAULT_CD_MS and the assault result text ("Assault cooldown started: 15:00.") changed; the build number is the only other difference (line diff against 0.9.22 shows six changed lines).
+- Level 5 retune: Brad asked for it, targeting about 65%. Not applied: 30 bot sessions on this build's rules (0.9.22 with the 15 minute cooldown, Level 5 difficulty still 80) won 66% of Level 5 assaults (182 assaults) against a shown estimate of 63%, so Level 5 is on target. The 58% in the 0.9.16 runs was sampling noise plus role-plan differences.
+- Bot results, 30 full-game sessions (scaleTeams and atv on, roles default), zero script errors, all 30 cleared: median clear 392 minutes (259 to 546) against 405 on 0.9.15 and 435 on 0.9.16 with the 20 minute cooldown; level minutes median 45 / 54 / 86 / 60 / 130. Win rate and shown estimate by level: L1 68% / 73% (44 assaults), L2 67% / 66% (89), L3 64% / 69% (140), L4 64% / 64% (94), L5 66% / 63% (182). Reactor I at minute 69. Unspent at clear: 2,029 supplies, 11,509 RP. Unanswered raid checks 4.3 per session, no overruns.
+- Picks F (gear costs) and G (extend bot) were declined by Brad. Hidden-world and outpost numbers confirmed as shipped.
+- Not done: Game Guide (still 0.9.22: its quick reference says 20 minutes), dist, commit.
+- Not verified: hand play, Safari.
+
+## 0.9.23 RELEASED to root (Oct 28 2026)
+
+- dist/sgc-command.html is build 0.9.23 (zip rewritten and compared byte for byte), 0.9.22 moved to builds/archive/, showcase rebuilt from the new dist file, Game Guide rebuilt with tools/guide/patch_guide_0923.py (build number and the quick-reference assault cooldown, 20 to 15 minutes; 38 pages, contents unchanged). Committed and tagged v0.9.23.

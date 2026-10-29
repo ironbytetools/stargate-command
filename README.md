@@ -1,6 +1,6 @@
 # Stargate Command
 
-A Stargate SG-1 base-management game in a single HTML file. Current build: 0.9.22 released (rolls up 0.9.15 to 0.9.22).
+A Stargate SG-1 base-management game in a single HTML file. Current build: 0.9.23 released.
 
 ## Play and read
 - dist/sgc-command.html: the playable game (current release, open in a browser); dist/sgc-command.html.zip is the same file zipped

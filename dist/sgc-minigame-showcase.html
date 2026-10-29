@@ -961,7 +961,7 @@ body.sc #scbar { display: block; }
     <svg class="emblem" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M24 8 L37.5 15.8 V32.2 L24 40 L10.5 32.2 V15.8 Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><circle cx="35.26" cy="19.50" r="1.6" fill="currentColor"/><circle cx="32.36" cy="16.04" r="1.6" fill="currentColor"/><circle cx="28.45" cy="13.78" r="1.6" fill="currentColor"/><circle cx="24.00" cy="13.00" r="1.6" fill="currentColor"/><circle cx="19.55" cy="13.78" r="1.6" fill="currentColor"/><circle cx="15.64" cy="16.04" r="1.6" fill="currentColor"/><circle cx="12.74" cy="19.50" r="1.6" fill="currentColor"/><path d="M15.5 32 L24 19.5 L32.5 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter"/><path d="M24 28 L26.8 31.4 L24 34.8 L21.2 31.4 Z" fill="currentColor"/></svg>
     <div class="txt">
       <div class="title">STARGATE COMMAND</div>
-      <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.22</div>
+      <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.23</div>
     </div>
   </div>
   <div id="status" class="status"></div>
@@ -1146,7 +1146,7 @@ body.sc #scbar { display: block; }
   <div class="titlebox">
     <svg class="emblem big" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M24 8 L37.5 15.8 V32.2 L24 40 L10.5 32.2 V15.8 Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/><circle cx="35.26" cy="19.50" r="1.6" fill="currentColor"/><circle cx="32.36" cy="16.04" r="1.6" fill="currentColor"/><circle cx="28.45" cy="13.78" r="1.6" fill="currentColor"/><circle cx="24.00" cy="13.00" r="1.6" fill="currentColor"/><circle cx="19.55" cy="13.78" r="1.6" fill="currentColor"/><circle cx="15.64" cy="16.04" r="1.6" fill="currentColor"/><circle cx="12.74" cy="19.50" r="1.6" fill="currentColor"/><path d="M15.5 32 L24 19.5 L32.5 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="miter"/><path d="M24 28 L26.8 31.4 L24 34.8 L21.2 31.4 Z" fill="currentColor"/></svg>
     <div class="title">STARGATE COMMAND</div>
-    <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.22</div>
+    <div class="sub">CHEYENNE MOUNTAIN COMPLEX // BUILD 0.9.23</div>
     <div class="panel" id="titlebody"></div>
   </div>
 </div>
@@ -1235,7 +1235,7 @@ const DIFF_STEP = 1.1;
 const BAND = 0.05;
 const ASSAULT_BASE = 150;
 const ASSAULT_MULT = 1.25;
-const ASSAULT_CD_MS = 20 * 60000;
+const ASSAULT_CD_MS = 15 * 60000;
 const MALP_COST = 25;
 const MALP_CAP = 3;
 const MALP_TIERS = [
@@ -4974,7 +4974,7 @@ const VEH_REPAIR_COST = 10;
 const VEH_REPAIR_MS = 180000;
 const VEH_LOSS_P = 0.25;
 const VEH_TIME_CAP = 0.5;
-const BUILD_VER = '0.9.22';
+const BUILD_VER = '0.9.23';
 const VP_PARTS = { truck: ['armor', 'engine', 'cargo'], drone: ['armor', 'engine', 'sensors'], atv: ['armor', 'engine', 'cargo'] };
 const VP_NAMES = { armor: 'Armor', engine: 'Engine', cargo: 'Cargo', sensors: 'Sensors' };
 const VP_SHORT = { truck: 'Truck', drone: 'Drone', atv: 'ATV' };
@@ -7532,7 +7532,7 @@ function resolveAssault(ids, wid, p) {
   let msg = `Assault on ${wname(w)} ${win ? 'succeeded' : 'failed'} (${Math.round(p * 100)}% estimate).`;
   if (notes.length) msg += ' ' + notes.join(', ') + '.';
   else msg += ' All personnel returned unharmed.';
-  msg += ' Assault cooldown started: 20:00.';
+  msg += ' Assault cooldown started: 15:00.';
   if (win) {
     w.status = 'captured';
     msg += ' The world is now peaceful: ambushes no longer occur there.';
